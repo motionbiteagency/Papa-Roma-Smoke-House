@@ -1,6 +1,6 @@
 {
   "restaurant": {
-    "name": "Papa Roma Smoke House",
+    "name": "PAPA ROMA FOOD ENGINEERING",
     "tagline": "Where Smoke Meets Flavor",
     "description": "Experience the art of slow-smoked perfection at Dhanmondi's lakeside. From Texas-style BBQ to authentic Bengali cuisine and international flavors — Papa Roma brings you a culinary journey like no other.",
     "address": "5/A Satmasjid Road, Lake Side, Dhanmondi, Dhaka-1209",
@@ -55,6 +55,59 @@
     "enabled": true,
     "imageSrc": "/images/banar/burger-offer.png",
     "link": "/menu/smoke-house"
+  },
+  "cookingVideos": {
+    "enabled": true,
+    "sectionLabel": "Trending Now",
+    "sectionTitle": "From Our Kitchen",
+    "sectionSubtitle": "Watch our chefs bring fire, smoke & flavor to life — straight from the kitchen",
+    "videos": [
+      {
+        "id": "cv1",
+        "title": "The Art of Slow Smoking — BBQ Brisket",
+        "youtubeId": "0RMoKZDlQaw",
+        "duration": "8:42",
+        "views": "2.1M",
+        "category": "Smoke & Fire",
+        "featured": true
+      },
+      {
+        "id": "cv2",
+        "title": "Perfect Flame-Grilled Burger",
+        "youtubeId": "5RkRVoLRJhA",
+        "duration": "5:10",
+        "views": "980K",
+        "category": "Grill Master",
+        "featured": false
+      },
+      {
+        "id": "cv3",
+        "title": "Bengali Beef Curry — Secret Recipe",
+        "youtubeId": "LME07_U4FHk",
+        "duration": "12:30",
+        "views": "1.4M",
+        "category": "Heritage Cooking",
+        "featured": false
+      },
+      {
+        "id": "cv4",
+        "title": "ASMR: Knife Skills & Meat Prep",
+        "youtubeId": "lxiB-4XjHAM",
+        "duration": "3:55",
+        "views": "4.2M",
+        "category": "ASMR",
+        "featured": false
+      },
+      {
+        "id": "cv5",
+        "title": "Smoky Jerk Chicken Wings",
+        "youtubeId": "UVjm_BQIZ0c",
+        "duration": "7:18",
+        "views": "760K",
+        "category": "Trending",
+        "featured": false
+      }
+    ]
   }
 }
 

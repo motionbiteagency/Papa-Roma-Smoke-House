@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import Image from 'next/image';
-import { Flame, ArrowRight, Star, MapPin, Clock, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Flame, ArrowRight, Star, MapPin, Clock, ChevronLeft, ChevronRight, Play, X, Eye } from 'lucide-react';
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { motion, AnimatePresence, useScroll, useTransform, useMotionValueEvent } from 'framer-motion';
 import { AnimateOnScroll, StaggerContainer, StaggerItem } from './components/ui/AnimateOnScroll';
@@ -181,7 +181,8 @@ function BrandHeroSection() {
   });
 
   const y1 = useTransform(scrollYProgress, [0, 1], [0, -100]);
-  const y2 = useTransform(scrollYProgress, [0, 1], [0, 100]);
+  const y2 = useTransform(scrollYProgress, [0, 1], [0, 0]);
+  const y3 = useTransform(scrollYProgress, [0, 1], [0, 100]);
   const bgY = useTransform(scrollYProgress, [0, 1], ['-10%', '10%']);
 
   return (
@@ -220,7 +221,19 @@ function BrandHeroSection() {
             transition={{ duration: 1, ease: [0.16, 1, 0.3, 1], delay: 0.1 }}
           >
             <motion.h2 className={styles.brandLine2} style={{ y: y2 }}>
-              SMOKE HOUSE
+              Food
+            </motion.h2>
+          </motion.div>
+
+          <motion.div 
+            className={styles.brandLineWrapper}
+            initial={{ opacity: 0, y: 100 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 1, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
+          >
+            <motion.h2 className={styles.brandLine3} style={{ y: y3 }}>
+              ENGINEERING
             </motion.h2>
           </motion.div>
         </div>
@@ -652,6 +665,150 @@ function SignatureDishesSection() {
   );
 }
 
+
+/* ===================== COOKING VIDEOS SECTION ===================== */
+function CookingVideosSection() {
+  const { cookingVideos } = siteConfig;
+  const [activeVideo, setActiveVideo] = useState(null);
+
+  // Close modal on Escape key
+  useEffect(() => {
+    const onKey = (e) => { if (e.key === 'Escape') setActiveVideo(null); };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, []);
+
+  if (!cookingVideos?.enabled || !cookingVideos.videos?.length) return null;
+
+  const videos = cookingVideos.videos.slice(0, 5);
+  const [hero, cardB, cardC, cardD, cardE] = videos;
+
+  // YouTube HQ thumbnail
+  const ytThumb = (id) => `https://img.youtube.com/vi/${id}/maxresdefault.jpg`;
+  const ytFallback = (id) => `https://img.youtube.com/vi/${id}/hqdefault.jpg`;
+
+  const VideoCard = ({ video, isHero = false }) => (
+    <div
+      className={`${styles.videoCard} ${isHero ? styles.videoCardHero : ''}`}
+      onClick={() => setActiveVideo(video)}
+      style={{ height: '100%' }}
+    >
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        src={ytThumb(video.youtubeId)}
+        alt={video.title}
+        className={styles.videoThumb}
+        onError={(e) => { e.currentTarget.src = ytFallback(video.youtubeId); }}
+      />
+      <div className={styles.videoCardOverlay} />
+
+      <div className={styles.videoPlayBtn}>
+        <Play size={isHero ? 32 : 22} fill="currentColor" />
+      </div>
+
+      <div className={styles.videoCardContent}>
+        <div className={styles.videoCardTopRow}>
+          {video.category && (
+            <span className={styles.videoCategoryBadge}>{video.category}</span>
+          )}
+          {video.duration && (
+            <span className={styles.videoDurationBadge}>{video.duration}</span>
+          )}
+        </div>
+        <h3 className={styles.videoCardTitle}>{video.title}</h3>
+        {video.views && (
+          <div className={styles.videoCardViews}>
+            <Eye size={11} />
+            {video.views} views
+          </div>
+        )}
+      </div>
+    </div>
+  );
+
+  return (
+    <section className={styles.cookingVideos}>
+      <div className="container">
+        <AnimateOnScroll>
+          <div className="section-header">
+            <span className="section-label">{cookingVideos.sectionLabel}</span>
+            <h2 className="section-title">
+              {cookingVideos.sectionTitle.split(' ')[0]}{' '}
+              <span className="gold-text">
+                {cookingVideos.sectionTitle.split(' ').slice(1).join(' ')}
+              </span>
+            </h2>
+            <p className="section-subtitle">{cookingVideos.sectionSubtitle}</p>
+          </div>
+        </AnimateOnScroll>
+
+        {/* ── MOSAIC GRID ── */}
+        <AnimateOnScroll>
+          <div className={styles.videoMosaicGrid}>
+            {/* Card A — Hero, spans 2 rows */}
+            {hero && <VideoCard video={hero} isHero />}
+
+            {/* Right column — 2 stacked */}
+            <div className={styles.videoMosaicRight}>
+              {cardB && <VideoCard video={cardB} />}
+              {cardC && <VideoCard video={cardC} />}
+            </div>
+          </div>
+
+          {/* Bottom row — 2 cards */}
+          {(cardD || cardE) && (
+            <div className={styles.videoMosaicBottom}>
+              {cardD && <div style={{ height: '240px' }}><VideoCard video={cardD} /></div>}
+              {cardE && <div style={{ height: '240px' }}><VideoCard video={cardE} /></div>}
+            </div>
+          )}
+        </AnimateOnScroll>
+      </div>
+
+      {/* ── MODAL ── */}
+      <AnimatePresence>
+        {activeVideo && (
+          <motion.div
+            className={styles.videoModal}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.25 }}
+          >
+            <div
+              className={styles.videoModalBackdrop}
+              onClick={() => setActiveVideo(null)}
+            />
+            <motion.div
+              className={styles.videoModalInner}
+              initial={{ scale: 0.92, opacity: 0, y: 20 }}
+              animate={{ scale: 1, opacity: 1, y: 0 }}
+              exit={{ scale: 0.92, opacity: 0, y: 20 }}
+              transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+            >
+              <button
+                className={styles.videoModalClose}
+                onClick={() => setActiveVideo(null)}
+                aria-label="Close video"
+              >
+                <X size={18} />
+              </button>
+              <iframe
+                className={styles.videoModalIframe}
+                src={`https://www.youtube.com/embed/${activeVideo.youtubeId}?autoplay=1&rel=0`}
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+                title={activeVideo.title}
+              />
+              <p className={styles.videoModalTitle}>{activeVideo.title}</p>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </section>
+  );
+}
+
 /* ===================== TESTIMONIALS ===================== */
 function TestimonialsSection() {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -823,7 +980,7 @@ function PosterCTASection() {
             whileInView={{ opacity: 0.4 }}
             transition={{ delay: 1, duration: 1 }}
           >
-            <span>PAPA ROMA SMOKE HOUSE</span>
+            <span>PAPA ROMA FOOD ENGINEERING</span>
             <div className={styles.posterDivider}></div>
             <span>ESTD 2024</span>
           </motion.div>
@@ -845,7 +1002,7 @@ function MapCtaSection() {
               src={siteConfig.restaurant.mapEmbed}
               width="100%" height="400" style={{ border: 0, borderRadius: 'var(--radius-lg)' }}
               allowFullScreen="" loading="lazy" referrerPolicy="no-referrer-when-downgrade"
-              title="Papa Roma Smoke House Location"
+              title="PAPA ROMA FOOD ENGINEERING Location"
             ></iframe>
           </AnimateOnScroll>
           <AnimateOnScroll direction="right" className={styles.ctaContent}>
@@ -877,6 +1034,7 @@ export default function HomePage() {
       <MenuCategoriesSection />
       <SignatureDishesSection />
       <OfferSection />
+      <CookingVideosSection />
       <TestimonialsSection />
       <PosterCTASection />
       <MapCtaSection />

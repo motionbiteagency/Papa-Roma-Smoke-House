@@ -4,13 +4,15 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
-import { Menu, X, Flame } from 'lucide-react';
+import { Menu, X, Flame, ShoppingBag } from 'lucide-react';
 import siteConfig from '@/data/siteConfig.json';
 import menuData from '@/data/menus.json';
 import { getItemImage } from '@/data/itemImages';
+import { useCart } from '@/app/context/CartContext';
 import styles from './Navbar.module.css';
 
 export default function Navbar() {
+  const { getCount, toggleDrawer } = useCart();
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const pathname = usePathname();
@@ -39,8 +41,8 @@ export default function Navbar() {
             <Flame size={24} />
           </div>
           <div className={styles.logoText}>
-            <span className={styles.logoName}>Papa Roma</span>
-            <span className={styles.logoSub}>Smoke House</span>
+            <span className={styles.logoName}>PAPA ROMA</span>
+            <span className={styles.logoSub}>FOOD ENGINEERING</span>
           </div>
         </Link>
 
@@ -82,6 +84,7 @@ export default function Navbar() {
                               src={getItemImage(item.id)} 
                               alt={item.name} 
                               fill 
+                              sizes="(max-width: 768px) 100vw, 250px"
                               style={{ objectFit: 'cover' }}
                               className={styles.megaItemImage}
                             />
@@ -100,24 +103,34 @@ export default function Navbar() {
           })}
         </ul>
 
-        {/* CTA Button */}
-        <a
-          href={`https://wa.me/${siteConfig.restaurant.whatsapp}?text=Hi! I'd like to make a reservation at Papa Roma Smoke House 🔥`}
-          target="_blank"
-          rel="noopener noreferrer"
-          className={styles.ctaBtn}
-        >
-          Reserve Now
-        </a>
+        {/* Actions */}
+        <div className={styles.navActions}>
+          <a
+            href={`https://wa.me/${siteConfig.restaurant.whatsapp}?text=Hi! I'd like to make a reservation at PAPA ROMA FOOD ENGINEERING 🔥`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className={styles.ctaBtn}
+          >
+            Reserve Now
+          </a>
 
-        {/* Mobile Toggle */}
-        <button
-          className={styles.mobileToggle}
-          onClick={() => setIsOpen(!isOpen)}
-          aria-label="Toggle menu"
-        >
-          {isOpen ? <X size={24} /> : <Menu size={24} />}
-        </button>
+          <button
+            className={styles.navCartBtn}
+            onClick={toggleDrawer}
+            aria-label="Open cart"
+          >
+            <ShoppingBag size={20} />
+            {getCount() > 0 && <span className={styles.navCartBadge}>{getCount()}</span>}
+          </button>
+
+          <button
+            className={styles.mobileToggle}
+            onClick={() => setIsOpen(!isOpen)}
+            aria-label="Toggle menu"
+          >
+            {isOpen ? <X size={24} /> : <Menu size={24} />}
+          </button>
+        </div>
       </nav>
 
       {/* Mobile Menu Overlay */}

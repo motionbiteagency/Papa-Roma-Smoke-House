@@ -7,7 +7,7 @@ import styles from './WhatsAppFAB.module.css';
 export default function WhatsAppFAB() {
   const { whatsapp } = siteConfig.restaurant;
   const message = encodeURIComponent(
-    "Hi! I'd like to make a reservation at Papa Roma Smoke House 🔥"
+    "Hi! I'd like to make a reservation at PAPA ROMA FOOD ENGINEERING 🔥"
   );
 
   return (

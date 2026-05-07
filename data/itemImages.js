@@ -35,7 +35,7 @@ const itemImageMap = {
 
   // === BANGLA KUTHIR — Breakfast ===
   bk1: 'https://images.unsplash.com/photo-1601050690597-df0568f70950?w=500&q=80',
-  bk2: 'https://images.unsplash.com/photo-1628294895950-9805252f784d?w=500&q=80',
+  bk2: 'https://images.unsplash.com/photo-1550547660-d9450f859349?w=500&q=80',
   bk3: 'https://images.unsplash.com/photo-1565557623262-b51c2513a641?w=500&q=80',
   bk4: 'https://images.unsplash.com/photo-1510693206972-df098062cb71?w=500&q=80',
   bk5: 'https://images.unsplash.com/photo-1525351484163-7529414344d8?w=500&q=80',

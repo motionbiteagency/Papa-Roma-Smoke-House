@@ -319,7 +319,20 @@
 
 .brandLine2 {
   font-family: var(--font-accent);
-  font-size: clamp(2.5rem, 14vw, 14rem);
+  font-size: clamp(2rem, 11vw, 11.5rem);
+  font-weight: 900;
+  color: var(--color-cream);
+  text-transform: uppercase;
+  letter-spacing: -0.05em;
+  margin: 0;
+  white-space: nowrap;
+  line-height: 0.82;
+  will-change: transform;
+}
+
+.brandLine3 {
+  font-family: var(--font-accent);
+  font-size: clamp(2.8rem, 15vw, 15.5rem);
   font-weight: 900;
   color: var(--color-cream);
   text-transform: uppercase;
@@ -1236,6 +1249,307 @@
   line-height: 1.6;
   margin-bottom: var(--space-xl);
 }
+
+/* ---- COOKING VIDEOS SECTION ---- */
+.cookingVideos {
+  position: relative;
+  padding: var(--space-4xl) 0;
+  background: #0a0a0a;
+  overflow: hidden;
+}
+
+/* Ambient glowing background */
+.cookingVideos::before {
+  content: '';
+  position: absolute;
+  top: 20%;
+  left: -10%;
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(circle, rgba(230, 57, 70, 0.06) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.cookingVideos::after {
+  content: '';
+  position: absolute;
+  bottom: 10%;
+  right: -5%;
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, rgba(212, 168, 83, 0.05) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+/* ---- MOSAIC GRID ---- */
+.videoMosaicGrid {
+  display: grid;
+  grid-template-columns: 1.7fr 1fr;
+  grid-template-rows: 340px 240px;
+  gap: 12px;
+  margin-top: var(--space-2xl);
+}
+
+/* Card A — Hero, spans 2 rows */
+.videoMosaicGrid > *:nth-child(1) {
+  grid-row: span 2;
+}
+
+/* Right side: 2 stacked cards */
+.videoMosaicRight {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* Bottom row */
+.videoMosaicBottom {
+  display: grid;
+  grid-template-columns: 1fr 1.6fr;
+  gap: 12px;
+  margin-top: 12px;
+}
+
+/* ---- VIDEO CARD ---- */
+.videoCard {
+  position: relative;
+  border-radius: 12px;
+  overflow: hidden;
+  cursor: pointer;
+  background: #111;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  transition: border-color 0.35s ease, transform 0.35s ease, box-shadow 0.35s ease;
+  width: 100%;
+  height: 100%;
+}
+
+.videoCard:hover {
+  border-color: rgba(212, 168, 83, 0.5);
+  transform: translateY(-3px);
+  box-shadow: 0 12px 40px rgba(0,0,0,0.7), 0 0 25px rgba(212, 168, 83, 0.12);
+}
+
+/* YouTube thumbnail as background */
+.videoThumb {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  display: block;
+}
+
+.videoCard:hover .videoThumb {
+  transform: scale(1.06);
+}
+
+/* Dark gradient overlay */
+.videoCardOverlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(0,0,0,0.05) 0%,
+    rgba(0,0,0,0.15) 40%,
+    rgba(0,0,0,0.88) 100%
+  );
+  z-index: 1;
+  transition: background 0.35s ease;
+}
+
+.videoCard:hover .videoCardOverlay {
+  background: linear-gradient(
+    to bottom,
+    rgba(0,0,0,0.1) 0%,
+    rgba(0,0,0,0.2) 40%,
+    rgba(0,0,0,0.92) 100%
+  );
+}
+
+/* Content at bottom of card */
+.videoCardContent {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 2;
+  padding: 20px;
+}
+
+.videoCardTopRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.videoCategoryBadge {
+  background: var(--color-accent);
+  color: white;
+  font-family: var(--font-accent);
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  padding: 3px 9px;
+  border-radius: 4px;
+}
+
+.videoDurationBadge {
+  background: rgba(0,0,0,0.7);
+  backdrop-filter: blur(6px);
+  color: rgba(255,255,255,0.9);
+  font-family: var(--font-accent);
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 3px 9px;
+  border-radius: 4px;
+  border: 1px solid rgba(255,255,255,0.1);
+}
+
+.videoCardTitle {
+  font-family: var(--font-heading);
+  font-size: 1rem;
+  font-weight: 700;
+  color: white;
+  line-height: 1.3;
+  margin: 0 0 6px;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.8);
+}
+
+.videoCardViews {
+  font-size: 0.75rem;
+  color: rgba(255,255,255,0.55);
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+/* Larger title for hero card */
+.videoCardHero .videoCardTitle {
+  font-size: 1.5rem;
+}
+
+.videoCardHero .videoCardContent {
+  padding: 28px;
+}
+
+/* ---- PLAY BUTTON ---- */
+.videoPlayBtn {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0.85);
+  opacity: 0;
+  z-index: 3;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.12);
+  backdrop-filter: blur(10px);
+  border: 1.5px solid rgba(255,255,255,0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.videoCard:hover .videoPlayBtn {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
+  background: var(--color-gold);
+  border-color: var(--color-gold);
+  color: #0a0a0a;
+  box-shadow: 0 0 30px rgba(212, 168, 83, 0.5);
+}
+
+/* Hero card always shows a slightly visible play btn */
+.videoCardHero .videoPlayBtn {
+  width: 76px;
+  height: 76px;
+  opacity: 0.7;
+  transform: translate(-50%, -50%) scale(1);
+}
+
+.videoCardHero:hover .videoPlayBtn {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1.05);
+}
+
+/* ---- MODAL LIGHTBOX ---- */
+.videoModal {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.videoModalBackdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.95);
+  backdrop-filter: blur(12px);
+}
+
+.videoModalInner {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 1060px;
+  background: #111;
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,0.1);
+  box-shadow: 0 30px 80px rgba(0,0,0,0.9), 0 0 50px rgba(212,168,83,0.08);
+}
+
+.videoModalIframe {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16/9;
+  border: none;
+}
+
+.videoModalClose {
+  position: absolute;
+  top: -16px;
+  right: -16px;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: #1a1a1a;
+  border: 1px solid rgba(255,255,255,0.15);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 2;
+  transition: all 0.25s ease;
+}
+
+.videoModalClose:hover {
+  background: var(--color-accent);
+  border-color: var(--color-accent);
+  transform: rotate(90deg) scale(1.1);
+}
+
+.videoModalTitle {
+  padding: 16px 20px;
+  font-family: var(--font-heading);
+  font-size: 1rem;
+  color: rgba(255,255,255,0.85);
+  border-top: 1px solid rgba(255,255,255,0.07);
+  background: #0d0d0d;
+  margin: 0;
+}
+
+
 /* ---- RESPONSIVE ---- */
 @media (max-width: 1200px) {
   .cineText { max-width: 320px; }
@@ -1263,6 +1577,15 @@
     width: clamp(240px, 44vw, 400px);
     height: clamp(320px, 56vh, 540px);
   }
+
+  /* Video mosaic: collapse to 1 column on tablet */
+  .videoMosaicGrid {
+    grid-template-columns: 1fr;
+    grid-template-rows: 280px 200px 200px;
+  }
+  .videoMosaicGrid > *:nth-child(1) { grid-row: span 1; }
+  .videoMosaicRight { flex-direction: row; }
+  .videoMosaicBottom { grid-template-columns: 1fr 1fr; }
 }
 
 @media (max-width: 768px) {
@@ -1275,6 +1598,17 @@
   .offerOverlay { background: linear-gradient(0deg, rgba(10,10,10,0.95) 0%, rgba(10,10,10,0.7) 60%, transparent 100%); }
   .offerContent { padding: var(--space-xl); text-align: center; align-self: flex-end; margin: 0 auto; }
   .offerCard { align-items: flex-end; }
+
+  /* Video mosaic: single column on mobile */
+  .videoMosaicGrid {
+    grid-template-columns: 1fr;
+    grid-template-rows: 260px;
+    grid-auto-rows: 200px;
+  }
+  .videoMosaicGrid > *:nth-child(1) { grid-row: span 1; }
+  .videoMosaicRight { flex-direction: column; }
+  .videoMosaicBottom { grid-template-columns: 1fr; }
+  .videoCardHero .videoCardTitle { font-size: 1.2rem; }
 }
 
 @media (max-width: 480px) {

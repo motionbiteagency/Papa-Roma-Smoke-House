@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import { Flame, MapPin, Clock, Phone, Mail } from 'lucide-react';
 import siteConfig from '@/data/siteConfig.json';
 import styles from './Footer.module.css';
@@ -39,9 +40,9 @@ export default function Footer() {
             <div className={styles.logoIcon}>
               <Flame size={20} />
             </div>
-            <div>
-              <span className={styles.logoName}>Papa Roma</span>
-              <span className={styles.logoSub}>Smoke House</span>
+            <div className={styles.logoText}>
+              <span className={styles.logoName}>PAPA ROMA</span>
+              <span className={styles.logoSub}>FOOD ENGINEERING</span>
             </div>
           </Link>
           <p className={styles.brandDesc}>{restaurant.description}</p>
@@ -98,7 +99,7 @@ export default function Footer() {
       {/* Bottom Bar */}
       <div className={styles.bottomBar}>
         <div className="container">
-          <p>&copy; {new Date().getFullYear()} Papa Roma Smoke House. All rights reserved.</p>
+          <p>&copy; {new Date().getFullYear()} PAPA ROMA FOOD ENGINEERING. All rights reserved.</p>
         </div>
       </div>
     </footer>
