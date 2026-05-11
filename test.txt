@@ -4,7 +4,7 @@
 - Scrolling Zoom out, with inside anather section 
 - CTA Big ang Bold like : Reserve a table
 - Full screen footer with brand animated brand name at the footer. 
-
+- does it possible to load hero video faster?
 
 
 

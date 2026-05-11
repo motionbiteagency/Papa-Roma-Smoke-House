@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { ArrowLeft, MessageCircle, ShoppingBag, Trash2 } from 'lucide-react';
+import { ArrowLeft, MessageCircle, ShoppingBag, Trash2, Loader2 } from 'lucide-react';
 import { useCart } from '@/app/context/CartContext';
 import siteConfig from '@/data/siteConfig.json';
 import styles from './checkout.module.css';
@@ -46,6 +46,7 @@ export default function CheckoutPage() {
     notes: '',
   });
   const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
     setForm(prev => ({ ...prev, [e.target.name]: e.target.value }));
@@ -59,10 +60,16 @@ export default function CheckoutPage() {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!isValid || items.length === 0) return;
+    
+    setLoading(true);
     const url = buildWhatsAppMessage(form, items, getTotal());
-    window.open(url, '_blank');
-    setSubmitted(true);
-    clearCart();
+    
+    setTimeout(() => {
+      window.open(url, '_blank');
+      setSubmitted(true);
+      clearCart();
+      setLoading(false);
+    }, 600);
   };
 
   if (submitted) {
@@ -195,10 +202,19 @@ export default function CheckoutPage() {
               <button
                 type="submit"
                 className={styles.submitBtn}
-                disabled={!isValid || items.length === 0}
+                disabled={!isValid || items.length === 0 || loading}
               >
-                <MessageCircle size={18} />
-                Place Order via WhatsApp
+                {loading ? (
+                  <>
+                    <Loader2 size={18} className={styles.spinner} />
+                    Opening WhatsApp...
+                  </>
+                ) : (
+                  <>
+                    <MessageCircle size={18} />
+                    Place Order via WhatsApp
+                  </>
+                )}
               </button>
               <p className={styles.submitNote}>
                 This will open WhatsApp with your order pre-filled. Just hit Send!

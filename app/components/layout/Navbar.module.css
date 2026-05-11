@@ -370,14 +370,33 @@
   color: var(--color-gold);
 }
 
-.mobileCta {
-  margin-top: var(--space-lg);
+.mobileActions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+  align-items: center;
   opacity: 0;
-  animation-delay: 0.5s !important;
+  transform: translateY(20px);
 }
 
-.mobileMenu.mobileOpen .mobileCta {
-  animation: fadeInUp 0.4s 0.5s ease forwards;
+.mobileMenu.mobileOpen .mobileActions {
+  animation: fadeInUp 0.4s ease forwards;
+}
+
+.mobileCartBtn {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  font-family: var(--font-accent);
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--color-gold);
+  background: rgba(212, 168, 83, 0.1);
+  border: 1px solid rgba(212, 168, 83, 0.2);
+  padding: 12px 24px;
+  border-radius: var(--radius-sm);
+  width: 100%;
+  justify-content: center;
 }
 
 /* --- Responsive --- */
@@ -390,19 +409,31 @@
   .mobileToggle {
     display: flex;
   }
+  
+  .navActions {
+    gap: var(--space-sm);
+  }
 }
 
 @media (max-width: 480px) {
   .logoName {
-    font-size: 1rem;
+    font-size: clamp(0.9rem, 3vw, 1.15rem);
   }
 
   .logoSub {
-    font-size: 0.6rem;
-    letter-spacing: 2px;
+    font-size: 0.55rem;
+    letter-spacing: 1.5px;
   }
 
   .mobileLink {
     font-size: 1.5rem;
+    min-height: 48px; /* Apple HIG standard */
+    display: flex;
+    align-items: center;
+  }
+  
+  .navCartBtn {
+    width: 40px;
+    height: 40px;
   }
 }

@@ -227,5 +227,31 @@
     grid-template-columns: 1fr;
     gap: var(--space-2xl);
     padding: var(--space-2xl) 0;
+    text-align: center;
+  }
+  
+  .brandCol, .col, .contactList {
+    align-items: center;
+  }
+  
+  .contactList li {
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+  }
+  
+  .contactIcon {
+    margin-bottom: 4px;
+  }
+  
+  .socials {
+    justify-content: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .socialLink {
+    width: 44px;
+    height: 44px;
   }
 }

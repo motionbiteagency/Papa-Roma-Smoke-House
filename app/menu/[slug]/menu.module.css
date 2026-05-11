@@ -359,9 +359,24 @@
     overflow-x: auto;
     padding-bottom: var(--space-sm);
     -webkit-overflow-scrolling: touch;
+    scroll-snap-type: x mandatory;
+    scroll-padding-left: var(--space-md);
   }
 
   .categoryTabs::-webkit-scrollbar {
     display: none;
+  }
+  
+  .categoryTab {
+    scroll-snap-align: start;
+  }
+}
+
+@media (max-width: 480px) {
+  .itemImageWrapper {
+    height: 180px;
+  }
+  .searchBar {
+    max-width: 100%;
   }
 }

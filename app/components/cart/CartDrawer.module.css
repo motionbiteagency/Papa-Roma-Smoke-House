@@ -309,3 +309,26 @@
   opacity: 0.9;
   transform: translateY(-1px);
 }
+
+/* --- Responsive --- */
+@media (max-width: 480px) {
+  .qtyBtn {
+    min-width: 36px;
+    min-height: 36px;
+    justify-content: center;
+  }
+  
+  .qty {
+    min-width: 24px;
+  }
+  
+  .itemName, .itemPrice {
+    font-size: max(0.85rem, 14px);
+  }
+}
+
+@media (max-width: 380px) {
+  .drawer {
+    max-width: 100vw;
+  }
+}

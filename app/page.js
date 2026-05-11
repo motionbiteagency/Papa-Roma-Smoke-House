@@ -2,10 +2,11 @@
 
 import Link from 'next/link';
 import Image from 'next/image';
-import { Flame, ArrowRight, Star, MapPin, Clock, ChevronLeft, ChevronRight, Play, X, Eye } from 'lucide-react';
+import { Flame, ArrowRight, Star, MapPin, Clock, ChevronLeft, ChevronRight, Play, X, Eye, Plus, Check } from 'lucide-react';
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { motion, AnimatePresence, useScroll, useTransform, useMotionValueEvent } from 'framer-motion';
 import { AnimateOnScroll, StaggerContainer, StaggerItem } from './components/ui/AnimateOnScroll';
+import { useCart } from '@/app/context/CartContext';
 import siteConfig from '@/data/siteConfig.json';
 import menuData from '@/data/menus.json';
 import testimonialData from '@/data/testimonials.json';
@@ -566,6 +567,20 @@ function SignatureDishesCinematic({ dishes }) {
 }
 
 function SignatureDishesMobile({ dishes }) {
+  const { addItem, items } = useCart();
+  
+  const handleAdd = (dish) => {
+    addItem({
+      id: dish.id,
+      name: dish.name,
+      price: dish.price,
+      menuName: dish.menuName,
+      unit: dish.unit
+    });
+  };
+
+  const isAdded = (dishId) => items.some(i => i.id === dishId);
+
   return (
     <section className={styles.sigMobileSection}>
       <div className="container">
@@ -581,40 +596,50 @@ function SignatureDishesMobile({ dishes }) {
           </div>
         </AnimateOnScroll>
         <StaggerContainer className={styles.sigMobileGrid}>
-          {dishes.map((dish, i) => (
-            <StaggerItem key={dish.id}>
-              <article className={styles.sigMobileCard}>
-                <div className={styles.sigMobileImage}>
-                  <Image
-                    src={dishImages[dish.id] || '/images/hero-brisket.png'}
-                    alt={dish.name}
-                    fill
-                    style={{ objectFit: 'cover' }}
-                    sizes="100vw"
-                  />
-                  <span className={styles.sigMobileNum}>
-                    {String(i + 1).padStart(2, '0')}
-                  </span>
-                </div>
-                <div className={styles.sigMobileContent}>
-                  <span className={styles.sigMobileCategory}>{dish.menuName}</span>
-                  <h3 className={styles.sigMobileTitle}>{dish.name}</h3>
-                  {dish.description && (
-                    <p className={styles.sigMobileDesc}>{dish.description}</p>
-                  )}
-                  <div className={styles.sigMobileMeta}>
-                    <span className={styles.sigMobilePrice}>
-                      ৳{dish.price}
-                      {dish.unit && <small> / {dish.unit}</small>}
+          {dishes.map((dish, i) => {
+            const added = isAdded(dish.id);
+            return (
+              <StaggerItem key={dish.id}>
+                <article className={styles.sigMobileCard}>
+                  <div className={styles.sigMobileImage}>
+                    <Image
+                      src={dishImages[dish.id] || '/images/hero-brisket.png'}
+                      alt={dish.name}
+                      fill
+                      style={{ objectFit: 'cover' }}
+                      sizes="100vw"
+                    />
+                    <span className={styles.sigMobileNum}>
+                      {String(i + 1).padStart(2, '0')}
                     </span>
-                    <Link href={`/menu/${dish.menuSlug}`} className={styles.sigMobileCta}>
-                      View Dish <ArrowRight size={14} />
-                    </Link>
                   </div>
-                </div>
-              </article>
-            </StaggerItem>
-          ))}
+                  <div className={styles.sigMobileContent}>
+                    <span className={styles.sigMobileCategory}>{dish.menuName}</span>
+                    <h3 className={styles.sigMobileTitle}>{dish.name}</h3>
+                    {dish.description && (
+                      <p className={styles.sigMobileDesc}>{dish.description}</p>
+                    )}
+                    <div className={styles.sigMobileMeta}>
+                      <span className={styles.sigMobilePrice}>
+                        ৳{dish.price}
+                        {dish.unit && <small> / {dish.unit}</small>}
+                      </span>
+                      <button 
+                        onClick={() => handleAdd(dish)}
+                        className={`${styles.sigMobileAddBtn} ${added ? styles.addedState : ''}`}
+                      >
+                        {added ? (
+                          <><Check size={14} /> Added</>
+                        ) : (
+                          <><Plus size={14} /> Add</>
+                        )}
+                      </button>
+                    </div>
+                  </div>
+                </article>
+              </StaggerItem>
+            );
+          })}
         </StaggerContainer>
       </div>
     </section>
@@ -822,6 +847,22 @@ function TestimonialsSection() {
     setCurrentIndex((prev) => (prev - 1 + testimonials.length) % testimonials.length);
   };
 
+  const [touchStart, setTouchStart] = useState(null);
+  const [touchEnd, setTouchEnd] = useState(null);
+  const minSwipeDistance = 50;
+
+  const onTouchStart = (e) => {
+    setTouchEnd(null);
+    setTouchStart(e.targetTouches[0].clientX);
+  };
+  const onTouchMove = (e) => setTouchEnd(e.targetTouches[0].clientX);
+  const onTouchEndHandler = () => {
+    if (!touchStart || !touchEnd) return;
+    const distance = touchStart - touchEnd;
+    if (distance > minSwipeDistance) next();
+    if (distance < -minSwipeDistance) prev();
+  };
+
   useEffect(() => {
     const interval = setInterval(next, 5000);
     return () => clearInterval(interval);
@@ -837,7 +878,12 @@ function TestimonialsSection() {
           </div>
         </AnimateOnScroll>
         <AnimateOnScroll>
-          <div className={styles.testimonialSlider}>
+          <div 
+            className={styles.testimonialSlider}
+            onTouchStart={onTouchStart}
+            onTouchMove={onTouchMove}
+            onTouchEnd={onTouchEndHandler}
+          >
             <button className={styles.tSliderBtn} onClick={prev} aria-label="Previous"><ChevronLeft size={20} /></button>
             <AnimatePresence mode="wait">
               <motion.div

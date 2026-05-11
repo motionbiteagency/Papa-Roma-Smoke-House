@@ -15,7 +15,12 @@
   cursor: pointer;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.45);
   transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease;
-  position: fixed;
+}
+
+@media (max-width: 480px) {
+  .cartBtn {
+    bottom: calc(env(safe-area-inset-bottom, 0px) + 5.5rem);
+  }
 }
 
 .cartBtn:hover {

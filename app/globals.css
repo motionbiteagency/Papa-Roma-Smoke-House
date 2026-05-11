@@ -173,6 +173,7 @@ button {
   font-family: inherit;
   font-size: inherit;
   color: inherit;
+  touch-action: manipulation; /* Prevent 300ms tap delay on mobile */
 }
 
 input, textarea, select {
@@ -182,6 +183,13 @@ input, textarea, select {
   background: none;
   border: none;
   outline: none;
+}
+
+/* Prevent iOS auto-zoom on inputs */
+@media screen and (max-width: 768px) {
+  input, textarea, select {
+    font-size: 16px !important;
+  }
 }
 
 /* --- Utility Classes --- */
@@ -446,8 +454,17 @@ input, textarea, select {
 }
 
 @media (max-width: 480px) {
+  :root {
+    --space-section: 3rem;
+  }
+
   .section-label::before,
   .section-label::after {
     width: 15px;
+  }
+
+  .btn {
+    padding: 12px 20px;
+    width: 100%;
   }
 }
