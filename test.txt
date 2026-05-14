@@ -8,18 +8,6 @@
 
 
 
--Hero section: 
-    -Button 'Reserve a table' should be glowing button.
-    -hero section sliding image duration make it to 3.5s.
-    - the status number on hero section should use countdown, like if it 80 then the number will start from 1 go to 80 by increasing 1 by 1. 
-
--Brand name slider section: 
-    - those text be glowing in a eye catchy way 
-
--Contact section: 
-    -Change font family to poppins or roboto
-    -Change font size to 18px or 20px
-
 
 
 

@@ -271,6 +271,26 @@ function HotItemsSection() {
       price: item.price,
     }));
 
+  const scrollRef = useRef(null);
+  const [isPaused, setIsPaused] = useState(false);
+
+  useEffect(() => {
+    if (isPaused) return;
+
+    const interval = setInterval(() => {
+      if (window.innerWidth <= 768 && scrollRef.current) {
+        const container = scrollRef.current;
+        const itemWidth = container.offsetWidth;
+        if (container.scrollLeft + itemWidth >= container.scrollWidth - 10) {
+          container.scrollTo({ left: 0, behavior: 'smooth' });
+        } else {
+          container.scrollTo({ left: container.scrollLeft + itemWidth, behavior: 'smooth' });
+        }
+      }
+    }, 2500);
+    return () => clearInterval(interval);
+  }, [isPaused]);
+
   return (
     <section className={`section ${styles.hotItems}`}>
       <div className="container">
@@ -281,21 +301,31 @@ function HotItemsSection() {
             <p className="section-subtitle">Our guests&apos; absolute favorites this week</p>
           </div>
         </AnimateOnScroll>
-        <StaggerContainer className={styles.hotGrid}>
-          {items.map((item, idx) => (
-            <StaggerItem key={idx} className={styles.hotCardWrapper}>
-              <Link href={item.href} className={styles.hotCard}>
-                <div className={styles.hotImage}>
-                  <Image src={item.image} alt={item.title} fill style={{ objectFit: 'cover' }} sizes="(max-width: 768px) 100vw, 50vw" />
-                </div>
-                <div className={styles.hotOverlay}>
-                  <h3 className={styles.hotTitle}>{item.title}</h3>
-                  <p className={styles.hotDesc}>{item.desc}</p>
-                </div>
-              </Link>
-            </StaggerItem>
-          ))}
-        </StaggerContainer>
+        <div 
+          className={styles.hotScrollWrapper} 
+          ref={scrollRef}
+          onTouchStart={() => setIsPaused(true)}
+          onTouchEnd={() => setIsPaused(false)}
+          onMouseDown={() => setIsPaused(true)}
+          onMouseUp={() => setIsPaused(false)}
+          onMouseLeave={() => setIsPaused(false)}
+        >
+          <StaggerContainer className={styles.hotGrid}>
+            {items.map((item, idx) => (
+              <StaggerItem key={idx} className={styles.hotCardWrapper}>
+                <Link href={item.href} className={styles.hotCard}>
+                  <div className={styles.hotImage}>
+                    <Image src={item.image} alt={item.title} fill style={{ objectFit: 'cover' }} sizes="(max-width: 768px) 100vw, 50vw" />
+                  </div>
+                  <div className={styles.hotOverlay}>
+                    <h3 className={styles.hotTitle}>{item.title}</h3>
+                    <p className={styles.hotDesc}>{item.desc}</p>
+                  </div>
+                </Link>
+              </StaggerItem>
+            ))}
+          </StaggerContainer>
+        </div>
       </div>
     </section>
   );
@@ -317,15 +347,15 @@ function OfferSection() {
       
       <div style={{ width: '100%' }}>
       {siteConfig.imageBanner?.enabled && (
-        <AnimateOnScroll>
+        <AnimateOnScroll className="container">
           <Link href={siteConfig.imageBanner.link || '#'}>
-            <div style={{ position: 'relative', width: '100%', height: 'auto', aspectRatio: '3.5/1', minHeight: '300px', overflow: 'hidden', cursor: 'pointer', display: 'block' }}>
+            <div className={styles.imageBannerWrapper}>
               <Image 
                 src={siteConfig.imageBanner.imageSrc} 
                 alt="Special Offer Banner" 
                 fill 
-                style={{ objectFit: 'cover' }} 
-                sizes="100vw"
+                style={{ objectFit: 'contain' }} 
+                sizes="(max-width: 768px) 100vw, 90vw"
                 priority
               />
             </div>
