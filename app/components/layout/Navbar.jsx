@@ -137,7 +137,7 @@ export default function Navbar() {
       <div className={`${styles.mobileMenu} ${isOpen ? styles.mobileOpen : ''}`}>
         <ul className={styles.mobileLinks}>
           {siteConfig.navLinks.map((link, i) => (
-            <li key={link.href} style={{ animationDelay: `${i * 0.06}s` }}>
+            <li key={link.href} style={{ transitionDelay: `${i * 0.06}s` }}>
               <Link
                 href={link.href}
                 className={`${styles.mobileLink} ${pathname === link.href ? styles.active : ''}`}
@@ -148,14 +148,31 @@ export default function Navbar() {
             </li>
           ))}
         </ul>
-        <a
-          href={`https://wa.me/${siteConfig.restaurant.whatsapp}`}
-          target="_blank"
-          rel="noopener noreferrer"
-          className={`btn btn-primary ${styles.mobileCta}`}
+
+        <div 
+          className={styles.mobileActions} 
+          style={{ transitionDelay: `${siteConfig.navLinks.length * 0.06}s` }}
         >
-          Reserve via WhatsApp
-        </a>
+          <button 
+            className={styles.mobileCartBtn} 
+            onClick={() => {
+              setIsOpen(false);
+              toggleDrawer();
+            }}
+          >
+            <ShoppingBag size={20} />
+            <span>View Order {getCount() > 0 ? `(${getCount()})` : ''}</span>
+          </button>
+          
+          <a
+            href={`https://wa.me/${siteConfig.restaurant.whatsapp}?text=Hi! I'd like to make a reservation at PAPA ROMA FOOD ENGINEERING 🔥`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className={`btn btn-primary ${styles.mobileCta}`}
+          >
+            Reserve via WhatsApp
+          </a>
+        </div>
       </div>
     </header>
   );

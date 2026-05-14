@@ -350,10 +350,12 @@
 .mobileLinks li {
   opacity: 0;
   transform: translateY(20px);
+  transition: opacity 0.4s ease, transform 0.4s ease;
 }
 
 .mobileMenu.mobileOpen .mobileLinks li {
-  animation: fadeInUp 0.4s ease forwards;
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .mobileLink {
@@ -377,10 +379,13 @@
   align-items: center;
   opacity: 0;
   transform: translateY(20px);
+  transition: opacity 0.4s ease, transform 0.4s ease;
+  width: 100%;
 }
 
 .mobileMenu.mobileOpen .mobileActions {
-  animation: fadeInUp 0.4s ease forwards;
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .mobileCartBtn {
@@ -396,6 +401,12 @@
   padding: 12px 24px;
   border-radius: var(--radius-sm);
   width: 100%;
+  justify-content: center;
+}
+
+.mobileCta {
+  width: 100%;
+  display: flex;
   justify-content: center;
 }
 

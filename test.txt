@@ -1,11 +1,9 @@
 
-- More smoother the scrolling like other website
-- Bold Brand Name
-- Scrolling Zoom out, with inside anather section 
-- CTA Big ang Bold like : Reserve a table
-- Full screen footer with brand animated brand name at the footer. 
-- does it possible to load hero video faster?
-
+- Mobile Responsive Fix:
+    - Navbar just displayed Reserve button, not other nav  menu displayed
+    -  Hot Items section is not displayed
+    - special offer banar is not displayed properly
+    - video Section need to optimize
 
 
 
