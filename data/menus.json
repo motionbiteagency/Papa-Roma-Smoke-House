@@ -6,6 +6,7 @@
       "slug": "smoke-house",
       "description": "Premium wood-smoked meats, handcrafted burgers & Texas-style BBQ",
       "icon": "🔥",
+      "logoImage": "/images/logo-bangla.png",
       "categories": [
         {
           "id": "smoked-meats",
@@ -58,6 +59,7 @@
       "slug": "bangla-kuthir",
       "description": "Authentic Bengali cuisine — traditional breakfast, lunch & dinner",
       "icon": "🇧🇩",
+      "logoImage": "/images/logo-smokehouse.png",
       "categories": [
         {
           "id": "breakfast",
@@ -117,6 +119,7 @@
       "slug": "pushkin",
       "description": "International cuisine — salads, pastas, steaks & Asian fusion",
       "icon": "🍝",
+      "logoImage": "/images/logo-pushkin.png",
       "categories": [
         {
           "id": "starters",

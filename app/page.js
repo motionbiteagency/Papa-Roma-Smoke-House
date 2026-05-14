@@ -409,7 +409,26 @@ function MenuCategoriesSection() {
             </div>
             
             <div className={styles.stickyPanelContent}>
-              <div className={styles.stickyPanelIcon}>{menu.icon}</div>
+              {menu.logoImage ? (
+                <div className={styles.stickyPanelLogo}>
+                  <Image 
+                    src={menu.logoImage} 
+                    alt={`${menu.name} Logo`} 
+                    width={100} 
+                    height={100} 
+                    style={{ 
+                      objectFit: 'contain', 
+                      backgroundColor: 'white', 
+                      borderRadius: '50%',
+                      padding: '10px',
+                      marginBottom: 'var(--space-sm)',
+                      filter: 'drop-shadow(0 2px 10px rgba(0,0,0,0.5))'
+                    }} 
+                  />
+                </div>
+              ) : (
+                <div className={styles.stickyPanelIcon}>{menu.icon}</div>
+              )}
               <h2 className={styles.stickyPanelTitle}>{menu.name}</h2>
               <p className={styles.stickyPanelDesc}>{menu.description}</p>
               <Link href={`/menu/${menu.slug}`} className="btn btn-primary" style={{ marginTop: 'var(--space-md)' }}>
@@ -726,7 +745,6 @@ function CookingVideosSection() {
   const { cookingVideos } = siteConfig;
   const [activeVideo, setActiveVideo] = useState(null);
 
-  // Close modal on Escape key
   useEffect(() => {
     const onKey = (e) => { if (e.key === 'Escape') setActiveVideo(null); };
     window.addEventListener('keydown', onKey);
@@ -735,51 +753,7 @@ function CookingVideosSection() {
 
   if (!cookingVideos?.enabled || !cookingVideos.videos?.length) return null;
 
-  const videos = cookingVideos.videos.slice(0, 5);
-  const [hero, cardB, cardC, cardD, cardE] = videos;
-
-  // YouTube HQ thumbnail
-  const ytThumb = (id) => `https://img.youtube.com/vi/${id}/maxresdefault.jpg`;
-  const ytFallback = (id) => `https://img.youtube.com/vi/${id}/hqdefault.jpg`;
-
-  const VideoCard = ({ video, isHero = false }) => (
-    <div
-      className={`${styles.videoCard} ${isHero ? styles.videoCardHero : ''}`}
-      onClick={() => setActiveVideo(video)}
-      style={{ height: '100%' }}
-    >
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img
-        src={ytThumb(video.youtubeId)}
-        alt={video.title}
-        className={styles.videoThumb}
-        onError={(e) => { e.currentTarget.src = ytFallback(video.youtubeId); }}
-      />
-      <div className={styles.videoCardOverlay} />
-
-      <div className={styles.videoPlayBtn}>
-        <Play size={isHero ? 32 : 22} fill="currentColor" />
-      </div>
-
-      <div className={styles.videoCardContent}>
-        <div className={styles.videoCardTopRow}>
-          {video.category && (
-            <span className={styles.videoCategoryBadge}>{video.category}</span>
-          )}
-          {video.duration && (
-            <span className={styles.videoDurationBadge}>{video.duration}</span>
-          )}
-        </div>
-        <h3 className={styles.videoCardTitle}>{video.title}</h3>
-        {video.views && (
-          <div className={styles.videoCardViews}>
-            <Eye size={11} />
-            {video.views} views
-          </div>
-        )}
-      </div>
-    </div>
-  );
+  const ytThumb = (id) => `https://img.youtube.com/vi/${id}/hqdefault.jpg`;
 
   return (
     <section className={styles.cookingVideos}>
@@ -797,30 +771,42 @@ function CookingVideosSection() {
           </div>
         </AnimateOnScroll>
 
-        {/* ── MOSAIC GRID ── */}
         <AnimateOnScroll>
-          <div className={styles.videoMosaicGrid}>
-            {/* Card A — Hero, spans 2 rows */}
-            {hero && <VideoCard video={hero} isHero />}
+          <div className={styles.reelsGridContainer}>
+            {cookingVideos.videos.map((video, idx) => {
+              let aspectClass = styles.aspectTall;
+              if (idx % 5 === 1) aspectClass = styles.aspectSquare;
+              else if (idx % 5 === 2) aspectClass = styles.aspectMedium;
+              else if (idx % 5 === 3) aspectClass = styles.aspectLandscape;
+              else if (idx % 5 === 4) aspectClass = styles.aspectTall;
 
-            {/* Right column — 2 stacked */}
-            <div className={styles.videoMosaicRight}>
-              {cardB && <VideoCard video={cardB} />}
-              {cardC && <VideoCard video={cardC} />}
-            </div>
+              return (
+                <div
+                  key={video.id}
+                  className={styles.reelCard}
+                  onClick={() => setActiveVideo(video)}
+                >
+                  <div className={`${styles.reelThumbWrapper} ${aspectClass}`}>
+                    <img src={ytThumb(video.youtubeId)} alt={video.title} className={styles.reelThumb} />
+                    <div className={styles.videoCardOverlay} />
+                    <div className={styles.videoPlayBtn}>
+                      <Play size={24} fill="currentColor" />
+                    </div>
+                  </div>
+                  <div className={styles.reelCardContent}>
+                    <h3 className={styles.reelCardTitle}>{video.title}</h3>
+                    <div className={styles.reelCardMeta}>
+                      {video.category && <span className={styles.videoCategoryBadgeSmall}>{video.category}</span>}
+                      {video.views && <span className={styles.videoCardViewsSmall}><Eye size={10} /> {video.views}</span>}
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
           </div>
-
-          {/* Bottom row — 2 cards */}
-          {(cardD || cardE) && (
-            <div className={styles.videoMosaicBottom}>
-              {cardD && <div style={{ height: '240px' }}><VideoCard video={cardD} /></div>}
-              {cardE && <div style={{ height: '240px' }}><VideoCard video={cardE} /></div>}
-            </div>
-          )}
         </AnimateOnScroll>
       </div>
 
-      {/* ── MODAL ── */}
       <AnimatePresence>
         {activeVideo && (
           <motion.div
@@ -830,10 +816,7 @@ function CookingVideosSection() {
             exit={{ opacity: 0 }}
             transition={{ duration: 0.25 }}
           >
-            <div
-              className={styles.videoModalBackdrop}
-              onClick={() => setActiveVideo(null)}
-            />
+            <div className={styles.videoModalBackdrop} onClick={() => setActiveVideo(null)} />
             <motion.div
               className={styles.videoModalInner}
               initial={{ scale: 0.92, opacity: 0, y: 20 }}
@@ -841,20 +824,18 @@ function CookingVideosSection() {
               exit={{ scale: 0.92, opacity: 0, y: 20 }}
               transition={{ type: 'spring', stiffness: 300, damping: 30 }}
             >
-              <button
-                className={styles.videoModalClose}
-                onClick={() => setActiveVideo(null)}
-                aria-label="Close video"
-              >
+              <button className={styles.videoModalClose} onClick={() => setActiveVideo(null)} aria-label="Close video">
                 <X size={18} />
               </button>
-              <iframe
-                className={styles.videoModalIframe}
-                src={`https://www.youtube.com/embed/${activeVideo.youtubeId}?autoplay=1&rel=0`}
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowFullScreen
-                title={activeVideo.title}
-              />
+              <div className={styles.videoPlayerWrapper}>
+                <iframe
+                  className={styles.videoModalIframe}
+                  src={`https://www.youtube.com/embed/${activeVideo.youtubeId}?autoplay=1&rel=0`}
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                  title={activeVideo.title}
+                />
+              </div>
               <p className={styles.videoModalTitle}>{activeVideo.title}</p>
             </motion.div>
           </motion.div>
