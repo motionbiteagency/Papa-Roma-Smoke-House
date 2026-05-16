@@ -783,16 +783,16 @@ function CookingVideosSection() {
 
               return (
                 <div
-                  key={video.id}
+                  key={`${video.id}-${idx}`}
                   className={styles.reelCard}
                   onClick={() => setActiveVideo(video)}
-                  onMouseEnter={() => setHoveredVideoId(video.id)}
+                  onMouseEnter={() => setHoveredVideoId(idx)}
                   onMouseLeave={() => setHoveredVideoId(null)}
                 >
                   <div className={`${styles.reelThumbWrapper} ${aspectClass}`}>
-                    {hoveredVideoId === video.id ? (
+                    {hoveredVideoId === idx ? (
                       <iframe
-                        src={`https://www.youtube.com/embed/${video.youtubeId}?autoplay=1&mute=1&controls=0&modestbranding=1&rel=0&loop=1&playlist=${video.youtubeId}`}
+                        src={`https://www.youtube.com/embed/${video.youtubeId}?autoplay=1&mute=1&controls=0&modestbranding=1&rel=0&loop=1&playlist=${video.youtubeId}&playsinline=1&uid=${idx}`}
                         className={styles.reelThumb}
                         style={{ border: 'none', pointerEvents: 'none', width: '100%', height: '100%' }}
                         allow="autoplay; encrypted-media"
