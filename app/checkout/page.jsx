@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { ArrowLeft, MessageCircle, ShoppingBag, Trash2, Loader2, CreditCard, Truck, CheckCircle2, Copy, Check } from 'lucide-react';
+import { ArrowLeft, MessageCircle, ShoppingBag, Trash2, Loader2, CreditCard, Truck, CheckCircle2, Copy, Check, ChevronDown, ChevronUp } from 'lucide-react';
 import { useCart } from '@/app/context/CartContext';
 import siteConfig from '@/data/siteConfig.json';
 import styles from './checkout.module.css';
@@ -73,6 +73,7 @@ export default function CheckoutPage() {
   });
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [instructionsExpanded, setInstructionsExpanded] = useState(false);
 
   const handleChange = (e) => {
     setForm(prev => ({ ...prev, [e.target.name]: e.target.value }));
@@ -115,6 +116,7 @@ export default function CheckoutPage() {
   }
 
   const gateway = siteConfig.paymentMethods[form.selectedGateway];
+  const totalAmount = getTotal();
 
   return (
     <div className={styles.checkoutPage}>
@@ -140,7 +142,7 @@ export default function CheckoutPage() {
         ) : (
           <div className={styles.layout}>
             {/* ── Form ── */}
-            <form className={styles.form} onSubmit={handleSubmit}>
+            <form className={styles.form} onSubmit={handleSubmit} id="checkout-form">
               <h2 className={styles.formTitle}>Your Details</h2>
 
               {/* Name */}
@@ -167,6 +169,7 @@ export default function CheckoutPage() {
                   onChange={handleChange}
                   required
                 />
+                <p className={styles.fieldHint}>Must be a valid Bangladeshi number.</p>
               </div>
 
               {/* Order Type */}
@@ -260,7 +263,7 @@ export default function CheckoutPage() {
                           <p className={styles.paymentDetailsType}>{gateway.type}</p>
                         </div>
                         <div className={styles.paymentAmountBadge}>
-                          ৳{getTotal().toLocaleString()}
+                          ৳{totalAmount.toLocaleString()}
                         </div>
                       </div>
 
@@ -309,16 +312,26 @@ export default function CheckoutPage() {
                         )}
                       </div>
 
-                      <div className={styles.paymentInstruction}>
-                        <CheckCircle2 size={15} />
-                        <div className={styles.instructionContent}>
-                          <p className={styles.instructionTitle}>How to Pay:</p>
-                          <ol className={styles.instructionList}>
-                            {gateway.instructions.map((step, idx) => (
-                              <li key={idx}>{step}</li>
-                            ))}
-                          </ol>
-                        </div>
+                      <div className={styles.paymentInstructionContainer}>
+                        <button 
+                          type="button" 
+                          className={styles.instructionToggle} 
+                          onClick={() => setInstructionsExpanded(!instructionsExpanded)}
+                        >
+                          <CheckCircle2 size={15} className={styles.instructionIcon} />
+                          <span>How to Pay</span>
+                          {instructionsExpanded ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
+                        </button>
+                        
+                        {instructionsExpanded && (
+                          <div className={styles.instructionContent}>
+                            <ol className={styles.instructionList}>
+                              {gateway.instructions.map((step, idx) => (
+                                <li key={idx}>{step}</li>
+                              ))}
+                            </ol>
+                          </div>
+                        )}
                       </div>
                     </div>
 
@@ -366,26 +379,29 @@ export default function CheckoutPage() {
                 />
               </div>
 
-              <button
-                type="submit"
-                className={styles.submitBtn}
-                disabled={!isValid || items.length === 0 || loading}
-              >
-                {loading ? (
-                  <>
-                    <Loader2 size={18} className={styles.spinner} />
-                    Opening WhatsApp...
-                  </>
-                ) : (
-                  <>
-                    <MessageCircle size={18} />
-                    Place Order via WhatsApp
-                  </>
-                )}
-              </button>
-              <p className={styles.submitNote}>
-                This will open WhatsApp with your order pre-filled. Just hit Send!
-              </p>
+              {/* Desktop Submit Button (Hidden on Mobile) */}
+              <div className={styles.desktopSubmitWrapper}>
+                <button
+                  type="submit"
+                  className={styles.submitBtn}
+                  disabled={!isValid || items.length === 0 || loading}
+                >
+                  {loading ? (
+                    <>
+                      <Loader2 size={18} className={styles.spinner} />
+                      Opening WhatsApp...
+                    </>
+                  ) : (
+                    <>
+                      <MessageCircle size={18} />
+                      Place Order — ৳{totalAmount.toLocaleString()}
+                    </>
+                  )}
+                </button>
+                <p className={styles.submitNote}>
+                  This will open WhatsApp with your order pre-filled. Just hit Send!
+                </p>
+              </div>
             </form>
 
             {/* ── Order Summary Sidebar ── */}
@@ -416,13 +432,31 @@ export default function CheckoutPage() {
               </ul>
               <div className={styles.totalRow}>
                 <span>Total</span>
-                <span className={styles.totalAmt}>৳{getTotal().toLocaleString()}</span>
+                <span className={styles.totalAmt}>৳{totalAmount.toLocaleString()}</span>
               </div>
               <p className={styles.totalNote}>Delivery charges may apply</p>
             </aside>
           </div>
         )}
       </div>
+
+      {/* Mobile Sticky Submit Bar */}
+      {items.length > 0 && (
+        <div className={styles.mobileSubmitBar}>
+          <div className={styles.mobileSubmitInfo}>
+            <span className={styles.mobileSubmitLabel}>Total</span>
+            <span className={styles.mobileSubmitTotal}>৳{totalAmount.toLocaleString()}</span>
+          </div>
+          <button
+            type="submit"
+            form="checkout-form"
+            className={styles.mobileSubmitBtn}
+            disabled={!isValid || loading}
+          >
+            {loading ? <Loader2 size={18} className={styles.spinner} /> : 'Place Order'}
+          </button>
+        </div>
+      )}
     </div>
   );
 }

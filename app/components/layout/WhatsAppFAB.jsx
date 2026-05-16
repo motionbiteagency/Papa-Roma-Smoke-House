@@ -1,11 +1,18 @@
 'use client';
 
+import { usePathname } from 'next/navigation';
 import { MessageCircle } from 'lucide-react';
 import siteConfig from '@/data/siteConfig.json';
 import styles from './WhatsAppFAB.module.css';
 
 export default function WhatsAppFAB() {
+  const pathname = usePathname();
   const { whatsapp } = siteConfig.restaurant;
+  
+  // Hide the general WhatsApp chat button on the checkout page
+  // to avoid overlapping the "Place Order" sticky bar.
+  if (pathname === '/checkout') return null;
+
   const message = encodeURIComponent(
     "Hi! I'd like to make a reservation at PAPA ROMA FOOD ENGINEERING 🔥"
   );
