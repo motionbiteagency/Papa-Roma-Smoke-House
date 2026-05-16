@@ -744,6 +744,7 @@ function SignatureDishesSection() {
 function CookingVideosSection() {
   const { cookingVideos } = siteConfig;
   const [activeVideo, setActiveVideo] = useState(null);
+  const [hoveredVideoId, setHoveredVideoId] = useState(null);
 
   useEffect(() => {
     const onKey = (e) => { if (e.key === 'Escape') setActiveVideo(null); };
@@ -785,13 +786,26 @@ function CookingVideosSection() {
                   key={video.id}
                   className={styles.reelCard}
                   onClick={() => setActiveVideo(video)}
+                  onMouseEnter={() => setHoveredVideoId(video.id)}
+                  onMouseLeave={() => setHoveredVideoId(null)}
                 >
                   <div className={`${styles.reelThumbWrapper} ${aspectClass}`}>
-                    <img src={ytThumb(video.youtubeId)} alt={video.title} className={styles.reelThumb} />
-                    <div className={styles.videoCardOverlay} />
-                    <div className={styles.videoPlayBtn}>
-                      <Play size={24} fill="currentColor" />
-                    </div>
+                    {hoveredVideoId === video.id ? (
+                      <iframe
+                        src={`https://www.youtube.com/embed/${video.youtubeId}?autoplay=1&mute=1&controls=0&modestbranding=1&rel=0&loop=1&playlist=${video.youtubeId}`}
+                        className={styles.reelThumb}
+                        style={{ border: 'none', pointerEvents: 'none', width: '100%', height: '100%' }}
+                        allow="autoplay; encrypted-media"
+                      />
+                    ) : (
+                      <>
+                        <img src={ytThumb(video.youtubeId)} alt={video.title} className={styles.reelThumb} />
+                        <div className={styles.videoCardOverlay} />
+                        <div className={styles.videoPlayBtn}>
+                          <Play size={24} fill="currentColor" />
+                        </div>
+                      </>
+                    )}
                   </div>
                   <div className={styles.reelCardContent}>
                     <h3 className={styles.reelCardTitle}>{video.title}</h3>
