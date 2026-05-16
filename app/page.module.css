@@ -1065,8 +1065,12 @@
 }
 
 /* ---- MAP & CTA SECTION ---- */
-.mapCta { background: var(--color-bg-secondary); }
-
+.mapCta { 
+  background: linear-gradient(rgba(10, 10, 10, 0.85), rgba(10, 10, 10, 0.95)), url('/images/map-bg.png');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+}
 .mapGrid {
   display: grid;
   grid-template-columns: 1fr 1fr;
