@@ -198,6 +198,54 @@
         "featured": false
       }
     ]
+  },
+  "paymentMethods": {
+    "bkash": {
+      "name": "bKash",
+      "color": "#E2136E",
+      "logoUrl": "/images/bkash.png",
+      "type": "Personal",
+      "number": "01712-345678",
+      "instructions": [
+        "Go to your bKash App or Dial *247#",
+        "Choose \"Send Money\"",
+        "Enter the bKash number below",
+        "Enter the exact total amount",
+        "Use \"Payment\" as Reference",
+        "Copy the Transaction ID (TxnID) and paste it below"
+      ]
+    },
+    "nagad": {
+      "name": "Nagad",
+      "color": "#ED1C24",
+      "logoUrl": "/images/nagad.png",
+      "type": "Personal",
+      "number": "01812-345678",
+      "instructions": [
+        "Go to your Nagad App or Dial *167#",
+        "Choose \"Send Money\"",
+        "Enter the Nagad number below",
+        "Enter the exact total amount",
+        "Use \"Payment\" as Reference",
+        "Copy the Transaction ID (TxnID) and paste it below"
+      ]
+    },
+    "bank": {
+      "name": "Bank Transfer",
+      "color": "#2563eb",
+      "emoji": "🏦",
+      "type": "Current Account",
+      "bankName": "Dutch-Bangla Bank Ltd.",
+      "accountName": "Papa Roma Food Engineering",
+      "accountNumber": "1234567890123",
+      "branchName": "Dhanmondi Branch",
+      "routingNumber": "090274245",
+      "instructions": [
+        "Log into your internet banking app",
+        "Transfer the exact total amount to the account below",
+        "Use your phone number as Reference",
+        "Copy the Transaction ID or Reference No. and paste it below"
+      ]
+    }
   }
 }
-

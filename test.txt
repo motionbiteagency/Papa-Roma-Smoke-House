@@ -5,9 +5,25 @@
     - special offer banar is not displayed properly
     - video Section need to optimize
 
+---------------
+Now i want to make chnage son the:
+"Our Kitchens
+Four Culinary Worlds" section
 
+----
+there is 4 category , but 3 of them have diffrent diffrent logo, i want to use them. there is no logo for "Beverages & Desserts".
+now tell me what size of image should i provide you for the logo, so that it will fit in the design?.
 
+- Make the banar full width on desktop
+- Video playas auto when mouse hover the video.
 
+--------------
+on the  checkout page, now want to add payment method, manuyal payment (no SSL comerce, but have plan to intrigate it in future)
+like there will be have bekash, nagad number, aand bank acocunt detais, user can maually make payment, after payment there will be a transition id, user input trans id on the input box, and input other details as it is now , then place order.
+add this after the Order Type section, (if you have better plan to place this, your good to go)
+the will two option make payment and pay on delivey. 
+when selected make payment, ther will be payment options comes like bekash, nagad, bank acocunt. and if selected pay on delivery, then no payment options. 
+add demo payment details for now, will chnage letter,  
 
 
 

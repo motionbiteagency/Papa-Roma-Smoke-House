@@ -2,15 +2,22 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { ArrowLeft, MessageCircle, ShoppingBag, Trash2, Loader2 } from 'lucide-react';
+import { ArrowLeft, MessageCircle, ShoppingBag, Trash2, Loader2, CreditCard, Truck, CheckCircle2, Copy, Check } from 'lucide-react';
 import { useCart } from '@/app/context/CartContext';
 import siteConfig from '@/data/siteConfig.json';
 import styles from './checkout.module.css';
+
+// Payment details are now fetched from siteConfig.paymentMethods
 
 function buildWhatsAppMessage(form, items, total) {
   const itemLines = items
     .map(i => `  • ${i.name}${i.unit ? ` (${i.unit})` : ''} x${i.quantity} — ৳${(i.price * i.quantity).toLocaleString()}`)
     .join('\n');
+
+  const paymentLine =
+    form.paymentMethod === 'cod'
+      ? '💵 *Payment:* Cash on Delivery'
+      : `💳 *Payment:* ${siteConfig.paymentMethods[form.selectedGateway]?.name || 'Online'}\n🧾 *Transaction ID:* ${form.transactionId}`;
 
   const lines = [
     `🍽️ *NEW ORDER — PAPA ROMA FOOD ENGINEERING*`,
@@ -19,6 +26,8 @@ function buildWhatsAppMessage(form, items, total) {
     `📞 *Phone:* ${form.phone}`,
     `🚚 *Type:* ${form.orderType === 'delivery' ? 'Delivery' : 'Pickup'}`,
     form.orderType === 'delivery' ? `📍 *Address:* ${form.address}` : null,
+    ``,
+    paymentLine,
     ``,
     `---`,
     `🛒 *ORDER ITEMS:*`,
@@ -36,6 +45,20 @@ function buildWhatsAppMessage(form, items, total) {
   return `https://wa.me/${siteConfig.restaurant.whatsapp}?text=${encodeURIComponent(lines)}`;
 }
 
+function CopyButton({ text }) {
+  const [copied, setCopied] = useState(false);
+  const handleCopy = () => {
+    navigator.clipboard.writeText(text);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+  return (
+    <button type="button" className={styles.copyBtn} onClick={handleCopy} title="Copy">
+      {copied ? <Check size={14} /> : <Copy size={14} />}
+    </button>
+  );
+}
+
 export default function CheckoutPage() {
   const { items, getTotal, updateQty, removeItem, clearCart } = useCart();
   const [form, setForm] = useState({
@@ -44,6 +67,9 @@ export default function CheckoutPage() {
     orderType: 'delivery',
     address: '',
     notes: '',
+    paymentMethod: 'online',     // 'cod' | 'online' Default to online
+    selectedGateway: 'bkash', // 'bkash' | 'nagad' | 'bank'
+    transactionId: '',
   });
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -55,15 +81,16 @@ export default function CheckoutPage() {
   const isValid =
     form.name.trim() &&
     form.phone.trim() &&
-    (form.orderType === 'pickup' || form.address.trim());
+    (form.orderType === 'pickup' || form.address.trim()) &&
+    (form.paymentMethod === 'cod' || form.transactionId.trim());
 
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!isValid || items.length === 0) return;
-    
+
     setLoading(true);
     const url = buildWhatsAppMessage(form, items, getTotal());
-    
+
     setTimeout(() => {
       window.open(url, '_blank');
       setSubmitted(true);
@@ -86,6 +113,8 @@ export default function CheckoutPage() {
       </div>
     );
   }
+
+  const gateway = siteConfig.paymentMethods[form.selectedGateway];
 
   return (
     <div className={styles.checkoutPage}>
@@ -110,16 +139,15 @@ export default function CheckoutPage() {
           </div>
         ) : (
           <div className={styles.layout}>
-            {/* Form */}
+            {/* ── Form ── */}
             <form className={styles.form} onSubmit={handleSubmit}>
               <h2 className={styles.formTitle}>Your Details</h2>
 
+              {/* Name */}
               <div className={styles.field}>
                 <label className={styles.label} htmlFor="name">Full Name *</label>
                 <input
-                  id="name"
-                  name="name"
-                  type="text"
+                  id="name" name="name" type="text"
                   className={styles.input}
                   placeholder="e.g. Rahim Uddin"
                   value={form.name}
@@ -128,12 +156,11 @@ export default function CheckoutPage() {
                 />
               </div>
 
+              {/* Phone */}
               <div className={styles.field}>
                 <label className={styles.label} htmlFor="phone">Phone Number *</label>
                 <input
-                  id="phone"
-                  name="phone"
-                  type="tel"
+                  id="phone" name="phone" type="tel"
                   className={styles.input}
                   placeholder="e.g. 01711-123456"
                   value={form.phone}
@@ -142,29 +169,18 @@ export default function CheckoutPage() {
                 />
               </div>
 
+              {/* Order Type */}
               <div className={styles.field}>
                 <label className={styles.label}>Order Type *</label>
                 <div className={styles.radioGroup}>
                   <label className={`${styles.radioCard} ${form.orderType === 'delivery' ? styles.radioCardActive : ''}`}>
-                    <input
-                      type="radio"
-                      name="orderType"
-                      value="delivery"
-                      checked={form.orderType === 'delivery'}
-                      onChange={handleChange}
-                      hidden
-                    />
+                    <input type="radio" name="orderType" value="delivery"
+                      checked={form.orderType === 'delivery'} onChange={handleChange} hidden />
                     <span>🚚 Delivery</span>
                   </label>
                   <label className={`${styles.radioCard} ${form.orderType === 'pickup' ? styles.radioCardActive : ''}`}>
-                    <input
-                      type="radio"
-                      name="orderType"
-                      value="pickup"
-                      checked={form.orderType === 'pickup'}
-                      onChange={handleChange}
-                      hidden
-                    />
+                    <input type="radio" name="orderType" value="pickup"
+                      checked={form.orderType === 'pickup'} onChange={handleChange} hidden />
                     <span>🏃 Pickup</span>
                   </label>
                 </div>
@@ -174,8 +190,7 @@ export default function CheckoutPage() {
                 <div className={styles.field}>
                   <label className={styles.label} htmlFor="address">Delivery Address *</label>
                   <textarea
-                    id="address"
-                    name="address"
+                    id="address" name="address"
                     className={styles.textarea}
                     placeholder="House no, Road, Area, Dhaka"
                     rows={3}
@@ -186,11 +201,163 @@ export default function CheckoutPage() {
                 </div>
               )}
 
+              {/* ── Payment Method ──────────────────────────────────── */}
+              <div className={styles.paymentSection}>
+                <h3 className={styles.paymentSectionTitle}>
+                  <CreditCard size={17} /> Payment Method
+                </h3>
+
+                {/* Online / COD Toggle */}
+                <div className={styles.radioGroup}>
+                  <label className={`${styles.radioCard} ${form.paymentMethod === 'online' ? styles.radioCardActive : ''}`}>
+                    <input type="radio" name="paymentMethod" value="online"
+                      checked={form.paymentMethod === 'online'} onChange={handleChange} hidden />
+                    <span>💳 Make Payment</span>
+                  </label>
+                  <label className={`${styles.radioCard} ${form.paymentMethod === 'cod' ? styles.radioCardActive : ''}`}>
+                    <input type="radio" name="paymentMethod" value="cod"
+                      checked={form.paymentMethod === 'cod'} onChange={handleChange} hidden />
+                    <span>🚛 Pay on Delivery</span>
+                  </label>
+                </div>
+
+                {/* Online payment panel */}
+                {form.paymentMethod === 'online' && (
+                  <div className={styles.paymentOptions}>
+
+                    {/* Gateway pills */}
+                    <div className={styles.gatewayGroup}>
+                      {Object.entries(siteConfig.paymentMethods).map(([key, method]) => (
+                        <label
+                          key={key}
+                          className={`${styles.gatewayCard} ${form.selectedGateway === key ? styles.gatewayCardActive : ''}`}
+                          style={form.selectedGateway === key ? { '--gw-color': method.color } : {}}
+                        >
+                          <input type="radio" name="selectedGateway" value={key}
+                            checked={form.selectedGateway === key} onChange={handleChange} hidden />
+                          {method.logoUrl ? (
+                            <img src={method.logoUrl} alt={method.name} className={styles.gatewayLogo} />
+                          ) : (
+                            <span className={styles.gatewayEmoji}>{method.emoji}</span>
+                          )}
+                          <span className={styles.gatewayName}>{method.name}</span>
+                        </label>
+                      ))}
+                    </div>
+
+                    {/* Details card */}
+                    <div className={styles.paymentDetailsCard} style={{ '--gw-color': gateway.color }}>
+                      <div className={styles.paymentDetailsHeader}>
+                        {gateway.logoUrl ? (
+                          <div className={styles.paymentDetailsLogoWrapper}>
+                            <img src={gateway.logoUrl} alt={gateway.name} className={styles.paymentDetailsLogo} />
+                          </div>
+                        ) : (
+                          <span className={styles.paymentDetailsEmoji}>{gateway.emoji}</span>
+                        )}
+                        <div>
+                          <p className={styles.paymentDetailsTitle}>{gateway.name}</p>
+                          <p className={styles.paymentDetailsType}>{gateway.type}</p>
+                        </div>
+                        <div className={styles.paymentAmountBadge}>
+                          ৳{getTotal().toLocaleString()}
+                        </div>
+                      </div>
+
+                      <div className={styles.paymentDetailsList}>
+                        {gateway.bankName && (
+                          <div className={styles.paymentDetailRow}>
+                            <span className={styles.paymentDetailKey}>Bank</span>
+                            <span className={styles.paymentDetailVal}>{gateway.bankName}</span>
+                          </div>
+                        )}
+                        {gateway.accountName && (
+                          <div className={styles.paymentDetailRow}>
+                            <span className={styles.paymentDetailKey}>Account Name</span>
+                            <span className={styles.paymentDetailVal}>{gateway.accountName}</span>
+                          </div>
+                        )}
+                        {gateway.number && (
+                          <div className={styles.paymentDetailRow}>
+                            <span className={styles.paymentDetailKey}>Number</span>
+                            <span className={styles.paymentDetailValHighlight}>
+                              {gateway.number}
+                              <CopyButton text={gateway.number} />
+                            </span>
+                          </div>
+                        )}
+                        {gateway.accountNumber && (
+                          <div className={styles.paymentDetailRow}>
+                            <span className={styles.paymentDetailKey}>Account No.</span>
+                            <span className={styles.paymentDetailValHighlight}>
+                              {gateway.accountNumber}
+                              <CopyButton text={gateway.accountNumber} />
+                            </span>
+                          </div>
+                        )}
+                        {gateway.branchName && (
+                          <div className={styles.paymentDetailRow}>
+                            <span className={styles.paymentDetailKey}>Branch</span>
+                            <span className={styles.paymentDetailVal}>{gateway.branchName}</span>
+                          </div>
+                        )}
+                        {gateway.routingNumber && (
+                          <div className={styles.paymentDetailRow}>
+                            <span className={styles.paymentDetailKey}>Routing No.</span>
+                            <span className={styles.paymentDetailVal}>{gateway.routingNumber}</span>
+                          </div>
+                        )}
+                      </div>
+
+                      <div className={styles.paymentInstruction}>
+                        <CheckCircle2 size={15} />
+                        <div className={styles.instructionContent}>
+                          <p className={styles.instructionTitle}>How to Pay:</p>
+                          <ol className={styles.instructionList}>
+                            {gateway.instructions.map((step, idx) => (
+                              <li key={idx}>{step}</li>
+                            ))}
+                          </ol>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Transaction ID */}
+                    <div className={styles.field}>
+                      <label className={styles.label} htmlFor="transactionId">
+                        Transaction ID *
+                      </label>
+                      <input
+                        id="transactionId" name="transactionId" type="text"
+                        className={styles.input}
+                        placeholder="e.g. 8N7A3B2K1X or TXN123456789"
+                        value={form.transactionId}
+                        onChange={handleChange}
+                        maxLength={20}
+                        required
+                      />
+                      <p className={styles.txnHelp}>
+                        Enter the Transaction ID you received after completing the payment.
+                      </p>
+                    </div>
+                  </div>
+                )}
+
+                {/* COD note */}
+                {form.paymentMethod === 'cod' && (
+                  <div className={styles.codNote}>
+                    <Truck size={16} />
+                    <span>You will pay in cash when your order is delivered or at pickup. Our team will confirm your order shortly.</span>
+                  </div>
+                )}
+              </div>
+              {/* ──────────────────────────────────────────────────────── */}
+
+              {/* Notes */}
               <div className={styles.field}>
                 <label className={styles.label} htmlFor="notes">Special Instructions</label>
                 <textarea
-                  id="notes"
-                  name="notes"
+                  id="notes" name="notes"
                   className={styles.textarea}
                   placeholder="Allergies, extra sauce, spice level..."
                   rows={2}
@@ -221,7 +388,7 @@ export default function CheckoutPage() {
               </p>
             </form>
 
-            {/* Order Summary */}
+            {/* ── Order Summary Sidebar ── */}
             <aside className={styles.summary}>
               <h2 className={styles.summaryTitle}>
                 <ShoppingBag size={18} /> Order Summary
