@@ -30,6 +30,16 @@
     }
   ],
   "hotPicksItemIds": ["pl1", "bs1", "pm2", "ds8"],
+  "offerItemIds": ["sm1", "pl1", "bk1", "pm1", "bz1"],
+  "popupOffer": {
+    "enabled": true,
+    "delaySeconds": 15,
+    "title": "🔥 Today's Special Offers!",
+    "subtitle": "Don't miss out on our exclusive deals",
+    "image": "/images/banar/burger-offer.png",
+    "buttonText": "View Offers",
+    "link": "/offers"
+  },
   "navLinks": [
     { "label": "Home", "href": "/" },
     { "label": "Smoke House", "href": "/menu/smoke-house" },
