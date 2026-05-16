@@ -347,7 +347,7 @@ function OfferSection() {
       
       <div style={{ width: '100%' }}>
       {siteConfig.imageBanner?.enabled && (
-        <AnimateOnScroll className="container">
+        <AnimateOnScroll style={{ maxWidth: '1600px', margin: '0 auto', padding: '0 clamp(1rem, 4vw, 2rem)' }}>
           <Link href={siteConfig.imageBanner.link || '#'}>
             <div className={styles.imageBannerWrapper}>
               <Image 
