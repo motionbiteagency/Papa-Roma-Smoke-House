@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { useState } from 'react';
-import { Flame, ArrowLeft, Download, Search, ShoppingCart, Check } from 'lucide-react';
+import { Flame, ArrowLeft, Download, ShoppingCart, Check } from 'lucide-react';
 import { AnimateOnScroll, StaggerContainer, StaggerItem } from '@/app/components/ui/AnimateOnScroll';
 import menuData from '@/data/menus.json';
 import { getItemImage } from '@/data/itemImages';
@@ -44,7 +44,6 @@ function AddToOrderButton({ item, menuName }) {
 
 export default function MenuClient({ slug }) {
   const [activeCategory, setActiveCategory] = useState(null);
-  const [searchQuery, setSearchQuery] = useState('');
 
   const menuType = menuData.menuTypes.find((m) => m.slug === slug);
 
@@ -63,15 +62,7 @@ export default function MenuClient({ slug }) {
   const categories = menuType.categories;
   const activeCat = activeCategory || categories[0]?.id;
 
-  const filteredCategories = searchQuery
-    ? categories.map((cat) => ({
-        ...cat,
-        items: cat.items.filter((item) =>
-          item.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          (item.description && item.description.toLowerCase().includes(searchQuery.toLowerCase()))
-        ),
-      })).filter((cat) => cat.items.length > 0)
-    : categories.filter((cat) => cat.id === activeCat);
+  const filteredCategories = categories.filter((cat) => cat.id === activeCat);
 
   const pdfMap = {
     'smoke-house': '/menus/Smoke house menu.pdf',
@@ -101,29 +92,17 @@ export default function MenuClient({ slug }) {
           {/* Search & Filter Bar */}
           <AnimateOnScroll>
             <div className={styles.menuControls}>
-              <div className={styles.searchBar}>
-                <Search size={18} className={styles.searchIcon} />
-                <input
-                  type="text"
-                  placeholder="Search dishes..."
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className={styles.searchInput}
-                />
+              <div className={styles.categoryTabs}>
+                {categories.map((cat) => (
+                  <button
+                    key={cat.id}
+                    className={`${styles.categoryTab} ${activeCat === cat.id ? styles.tabActive : ''}`}
+                    onClick={() => setActiveCategory(cat.id)}
+                  >
+                    {cat.name}
+                  </button>
+                ))}
               </div>
-              {!searchQuery && (
-                <div className={styles.categoryTabs}>
-                  {categories.map((cat) => (
-                    <button
-                      key={cat.id}
-                      className={`${styles.categoryTab} ${activeCat === cat.id ? styles.tabActive : ''}`}
-                      onClick={() => setActiveCategory(cat.id)}
-                    >
-                      {cat.name}
-                    </button>
-                  ))}
-                </div>
-              )}
             </div>
           </AnimateOnScroll>
 

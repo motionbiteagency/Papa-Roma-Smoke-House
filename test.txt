@@ -1,4 +1,5 @@
 
+
 - Mobile Responsive Fix:
     - Navbar just displayed Reserve button, not other nav  menu displayed
     -  Hot Items section is not displayed
@@ -25,6 +26,49 @@ the will two option make payment and pay on delivey.
 when selected make payment, ther will be payment options comes like bekash, nagad, bank acocunt. and if selected pay on delivery, then no payment options. 
 add demo payment details for now, will chnage letter,  
 
+-----------------
+From now do run any git commit or push, without my permission.
+
+Add an Event Section:
+-----------------------
+    as the restrurant located on dhaka, there is diffenren ty of event happning like birth day , anyversary, Holud Night, Corporate party, etc , 
+    - Add a button on navbar with "Book your event" or similar to this.
+    - when user click this button, it should redirect to a page where user can book their event.
+    - on this page there will be a form with fields like:
+        - Event type (dropdown with options like Birthday, Anniversary, Holud Night, Corporate party, etc)
+        - Event date (date picker)
+        - Number of guests (number input)
+        - Your name (text input)
+        - Your phone number (number input)
+        - Your email (email input)
+        - Any special instructions (textarea)
+    - after submit the form, it should display a success message and redirect to home page.
+    - for now, just show a success message and redirect to home page, no email or database integration needed.
+    - below the form display other events those are Completed here.
+    - on this page use a good background image related to event or party.
+    - event date should be atleast 10 days from the current date. 
+    - in the form submit button, add a loading spinner.
+    - 
+-------------
+i am run out of idea for this event section, you plan it. but remember it should be eyecaty and user friendly, and it should be relevant to restaurant. 
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+Add anather section:
+Client want he will manage a Beef eater club, so i want to add a section for this club.
+whre a user can join or become the memeber of this club by fillup a form. and if become the member he will get aditional benifits like 
+1   - 10% discount on evry order
+2   - get special offer
+3   - get acces to special beef party, where user can cook beef by their hand, our master chef tech them to cook.
+4   - get primium beef meat as home delivay, time to time
+5   - get special acces to new menu items.
+6   - special gift, on target purchase. 
+7   - get exclusive acces to beef tasting events.
+-----------------------
+beef eater club have a logo, i attach it,
+create section for it and add CTA , that cta redirect the user to a page where user can join the club by fillup a form.
+add this section before the special offer section.
+-------------
+i am run out of idea for this beef eater club section, you plan it. but remember it should be eyecaty and user friendly, and it should be relevant to restaurant. 
 
 
 

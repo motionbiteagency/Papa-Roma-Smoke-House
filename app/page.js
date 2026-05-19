@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import Image from 'next/image';
-import { Flame, ArrowRight, Star, MapPin, Clock, ChevronLeft, ChevronRight, Play, X, Eye, Plus, Check } from 'lucide-react';
+import { Flame, ArrowRight, Star, MapPin, Clock, ChevronLeft, ChevronRight, Play, X, Eye, Plus, Check, Crown } from 'lucide-react';
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { motion, AnimatePresence, useScroll, useTransform, useMotionValueEvent } from 'framer-motion';
 import { AnimateOnScroll, StaggerContainer, StaggerItem } from './components/ui/AnimateOnScroll';
@@ -129,17 +129,20 @@ function HeroSection() {
         </AnimatePresence>
 
         <div className={styles.heroCtas}>
-          <Link href="/menu/smoke-house" className="btn btn-primary">
-            Explore Menu <ArrowRight size={16} />
-          </Link>
           <a
-            href={`https://wa.me/${siteConfig.restaurant.whatsapp}`}
+            href={`https://wa.me/${siteConfig.restaurant.whatsapp}?text=Hi! I'd like to make a reservation at PAPA ROMA FOOD ENGINEERING 🔥`}
             target="_blank"
             rel="noopener noreferrer"
-            className={`btn btn-secondary ${styles.glowingBtn}`}
+            className="btn btn-primary"
           >
             Reserve a Table
           </a>
+          <Link
+            href="/events"
+            className={`btn btn-secondary ${styles.glowingBtn}`}
+          >
+            Book An Event
+          </Link>
         </div>
 
         {/* Slider controls */}
@@ -325,6 +328,70 @@ function HotItemsSection() {
               </StaggerItem>
             ))}
           </StaggerContainer>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ===================== BEEF EATER CLUB ===================== */
+const CLUB_BENEFITS = [
+  { icon: '🎯', title: '10% Off Every Order', desc: 'Permanent discount on all orders' },
+  { icon: '🔥', title: 'Exclusive Beef Parties', desc: 'Cook alongside our Master Chef' },
+  { icon: '🚚', title: 'Premium Home Delivery', desc: 'Hand-selected beef to your door' },
+  { icon: '👑', title: 'VIP Tasting Events', desc: 'Exclusive beef tasting invitations' },
+  { icon: '🎁', title: 'Special Gifts', desc: 'Rewards on milestone purchases' },
+  { icon: '🍽️', title: 'New Menu First Access', desc: 'Taste new items before anyone else' },
+];
+
+function BeefEaterClubSection() {
+  return (
+    <section className={styles.beefClubSection}>
+      <div className={styles.beefClubBg} />
+      <div className="container">
+        <div className={styles.beefClubInner}>
+          {/* Left content */}
+          <div className={styles.beefClubLeft}>
+            <div className={styles.beefClubLogo}>
+              <Image 
+                src="/images/beef-club-logo.png" 
+                alt="Beef Eater Club Logo" 
+                width={240} 
+                height={70} 
+                style={{ objectFit: 'contain' }} 
+              />
+            </div>
+            <div className={styles.beefClubBadge}>Members Only</div>
+            <h2 className={styles.beefClubTitle}>
+              Join the <span className={styles.beefClubRed}>Beef Eater</span> Club
+            </h2>
+            <p className={styles.beefClubDesc}>
+              Dhaka&apos;s most exclusive beef-lover community. Become a member and unlock a world of premium privileges — from VIP events to home-delivered premium cuts.
+            </p>
+            <div className={styles.beefClubStats}>
+              <div className={styles.beefClubStat}><strong>250+</strong><span>Members</span></div>
+              <div className={styles.beefClubStatDiv} />
+              <div className={styles.beefClubStat}><strong>7</strong><span>Perks</span></div>
+              <div className={styles.beefClubStatDiv} />
+              <div className={styles.beefClubStat}><strong>Free</strong><span>to Join</span></div>
+            </div>
+            <Link href="/beef-club" className={styles.beefClubCta}>
+              <Crown size={18} /> Claim Your Membership
+            </Link>
+          </div>
+
+          {/* Right benefits grid */}
+          <div className={styles.beefClubRight}>
+            {CLUB_BENEFITS.map((b, i) => (
+              <div key={i} className={styles.beefClubBenefit}>
+                <div className={styles.beefClubBenefitIcon}>{b.icon}</div>
+                <div>
+                  <h4 className={styles.beefClubBenefitTitle}>{b.title}</h4>
+                  <p className={styles.beefClubBenefitDesc}>{b.desc}</p>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </section>
@@ -1104,6 +1171,7 @@ export default function HomePage() {
       <HotItemsSection />
       <MenuCategoriesSection />
       <SignatureDishesSection />
+      <BeefEaterClubSection />
       <OfferSection />
       <CookingVideosSection />
       <TestimonialsSection />

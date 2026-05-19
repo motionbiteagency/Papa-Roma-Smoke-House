@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
-import { Menu, X, Flame, ShoppingBag } from 'lucide-react';
+import { Menu, X, Flame, ShoppingBag, CalendarDays } from 'lucide-react';
 import siteConfig from '@/data/siteConfig.json';
 import menuData from '@/data/menus.json';
 import { getItemImage } from '@/data/itemImages';
@@ -112,13 +112,18 @@ export default function Navbar() {
 
         {/* Actions */}
         <div className={styles.navActions}>
+          <Link href="/events" className={styles.eventBtn}>
+            <CalendarDays size={15} />
+            Book An Event
+          </Link>
+
           <a
             href={`https://wa.me/${siteConfig.restaurant.whatsapp}?text=Hi! I'd like to make a reservation at PAPA ROMA FOOD ENGINEERING 🔥`}
             target="_blank"
             rel="noopener noreferrer"
             className={styles.ctaBtn}
           >
-            Reserve Now
+            Reserve A Table
           </a>
 
           <button
@@ -171,13 +176,17 @@ export default function Navbar() {
             <span>View Order {getCount() > 0 ? `(${getCount()})` : ''}</span>
           </button>
           
+          <Link href="/events" className={`btn btn-secondary ${styles.mobileCta}`} onClick={() => setIsOpen(false)}>
+            <CalendarDays size={16} /> Book An Event
+          </Link>
+
           <a
             href={`https://wa.me/${siteConfig.restaurant.whatsapp}?text=Hi! I'd like to make a reservation at PAPA ROMA FOOD ENGINEERING 🔥`}
             target="_blank"
             rel="noopener noreferrer"
             className={`btn btn-primary ${styles.mobileCta}`}
           >
-            Reserve via WhatsApp
+            Reserve A Table
           </a>
         </div>
       </div>

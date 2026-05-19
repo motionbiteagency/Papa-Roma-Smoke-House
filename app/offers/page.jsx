@@ -11,7 +11,7 @@ import { getItemImage } from '@/data/itemImages';
 import styles from './offers.module.css';
 
 export default function OffersPage() {
-  const { addItem, items: cartItems } = useCart();
+  const { addItem, items: cartItems, openDrawer } = useCart();
   const [addedItems, setAddedItems] = useState({});
 
   // Flatten the entire menu to find offer items
@@ -33,8 +33,15 @@ export default function OffersPage() {
   );
 
   const handleAddToCart = (item) => {
-    addItem({ ...item, quantity: 1 });
+    addItem({
+      id: item.id,
+      name: item.name,
+      price: item.price,
+      unit: item.unit || null,
+      menuName: item.menuName,
+    });
     setAddedItems(prev => ({ ...prev, [item.id]: true }));
+    openDrawer();
     setTimeout(() => {
       setAddedItems(prev => ({ ...prev, [item.id]: false }));
     }, 2000);

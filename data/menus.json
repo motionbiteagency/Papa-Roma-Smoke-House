@@ -13,13 +13,58 @@
           "name": "Smoked Meats",
           "description": "Prices are based on cooked weight",
           "items": [
-            { "id": "sm1", "name": "Beef Fillet / Brisket", "description": "Slow-smoked premium beef cuts", "price": 290, "unit": "per 100gm", "featured": true },
-            { "id": "sm2", "name": "Beef Ribs", "description": "Fall-off-the-bone tender smoked ribs", "price": 290, "unit": "per 100gm", "featured": true },
-            { "id": "sm3", "name": "Beef Shank / Bong 'Hammer'", "description": "Rich, slow-cooked beef shank", "price": 290, "unit": "per 100gm" },
-            { "id": "sm4", "name": "Duck", "description": "Tender smoked duck", "price": 190, "unit": "per 100gm" },
-            { "id": "sm5", "name": "Lamb", "description": "Premium smoked lamb", "price": 390, "unit": "per 100gm", "featured": true },
-            { "id": "sm6", "name": "Chicken", "description": "Whole smoked chicken", "price": 690, "unit": "whole" },
-            { "id": "sm7", "name": "Texas Homemade Sausage", "description": "House-made Texas-style smoked sausage", "price": 290, "unit": "per 100gm" }
+            {
+              "id": "sm1",
+              "name": "Beef Fillet / Brisket",
+              "description": "Slow-smoked premium beef cuts",
+              "price": 290,
+              "unit": "per 100gm",
+              "featured": true
+            },
+            {
+              "id": "sm2",
+              "name": "Beef Ribs",
+              "description": "Fall-off-the-bone tender smoked ribs",
+              "price": 290,
+              "unit": "per 100gm",
+              "featured": true
+            },
+            {
+              "id": "sm3",
+              "name": "Beef Shank / Bong 'Hammer'",
+              "description": "Rich, slow-cooked beef shank",
+              "price": 290,
+              "unit": "per 100gm"
+            },
+            {
+              "id": "sm4",
+              "name": "Duck",
+              "description": "Tender smoked duck",
+              "price": 190,
+              "unit": "per 100gm"
+            },
+            {
+              "id": "sm5",
+              "name": "Lamb",
+              "description": "Premium smoked lamb",
+              "price": 390,
+              "unit": "per 100gm",
+              "featured": true
+            },
+            {
+              "id": "sm6",
+              "name": "Chicken",
+              "description": "Whole smoked chicken",
+              "price": 990,
+              "unit": "whole"
+            },
+            {
+              "id": "sm7",
+              "name": "Texas Homemade Sausage",
+              "description": "House-made Texas-style smoked sausage",
+              "price": 290,
+              "unit": "per 100gm"
+            }
           ]
         },
         {
@@ -27,7 +72,12 @@
           "name": "Sides",
           "description": "Choose your perfect accompaniment",
           "items": [
-            { "id": "sd1", "name": "Sides on Your Choice", "description": "French fries, Wedges, Mashed Potato, Rice, Beans, Coleslaw, Pickles, Sauces, Garlic Bread", "price": 290 }
+            {
+              "id": "sd1",
+              "name": "Sides on Your Choice",
+              "description": "French fries, Wedges, Mashed Potato, Rice, Beans, Coleslaw, Pickles, Sauces, Garlic Bread",
+              "price": 290
+            }
           ]
         },
         {
@@ -35,20 +85,63 @@
           "name": "Burgers & Sandwiches",
           "description": "Served with French fries/Wedges, Coleslaw, Pickles (400gm)",
           "items": [
-            { "id": "bs1", "name": "Chiabatta Pulled Beef Brisket Burger", "description": "Slow-smoked pulled brisket on ciabatta bread", "price": 490, "featured": true },
-            { "id": "bs2", "name": "Croissant Smoked Chicken", "description": "Tender smoked chicken in a buttery croissant", "price": 490 },
-            { "id": "bs3", "name": "Chicken Parmesan Whopper", "description": "Crispy chicken parmesan in a whopper bun", "price": 490 },
-            { "id": "bs4", "name": "Papa Roma Club Sandwich", "description": "Our signature club sandwich", "price": 490, "featured": true },
-            { "id": "bs5", "name": "Smokey Meat Shawarma Platter", "description": "Smoked meat shawarma with all the fixings", "price": 490 },
-            { "id": "bs6", "name": "Smoked Italian Sausage Sub", "description": "House-made smoked sausage in a sub roll", "price": 490 },
-            { "id": "bs7", "name": "Smoked Meat Mexican Burrito", "description": "Loaded burrito with smoked meats", "price": 490 }
+            {
+              "id": "bs1",
+              "name": "Chiabatta Pulled Beef Brisket Burger",
+              "description": "Slow-smoked pulled brisket on ciabatta bread",
+              "price": 490,
+              "featured": true
+            },
+            {
+              "id": "bs2",
+              "name": "Croissant Smoked Chicken",
+              "description": "Tender smoked chicken in a buttery croissant",
+              "price": 490
+            },
+            {
+              "id": "bs3",
+              "name": "Chicken Parmesan Whopper",
+              "description": "Crispy chicken parmesan in a whopper bun",
+              "price": 490
+            },
+            {
+              "id": "bs4",
+              "name": "Papa Roma Club Sandwich",
+              "description": "Our signature club sandwich",
+              "price": 490,
+              "featured": true
+            },
+            {
+              "id": "bs5",
+              "name": "Smokey Meat Shawarma Platter",
+              "description": "Smoked meat shawarma with all the fixings",
+              "price": 490
+            },
+            {
+              "id": "bs6",
+              "name": "Smoked Italian Sausage Sub",
+              "description": "House-made smoked sausage in a sub roll",
+              "price": 490
+            },
+            {
+              "id": "bs7",
+              "name": "Smoked Meat Mexican Burrito",
+              "description": "Loaded burrito with smoked meats",
+              "price": 490
+            }
           ]
         },
         {
           "id": "platters",
           "name": "Platters",
           "items": [
-            { "id": "pl1", "name": "Smoke House Quick Bite Platter 'Dudes'", "description": "For 4 Pax — Chiabatta Pulled Beef Brisket Burger, Papa Roma Club Sandwich, Smoked Italian Sausage Sub, Smoked Meat Mexican Burrito with fries, coleslaw & pickles", "price": 1290, "featured": true }
+            {
+              "id": "pl1",
+              "name": "Smoke House Quick Bite Platter 'Dudes'",
+              "description": "For 4 Pax — Chiabatta Pulled Beef Brisket Burger, Papa Roma Club Sandwich, Smoked Italian Sausage Sub, Smoked Meat Mexican Burrito with fries, coleslaw & pickles",
+              "price": 1290,
+              "featured": true
+            }
           ]
         }
       ]
@@ -65,50 +158,217 @@
           "id": "breakfast",
           "name": "সকালের নাস্তা (Breakfast)",
           "items": [
-            { "id": "bk1", "name": "Ata Rooti / Rice Roti / Luchi", "nameBn": "আটা রুটি / চাউলের রুটি / লুচি", "price": 30 },
-            { "id": "bk2", "name": "Ghee Paratha / Roomali Roti / Nan", "nameBn": "ঘি পরাটা / রুমালি রুটি / নান", "price": 60 },
-            { "id": "bk3", "name": "Vaji", "nameBn": "সবজি ভাজি", "price": 70 },
-            { "id": "bk4", "name": "Egg Omelette / Poached (2pcs)", "nameBn": "ডিম ওমেলট / পোচ", "price": 70 },
-            { "id": "bk5", "name": "Spanish Omelette", "nameBn": "স্প্যানিশ ওমেলট", "price": 390 },
-            { "id": "bk6", "name": "English Breakfast", "nameBn": "ইংলিশ ব্রেকফাস্ট", "price": 390 },
-            { "id": "bk7", "name": "Dal Afghani (Mutton Keema)", "nameBn": "ডাল আফগানি (খাসির কিমা)", "price": 290 }
+            {
+              "id": "bk1",
+              "name": "Ata Rooti / Rice Roti / Luchi",
+              "nameBn": "আটা রুটি / চাউলের রুটি / লুচি",
+              "price": 30
+            },
+            {
+              "id": "bk2",
+              "name": "Ghee Paratha / Roomali Roti / Nan",
+              "nameBn": "ঘি পরাটা / রুমালি রুটি / নান",
+              "price": 60
+            },
+            {
+              "id": "bk3",
+              "name": "Vaji",
+              "nameBn": "সবজি ভাজি",
+              "price": 70
+            },
+            {
+              "id": "bk4",
+              "name": "Egg Omelette / Poached (2pcs)",
+              "nameBn": "ডিম ওমেলট / পোচ",
+              "price": 70
+            },
+            {
+              "id": "bk5",
+              "name": "Spanish Omelette",
+              "nameBn": "স্প্যানিশ ওমেলট",
+              "price": 390
+            },
+            {
+              "id": "bk6",
+              "name": "English Breakfast",
+              "nameBn": "ইংলিশ ব্রেকফাস্ট",
+              "price": 390
+            },
+            {
+              "id": "bk7",
+              "name": "Dal Afghani (Mutton Keema)",
+              "nameBn": "ডাল আফগানি (খাসির কিমা)",
+              "price": 290
+            }
           ]
         },
         {
           "id": "lunch",
           "name": "দুপুরের খাবার (Lunch)",
           "items": [
-            { "id": "bl1", "name": "Steam Rice (Nazirshail)", "nameBn": "ভাত (নাজিরশাইল)", "price": 40 },
-            { "id": "bl2", "name": "Mashkalai Dal", "nameBn": "মাশকলাইয়ের ডাল", "price": 40 },
-            { "id": "bl3", "name": "Loita Fry", "nameBn": "লইট্টা ফ্রাই", "price": 110 },
-            { "id": "bl4", "name": "Bhorta Thali (Five Items)", "nameBn": "ভর্তা থালি (পাঁচ প্রকার)", "description": "Potato, Eggplant, Tomato, Garlic & more", "price": 130 },
-            { "id": "bl5", "name": "Fish / Shrimp / Shutki Bhorta", "nameBn": "মাছ / চিংড়ি / শুটকি ভর্তা", "price": 130 },
-            { "id": "bl6", "name": "Lau Chingri / Korola Chingri", "nameBn": "লাউ চিংড়ি / করোলা চিংড়ি", "price": 70 },
-            { "id": "bl7", "name": "Katla Fry / Voona", "nameBn": "কাতলা ফ্রাই / ভুনা", "price": 190 },
-            { "id": "bl8", "name": "Koral Paturi", "nameBn": "কোরাল পাতুরি", "price": 390, "featured": true },
-            { "id": "bl9", "name": "Prawn Paturi", "nameBn": "চিংড়ি পাতুরি", "price": 390, "featured": true },
-            { "id": "bl10", "name": "Prawn Dopeaza", "nameBn": "চিংড়ি দোপেয়াজা", "price": 390 },
-            { "id": "bl11", "name": "Deshi Beef Red / Kala Voona", "nameBn": "দেশী গরুর লাল / কালা ভুনা", "price": 290, "featured": true },
-            { "id": "bl12", "name": "Deshi Beef Jhura", "nameBn": "দেশী গরুর ঝুরা মাংস", "price": 290 },
-            { "id": "bl13", "name": "Chicken Goalando Curry", "nameBn": "গোয়ালন্দ মুরগী কারি", "price": 290 },
-            { "id": "bl14", "name": "Chatni / Salad", "nameBn": "চাটনি / সালাদ", "price": 60 },
-            { "id": "bl15", "name": "Carrot / Pumpkin Halwa", "nameBn": "গাজর / দুধ লাউ হালুয়া", "price": 130 },
-            { "id": "bl16", "name": "Homemade Yoghurt", "nameBn": "ঘরে তৈরি দই", "price": 90 }
+            {
+              "id": "bl1",
+              "name": "Steam Rice (Nazirshail)",
+              "nameBn": "ভাত (নাজিরশাইল)",
+              "price": 40
+            },
+            {
+              "id": "bl2",
+              "name": "Mashkalai Dal",
+              "nameBn": "মাশকলাইয়ের ডাল",
+              "price": 40
+            },
+            {
+              "id": "bl3",
+              "name": "Loita Fry",
+              "nameBn": "লইট্টা ফ্রাই",
+              "price": 110
+            },
+            {
+              "id": "bl4",
+              "name": "Bhorta Thali (Five Items)",
+              "nameBn": "ভর্তা থালি (পাঁচ প্রকার)",
+              "description": "Potato, Eggplant, Tomato, Garlic & more",
+              "price": 130
+            },
+            {
+              "id": "bl5",
+              "name": "Fish / Shrimp / Shutki Bhorta",
+              "nameBn": "মাছ / চিংড়ি / শুটকি ভর্তা",
+              "price": 130
+            },
+            {
+              "id": "bl6",
+              "name": "Lau Chingri / Korola Chingri",
+              "nameBn": "লাউ চিংড়ি / করোলা চিংড়ি",
+              "price": 70
+            },
+            {
+              "id": "bl7",
+              "name": "Katla Fry / Voona",
+              "nameBn": "কাতলা ফ্রাই / ভুনা",
+              "price": 190
+            },
+            {
+              "id": "bl8",
+              "name": "Koral Paturi",
+              "nameBn": "কোরাল পাতুরি",
+              "price": 390,
+              "featured": true
+            },
+            {
+              "id": "bl9",
+              "name": "Prawn Paturi",
+              "nameBn": "চিংড়ি পাতুরি",
+              "price": 390,
+              "featured": true
+            },
+            {
+              "id": "bl10",
+              "name": "Prawn Dopeaza",
+              "nameBn": "চিংড়ি দোপেয়াজা",
+              "price": 390
+            },
+            {
+              "id": "bl11",
+              "name": "Deshi Beef Red / Kala Voona",
+              "nameBn": "দেশী গরুর লাল / কালা ভুনা",
+              "price": 290,
+              "featured": true
+            },
+            {
+              "id": "bl12",
+              "name": "Deshi Beef Jhura",
+              "nameBn": "দেশী গরুর ঝুরা মাংস",
+              "price": 290
+            },
+            {
+              "id": "bl13",
+              "name": "Chicken Goalando Curry",
+              "nameBn": "গোয়ালন্দ মুরগী কারি",
+              "price": 290
+            },
+            {
+              "id": "bl14",
+              "name": "Chatni / Salad",
+              "nameBn": "চাটনি / সালাদ",
+              "price": 60
+            },
+            {
+              "id": "bl15",
+              "name": "Carrot / Pumpkin Halwa",
+              "nameBn": "গাজর / দুধ লাউ হালুয়া",
+              "price": 130
+            },
+            {
+              "id": "bl16",
+              "name": "Homemade Yoghurt",
+              "nameBn": "ঘরে তৈরি দই",
+              "price": 90
+            }
           ]
         },
         {
           "id": "main-courses-bk",
           "name": "Main Courses",
           "items": [
-            { "id": "bm1", "name": "Chicken Kopta Karahi", "nameBn": "মুরগীর কোপ্তা কড়াই", "price": 150 },
-            { "id": "bm2", "name": "Beef Jhoora Dal", "nameBn": "গরুর ঝুরা মাংস", "price": 170 },
-            { "id": "bm3", "name": "Beef Brain Masala", "nameBn": "গরু মগজ মাসালা", "price": 220 },
-            { "id": "bm4", "name": "Nehari", "nameBn": "নেহারী", "price": 320, "featured": true },
-            { "id": "bm5", "name": "Dhakaya Thali", "nameBn": "ঢাকাইয়া থালি", "price": 390, "featured": true },
-            { "id": "bm6", "name": "Nababi Thali", "nameBn": "নবাবী থালি", "price": 430, "featured": true },
-            { "id": "bm7", "name": "Carrot / Pumpkin Halwa", "nameBn": "গাজর / দুধ লাউ হালুয়া", "price": 130 },
-            { "id": "bm8", "name": "Homemade Yoghurt", "nameBn": "ঘরে তৈরি দই", "price": 90 },
-            { "id": "bm9", "name": "Masala Cha", "nameBn": "মাসালা চা", "price": 60 }
+            {
+              "id": "bm1",
+              "name": "Chicken Kopta Karahi",
+              "nameBn": "মুরগীর কোপ্তা কড়াই",
+              "price": 150
+            },
+            {
+              "id": "bm2",
+              "name": "Beef Jhoora Dal",
+              "nameBn": "গরুর ঝুরা মাংস",
+              "price": 170
+            },
+            {
+              "id": "bm3",
+              "name": "Beef Brain Masala",
+              "nameBn": "গরু মগজ মাসালা",
+              "price": 220
+            },
+            {
+              "id": "bm4",
+              "name": "Nehari",
+              "nameBn": "নেহারী",
+              "price": 320,
+              "featured": true
+            },
+            {
+              "id": "bm5",
+              "name": "Dhakaya Thali",
+              "nameBn": "ঢাকাইয়া থালি",
+              "price": 390,
+              "featured": true
+            },
+            {
+              "id": "bm6",
+              "name": "Nababi Thali",
+              "nameBn": "নবাবী থালি",
+              "price": 430,
+              "featured": true
+            },
+            {
+              "id": "bm7",
+              "name": "Carrot / Pumpkin Halwa",
+              "nameBn": "গাজর / দুধ লাউ হালুয়া",
+              "price": 130
+            },
+            {
+              "id": "bm8",
+              "name": "Homemade Yoghurt",
+              "nameBn": "ঘরে তৈরি দই",
+              "price": 90
+            },
+            {
+              "id": "bm9",
+              "name": "Masala Cha",
+              "nameBn": "মাসালা চা",
+              "price": 60
+            }
           ]
         }
       ]
@@ -125,30 +385,130 @@
           "id": "starters",
           "name": "Starters",
           "items": [
-            { "id": "ps1", "name": "Greek Salad", "description": "Tomato, Cucumber, Capsicum, Lettuce, Olive and Cheese on top with Greek dressing", "price": 290, "unit": "200gm" },
-            { "id": "ps2", "name": "Grilled Parmesan Chicken Salad", "description": "Tomato, Capsicum, Cucumber, Caesar dressing", "price": 390, "unit": "300gm" },
-            { "id": "ps3", "name": "French Onion Soup with Smoked Meat", "price": 290, "unit": "300gm" },
-            { "id": "ps4", "name": "Mushroom Cream Soup", "price": 290, "unit": "300gm" },
-            { "id": "ps5", "name": "Fish n Chips", "price": 390, "unit": "300gm", "featured": true },
-            { "id": "ps6", "name": "Mexican Nachos", "price": 390, "unit": "300gm" },
-            { "id": "ps7", "name": "Loaded Meatbox", "price": 390, "unit": "300gm" },
-            { "id": "ps8", "name": "Hot n Spicy Wings", "description": "8 pieces of spicy wings", "price": 390, "unit": "8pcs", "featured": true }
+            {
+              "id": "ps1",
+              "name": "Greek Salad",
+              "description": "Tomato, Cucumber, Capsicum, Lettuce, Olive and Cheese on top with Greek dressing",
+              "price": 290,
+              "unit": "200gm"
+            },
+            {
+              "id": "ps2",
+              "name": "Grilled Parmesan Chicken Salad",
+              "description": "Tomato, Capsicum, Cucumber, Caesar dressing",
+              "price": 390,
+              "unit": "300gm"
+            },
+            {
+              "id": "ps3",
+              "name": "French Onion Soup with Smoked Meat",
+              "price": 290,
+              "unit": "300gm"
+            },
+            {
+              "id": "ps4",
+              "name": "Mushroom Cream Soup",
+              "price": 290,
+              "unit": "300gm",
+              "featured": false
+            },
+            {
+              "id": "ps5",
+              "name": "Fish n Chips",
+              "price": 390,
+              "unit": "300gm",
+              "featured": true
+            },
+            {
+              "id": "ps6",
+              "name": "Mexican Nachos",
+              "price": 390,
+              "unit": "300gm"
+            },
+            {
+              "id": "ps7",
+              "name": "Loaded Meatbox",
+              "price": 390,
+              "unit": "300gm"
+            },
+            {
+              "id": "ps8",
+              "name": "Hot n Spicy Wings",
+              "description": "8 pieces of spicy wings",
+              "price": 390,
+              "unit": "8pcs",
+              "featured": true
+            }
           ]
         },
         {
           "id": "main-courses-pk",
           "name": "Main Courses",
           "items": [
-            { "id": "pm1", "name": "Lemon Butter Dori with Mashed Potato", "price": 490, "unit": "400gm" },
-            { "id": "pm2", "name": "Fettuccine Alfredo with Chicken & Mushroom", "price": 490, "unit": "400gm", "featured": true },
-            { "id": "pm3", "name": "Baked Penne with Chicken", "price": 490, "unit": "400gm" },
-            { "id": "pm4", "name": "Smoked Meat Lasagna", "price": 490, "unit": "400gm", "featured": true },
-            { "id": "pm5", "name": "Cheesy Chicken Baked with Mushroom", "price": 490, "unit": "400gm" },
-            { "id": "pm6", "name": "Cajun Chicken with Pasta", "price": 390, "unit": "400gm" },
-            { "id": "pm7", "name": "Japanese Katsu Chicken with Rice", "price": 390, "unit": "400gm" },
-            { "id": "pm8", "name": "Italian Ground Beef Steak", "description": "With Mashed Potato and Poached Egg", "price": 590, "unit": "400gm", "featured": true },
-            { "id": "pm9", "name": "Bangkok Chowmein", "price": 390, "unit": "400gm" },
-            { "id": "pm10", "name": "Nasi Goreng", "price": 390, "unit": "400gm" }
+            {
+              "id": "pm1",
+              "name": "Lemon Butter Dori with Mashed Potato",
+              "price": 490,
+              "unit": "400gm"
+            },
+            {
+              "id": "pm2",
+              "name": "Fettuccine Alfredo with Chicken & Mushroom",
+              "price": 490,
+              "unit": "400gm",
+              "featured": true
+            },
+            {
+              "id": "pm3",
+              "name": "Baked Penne with Chicken",
+              "price": 490,
+              "unit": "400gm"
+            },
+            {
+              "id": "pm4",
+              "name": "Smoked Meat Lasagna",
+              "price": 490,
+              "unit": "400gm",
+              "featured": true
+            },
+            {
+              "id": "pm5",
+              "name": "Cheesy Chicken Baked with Mushroom",
+              "price": 490,
+              "unit": "400gm"
+            },
+            {
+              "id": "pm6",
+              "name": "Cajun Chicken with Pasta",
+              "price": 390,
+              "unit": "400gm"
+            },
+            {
+              "id": "pm7",
+              "name": "Japanese Katsu Chicken with Rice",
+              "price": 390,
+              "unit": "400gm"
+            },
+            {
+              "id": "pm8",
+              "name": "Italian Ground Beef Steak",
+              "description": "With Mashed Potato and Poached Egg",
+              "price": 590,
+              "unit": "400gm",
+              "featured": true
+            },
+            {
+              "id": "pm9",
+              "name": "Bangkok Chowmein",
+              "price": 390,
+              "unit": "400gm"
+            },
+            {
+              "id": "pm10",
+              "name": "Nasi Goreng",
+              "price": 390,
+              "unit": "400gm"
+            }
           ]
         }
       ]
@@ -164,116 +524,389 @@
           "id": "fresh-juice",
           "name": "Fresh Juice (250ml)",
           "items": [
-            { "id": "fj1", "name": "Malta", "price": 290 },
-            { "id": "fj2", "name": "Apple", "price": 290 },
-            { "id": "fj3", "name": "Dragon", "price": 230 },
-            { "id": "fj4", "name": "Papaya", "price": 190 },
-            { "id": "fj5", "name": "Pineapple", "price": 220 },
-            { "id": "fj6", "name": "Carrot", "price": 220 },
-            { "id": "fj7", "name": "Mango", "price": 190 },
-            { "id": "fj8", "name": "Watermelon", "price": 190 }
+            {
+              "id": "fj1",
+              "name": "Malta",
+              "price": 290
+            },
+            {
+              "id": "fj2",
+              "name": "Apple",
+              "price": 290
+            },
+            {
+              "id": "fj3",
+              "name": "Dragon",
+              "price": 230
+            },
+            {
+              "id": "fj4",
+              "name": "Papaya",
+              "price": 190
+            },
+            {
+              "id": "fj5",
+              "name": "Pineapple",
+              "price": 220
+            },
+            {
+              "id": "fj6",
+              "name": "Carrot",
+              "price": 220
+            },
+            {
+              "id": "fj7",
+              "name": "Mango",
+              "price": 190
+            },
+            {
+              "id": "fj8",
+              "name": "Watermelon",
+              "price": 190
+            }
           ]
         },
         {
           "id": "mocktails",
           "name": "Mocktails / Chillers (350ml)",
           "items": [
-            { "id": "mk1", "name": "Fresh Lemonade", "price": 110 },
-            { "id": "mk2", "name": "Mint", "price": 130 },
-            { "id": "mk3", "name": "Cloudy", "price": 150 },
-            { "id": "mk4", "name": "Classical Mojito", "price": 150, "featured": true },
-            { "id": "mk5", "name": "Strawberry", "price": 180 },
-            { "id": "mk6", "name": "Blue Curacao", "price": 190 },
-            { "id": "mk7", "name": "Orange", "price": 190 },
-            { "id": "mk8", "name": "Grenadine", "price": 190 },
-            { "id": "mk9", "name": "Citrus Sunset", "price": 230, "featured": true },
-            { "id": "mk10", "name": "Blue Berry", "price": 230 },
-            { "id": "mk11", "name": "Lake Breeze", "price": 250 },
-            { "id": "mk12", "name": "Tropical Paradise", "price": 250, "featured": true },
-            { "id": "mk13", "name": "Pina Colada", "price": 250 }
+            {
+              "id": "mk1",
+              "name": "Fresh Lemonade",
+              "price": 110
+            },
+            {
+              "id": "mk2",
+              "name": "Mint",
+              "price": 130
+            },
+            {
+              "id": "mk3",
+              "name": "Cloudy",
+              "price": 150
+            },
+            {
+              "id": "mk4",
+              "name": "Classical Mojito",
+              "price": 150,
+              "featured": true
+            },
+            {
+              "id": "mk5",
+              "name": "Strawberry",
+              "price": 180
+            },
+            {
+              "id": "mk6",
+              "name": "Blue Curacao",
+              "price": 190
+            },
+            {
+              "id": "mk7",
+              "name": "Orange",
+              "price": 190
+            },
+            {
+              "id": "mk8",
+              "name": "Grenadine",
+              "price": 190
+            },
+            {
+              "id": "mk9",
+              "name": "Citrus Sunset",
+              "price": 230,
+              "featured": true
+            },
+            {
+              "id": "mk10",
+              "name": "Blue Berry",
+              "price": 230
+            },
+            {
+              "id": "mk11",
+              "name": "Lake Breeze",
+              "price": 250
+            },
+            {
+              "id": "mk12",
+              "name": "Tropical Paradise",
+              "price": 250,
+              "featured": true
+            },
+            {
+              "id": "mk13",
+              "name": "Pina Colada",
+              "price": 250
+            }
           ]
         },
         {
           "id": "frappe",
           "name": "Frappe (350ml)",
           "items": [
-            { "id": "fr1", "name": "Hazelnut", "price": 230 },
-            { "id": "fr2", "name": "Butterscotch", "price": 230 },
-            { "id": "fr3", "name": "Caramel Crush", "price": 230 },
-            { "id": "fr4", "name": "Tiramisu", "price": 230 },
-            { "id": "fr5", "name": "Blue Berry Matcha", "price": 230 }
+            {
+              "id": "fr1",
+              "name": "Hazelnut",
+              "price": 230
+            },
+            {
+              "id": "fr2",
+              "name": "Butterscotch",
+              "price": 230
+            },
+            {
+              "id": "fr3",
+              "name": "Caramel Crush",
+              "price": 230
+            },
+            {
+              "id": "fr4",
+              "name": "Tiramisu",
+              "price": 230
+            },
+            {
+              "id": "fr5",
+              "name": "Blue Berry Matcha",
+              "price": 230
+            }
           ]
         },
         {
           "id": "matcha",
           "name": "Matcha Drinks (300ml)",
           "items": [
-            { "id": "mt1", "name": "Matcha Latte", "price": 190 },
-            { "id": "mt2", "name": "Matcha Coconut Delight", "price": 230 },
-            { "id": "mt3", "name": "Bounty Matcha", "price": 230 },
-            { "id": "mt4", "name": "Dragon Matcha", "price": 230 },
-            { "id": "mt5", "name": "Caramel Matcha", "price": 230 }
+            {
+              "id": "mt1",
+              "name": "Matcha Latte",
+              "price": 190
+            },
+            {
+              "id": "mt2",
+              "name": "Matcha Coconut Delight",
+              "price": 230
+            },
+            {
+              "id": "mt3",
+              "name": "Bounty Matcha",
+              "price": 230
+            },
+            {
+              "id": "mt4",
+              "name": "Dragon Matcha",
+              "price": 230
+            },
+            {
+              "id": "mt5",
+              "name": "Caramel Matcha",
+              "price": 230
+            }
           ]
         },
         {
           "id": "milkshake",
           "name": "Milk Shake (350ml)",
           "items": [
-            { "id": "ms1", "name": "Chocolate", "price": 190 },
-            { "id": "ms2", "name": "Vanilla", "price": 190 },
-            { "id": "ms3", "name": "Strawberry", "price": 190 },
-            { "id": "ms4", "name": "Mango", "price": 190 },
-            { "id": "ms5", "name": "Butterscotch", "price": 190 }
+            {
+              "id": "ms1",
+              "name": "Chocolate",
+              "price": 190
+            },
+            {
+              "id": "ms2",
+              "name": "Vanilla",
+              "price": 190
+            },
+            {
+              "id": "ms3",
+              "name": "Strawberry",
+              "price": 190
+            },
+            {
+              "id": "ms4",
+              "name": "Mango",
+              "price": 190
+            },
+            {
+              "id": "ms5",
+              "name": "Butterscotch",
+              "price": 190
+            }
           ]
         },
         {
           "id": "lassi",
           "name": "Lassi",
           "items": [
-            { "id": "ls1", "name": "Lassi", "price": 150 }
+            {
+              "id": "ls1",
+              "name": "Lassi",
+              "price": 150
+            }
           ]
         },
         {
           "id": "tea",
           "name": "Tea",
           "items": [
-            { "id": "te1", "name": "Masala Milk Tea", "description": "Premium Black Tea with Fresh Milk and Deshi Masala", "price": 60, "priceAlt": 190, "unit": "Single / Tea Pot" },
-            { "id": "te2", "name": "Mountain Flower Tea", "description": "Wild Flowers Bouquet with Chinese Jasmine Tea", "price": 70, "priceAlt": 230, "unit": "Single / Tea Pot" },
-            { "id": "te3", "name": "Fruit Tea", "description": "Fresh Orange, Apple, Pineapple, Cinnamon, Star Anise, Mint with Vanilla Green Tea", "price": 90, "priceAlt": 290, "unit": "Single / Tea Pot" },
-            { "id": "te4", "name": "Herbal Tea", "description": "Cinnamon, Star Anise, Curcuma, Ginger, Cloves, Mint, Hibiscus, Lemon Grass with Orthodox Green Tea", "price": 90, "priceAlt": 290, "unit": "Single / Tea Pot" },
-            { "id": "te5", "name": "Black Bergamot Tea (Earl Grey)", "description": "Black Tea with dried Bergamot Orange — Classic Earl Grey", "price": 90, "priceAlt": 290, "unit": "Single / Tea Pot" },
-            { "id": "te6", "name": "Honey", "price": 90, "unit": "10ml / 60tk — 50ml / 140tk" }
+            {
+              "id": "te1",
+              "name": "Masala Milk Tea",
+              "description": "Premium Black Tea with Fresh Milk and Deshi Masala",
+              "price": 60,
+              "priceAlt": 190,
+              "unit": "Single / Tea Pot"
+            },
+            {
+              "id": "te2",
+              "name": "Mountain Flower Tea",
+              "description": "Wild Flowers Bouquet with Chinese Jasmine Tea",
+              "price": 70,
+              "priceAlt": 230,
+              "unit": "Single / Tea Pot"
+            },
+            {
+              "id": "te3",
+              "name": "Fruit Tea",
+              "description": "Fresh Orange, Apple, Pineapple, Cinnamon, Star Anise, Mint with Vanilla Green Tea",
+              "price": 90,
+              "priceAlt": 290,
+              "unit": "Single / Tea Pot"
+            },
+            {
+              "id": "te4",
+              "name": "Herbal Tea",
+              "description": "Cinnamon, Star Anise, Curcuma, Ginger, Cloves, Mint, Hibiscus, Lemon Grass with Orthodox Green Tea",
+              "price": 90,
+              "priceAlt": 290,
+              "unit": "Single / Tea Pot"
+            },
+            {
+              "id": "te5",
+              "name": "Black Bergamot Tea (Earl Grey)",
+              "description": "Black Tea with dried Bergamot Orange — Classic Earl Grey",
+              "price": 90,
+              "priceAlt": 290,
+              "unit": "Single / Tea Pot"
+            },
+            {
+              "id": "te6",
+              "name": "Honey",
+              "price": 90,
+              "unit": "10ml / 60tk — 50ml / 140tk"
+            }
           ]
         },
         {
           "id": "coffee",
           "name": "Coffee",
           "items": [
-            { "id": "cf1", "name": "Espresso", "price": 150, "unit": "Single / Double" },
-            { "id": "cf2", "name": "Macchiato", "price": 140 },
-            { "id": "cf3", "name": "Cappuccino", "price": 120 },
-            { "id": "cf4", "name": "Americano", "price": 140 },
-            { "id": "cf5", "name": "Latte", "price": 230 },
-            { "id": "cf6", "name": "Mocha (White / Dark)", "price": 230 },
-            { "id": "cf7", "name": "Hot Chocolate", "price": 230 }
+            {
+              "id": "cf1",
+              "name": "Espresso",
+              "price": 150,
+              "unit": "Single / Double"
+            },
+            {
+              "id": "cf2",
+              "name": "Macchiato",
+              "price": 140
+            },
+            {
+              "id": "cf3",
+              "name": "Cappuccino",
+              "price": 120
+            },
+            {
+              "id": "cf4",
+              "name": "Americano",
+              "price": 140
+            },
+            {
+              "id": "cf5",
+              "name": "Latte",
+              "price": 230
+            },
+            {
+              "id": "cf6",
+              "name": "Mocha (White / Dark)",
+              "price": 230
+            },
+            {
+              "id": "cf7",
+              "name": "Hot Chocolate",
+              "price": 230
+            }
           ]
         },
         {
           "id": "dessert",
           "name": "Desserts",
           "items": [
-            { "id": "ds1", "name": "Cream Brulee", "price": 190 },
-            { "id": "ds2", "name": "Falooda", "price": 190 },
-            { "id": "ds3", "name": "Chocolate Cake", "price": 190 },
-            { "id": "ds4", "name": "Basque Cheesecake", "price": 290, "featured": true },
-            { "id": "ds5", "name": "Cheesecake", "description": "Strawberry / Blueberry / Matcha / Dragon", "price": 290 },
-            { "id": "ds6", "name": "Browny on Fire", "price": 290, "featured": true },
-            { "id": "ds7", "name": "Ice Cream", "price": 290 },
-            { "id": "ds8", "name": "Matcha Tiramisu", "price": 290, "featured": true },
-            { "id": "ds9", "name": "Almond Croissant", "price": 290 },
-            { "id": "ds10", "name": "Chocolate Croissant", "price": 290 },
-            { "id": "ds11", "name": "White Chocolate Mango Croissant", "price": 290 },
-            { "id": "ds12", "name": "Matcha Pistachio Croissant", "price": 390, "featured": true }
+            {
+              "id": "ds1",
+              "name": "Cream Brulee",
+              "price": 190
+            },
+            {
+              "id": "ds2",
+              "name": "Falooda",
+              "price": 190
+            },
+            {
+              "id": "ds3",
+              "name": "Chocolate Cake",
+              "price": 190
+            },
+            {
+              "id": "ds4",
+              "name": "Basque Cheesecake",
+              "price": 290,
+              "featured": true
+            },
+            {
+              "id": "ds5",
+              "name": "Cheesecake",
+              "description": "Strawberry / Blueberry / Matcha / Dragon",
+              "price": 290
+            },
+            {
+              "id": "ds6",
+              "name": "Browny on Fire",
+              "price": 290,
+              "featured": true
+            },
+            {
+              "id": "ds7",
+              "name": "Ice Cream",
+              "price": 290
+            },
+            {
+              "id": "ds8",
+              "name": "Matcha Tiramisu",
+              "price": 290,
+              "featured": true
+            },
+            {
+              "id": "ds9",
+              "name": "Almond Croissant",
+              "price": 290
+            },
+            {
+              "id": "ds10",
+              "name": "Chocolate Croissant",
+              "price": 290
+            },
+            {
+              "id": "ds11",
+              "name": "White Chocolate Mango Croissant",
+              "price": 290
+            },
+            {
+              "id": "ds12",
+              "name": "Matcha Pistachio Croissant",
+              "price": 390,
+              "featured": true
+            }
           ]
         }
       ]

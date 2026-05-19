@@ -7,6 +7,7 @@ import { CartProvider } from './context/CartContext';
 import CartButton from './components/cart/CartButton';
 import CartDrawer from './components/cart/CartDrawer';
 import OfferPopup from './components/layout/OfferPopup';
+import Providers from './components/Providers';
 
 export const metadata = {
   title: 'PAPA ROMA FOOD ENGINEERING | Premium BBQ & Restaurant in Dhanmondi, Dhaka',
@@ -27,17 +28,19 @@ export default function RootLayout({ children }) {
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
       </head>
       <body>
-        <CartProvider>
-          <AppWrapper>
-            <Navbar />
-            <main>{children}</main>
-            <Footer />
-            <WhatsAppFAB />
-            <OfferPopup />
-            <CartButton />
-            <CartDrawer />
-          </AppWrapper>
-        </CartProvider>
+        <Providers>
+          <CartProvider>
+            <AppWrapper>
+              <Navbar />
+              <main>{children}</main>
+              <Footer />
+              <WhatsAppFAB />
+              <OfferPopup />
+              <CartButton />
+              <CartDrawer />
+            </AppWrapper>
+          </CartProvider>
+        </Providers>
       </body>
     </html>
   );

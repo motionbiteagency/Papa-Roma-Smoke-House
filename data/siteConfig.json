@@ -15,22 +15,48 @@
   "heroSlides": [
     {
       "image": "/images/hero-brisket.png",
-      "title": ["Where", "Smoke", "Meets", "Flavor"],
+      "title": [
+        "Where",
+        "Smoke",
+        "Meets",
+        "Flavor"
+      ],
       "subtitle": "Premium wood-smoked BBQ crafted with passion at Dhanmondi's lakeside"
     },
     {
       "image": "/images/hero-platter.png",
-      "title": ["Taste", "the", "Art of", "Fire"],
+      "title": [
+        "Taste",
+        "the",
+        "Art of",
+        "Fire"
+      ],
       "subtitle": "From Texas-style brisket to authentic Bengali specialties — a culinary journey"
     },
     {
       "image": "/images/hero-ambiance.png",
-      "title": ["Dine", "by", "the", "Lake"],
+      "title": [
+        "Dine",
+        "by",
+        "the",
+        "Lake"
+      ],
       "subtitle": "An unforgettable dining experience with four unique menus under one roof"
     }
   ],
-  "hotPicksItemIds": ["pl1", "bs1", "pm2", "ds8"],
-  "offerItemIds": ["sm1", "pl1", "bk1", "pm1", "bz1"],
+  "hotPicksItemIds": [
+    "pl1",
+    "bs1",
+    "pm2",
+    "ds8"
+  ],
+  "offerItemIds": [
+    "sm1",
+    "pl1",
+    "bk1",
+    "pm1",
+    "bz1"
+  ],
   "popupOffer": {
     "enabled": true,
     "delaySeconds": 15,
@@ -41,13 +67,26 @@
     "link": "/offers"
   },
   "navLinks": [
-    { "label": "Home", "href": "/" },
-    { "label": "Smoke House", "href": "/menu/smoke-house" },
-    { "label": "Bangla Kuthir", "href": "/menu/bangla-kuthir" },
-    { "label": "Pushkin", "href": "/menu/pushkin" },
-    { "label": "Beverages", "href": "/menu/beverages" },
-    { "label": "Gallery", "href": "/gallery" },
-    { "label": "Contact", "href": "/contact" }
+    {
+      "label": "Home",
+      "href": "/"
+    },
+    {
+      "label": "Smoke House",
+      "href": "/menu/smoke-house"
+    },
+    {
+      "label": "Bangla Kuthir",
+      "href": "/menu/bangla-kuthir"
+    },
+    {
+      "label": "Pushkin",
+      "href": "/menu/pushkin"
+    },
+    {
+      "label": "Beverages",
+      "href": "/menu/beverages"
+    }
   ],
   "currentOffer": {
     "enabled": false,
@@ -117,7 +156,7 @@
         "category": "Reels",
         "featured": false
       },
-            {
+      {
         "id": "cv5",
         "title": "Slicing the Perfect Picanha Steak",
         "youtubeId": "qlOFiex5DxQ",
@@ -126,7 +165,7 @@
         "category": "Reels",
         "featured": false
       },
-            {
+      {
         "id": "cv5",
         "title": "Slicing the Perfect Picanha Steak",
         "youtubeId": "H3R1y1ADCZw",
@@ -135,7 +174,7 @@
         "category": "Reels",
         "featured": false
       },
-            {
+      {
         "id": "cv5",
         "title": "Slicing the Perfect Picanha Steak",
         "youtubeId": "bAv0JDH7Ca0",
@@ -144,7 +183,7 @@
         "category": "Reels",
         "featured": false
       },
-            {
+      {
         "id": "cv5",
         "title": "Slicing the Perfect Picanha Steak",
         "youtubeId": "ivxgebDK0iQ",
@@ -162,7 +201,7 @@
         "category": "Reels",
         "featured": false
       },
-            {
+      {
         "id": "cv5",
         "title": "Slicing the Perfect Picanha Steak",
         "youtubeId": "ivxgebDK0iQ",
@@ -171,7 +210,7 @@
         "category": "Reels",
         "featured": false
       },
-            {
+      {
         "id": "cv5",
         "title": "Slicing the Perfect Picanha Steak",
         "youtubeId": "bAv0JDH7Ca0",
@@ -180,7 +219,7 @@
         "category": "Reels",
         "featured": false
       },
-            {
+      {
         "id": "cv5",
         "title": "Slicing the Perfect Picanha Steak",
         "youtubeId": "qlOFiex5DxQ",
@@ -189,7 +228,7 @@
         "category": "Reels",
         "featured": false
       },
-            {
+      {
         "id": "cv5",
         "title": "Slicing the Perfect Picanha Steak",
         "youtubeId": "qlOFiex5DxQ",
@@ -198,7 +237,7 @@
         "category": "Reels",
         "featured": false
       },
-            {
+      {
         "id": "cv5",
         "title": "Slicing the Perfect Picanha Steak",
         "youtubeId": "bAv0JDH7Ca0",
