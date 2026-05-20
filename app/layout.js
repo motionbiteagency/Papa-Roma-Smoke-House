@@ -1,12 +1,7 @@
 import './globals.css';
-import Navbar from './components/layout/Navbar';
-import Footer from './components/layout/Footer';
-import WhatsAppFAB from './components/layout/WhatsAppFAB';
 import AppWrapper from './components/layout/AppWrapper';
+import PublicShell from './components/layout/PublicShell';
 import { CartProvider } from './context/CartContext';
-import CartButton from './components/cart/CartButton';
-import CartDrawer from './components/cart/CartDrawer';
-import OfferPopup from './components/layout/OfferPopup';
 import Providers from './components/Providers';
 
 export const metadata = {
@@ -31,13 +26,7 @@ export default function RootLayout({ children }) {
         <Providers>
           <CartProvider>
             <AppWrapper>
-              <Navbar />
-              <main>{children}</main>
-              <Footer />
-              <WhatsAppFAB />
-              <OfferPopup />
-              <CartButton />
-              <CartDrawer />
+              <PublicShell>{children}</PublicShell>
             </AppWrapper>
           </CartProvider>
         </Providers>
