@@ -67,19 +67,26 @@ export default function AdminVideosPage() {
         body: JSON.stringify({ action: 'delete', data: { id } }),
       });
       if (res.ok) { showToast('Video removed'); fetchVideos(); }
-      else showToast('Failed to delete', 'error');
-    } catch { showToast('Failed to delete', 'error'); }
+      else {
+        const j = await res.json();
+        showToast(j.error || 'Failed to delete', 'error');
+      }
+    } catch { showToast('Failed to delete — DB may be offline', 'error'); }
   };
 
   const toggleActive = async (id, active) => {
     try {
-      await fetch('/api/admin/videos', {
+      const res = await fetch('/api/admin/videos', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ action: 'toggle', data: { id, active: !active } }),
       });
-      fetchVideos();
-    } catch { showToast('Failed to update', 'error'); }
+      if (res.ok) { fetchVideos(); }
+      else {
+        const j = await res.json();
+        showToast(j.error || 'Failed to update', 'error');
+      }
+    } catch { showToast('Failed to update — DB may be offline', 'error'); }
   };
 
   if (loading) return <div style={{ color: 'rgba(255,255,255,0.4)', padding: '2rem' }}>Loading videos...</div>;
