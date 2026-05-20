@@ -51,3 +51,31 @@ export async function POST(request) {
     return NextResponse.json({ error: 'Failed to save inquiry' }, { status: 500 });
   }
 }
+
+// PATCH — persist read/unread state
+export async function PATCH(request) {
+  try {
+    const { id, read } = await request.json();
+    const data = readData();
+    const idx = data.inquiries.findIndex(i => i.id === id);
+    if (idx === -1) return NextResponse.json({ error: 'Not found' }, { status: 404 });
+    data.inquiries[idx].read = read ?? true;
+    writeData(data);
+    return NextResponse.json({ success: true });
+  } catch {
+    return NextResponse.json({ error: 'Failed to update' }, { status: 500 });
+  }
+}
+
+// DELETE — remove an inquiry
+export async function DELETE(request) {
+  try {
+    const { id } = await request.json();
+    const data = readData();
+    data.inquiries = data.inquiries.filter(i => i.id !== id);
+    writeData(data);
+    return NextResponse.json({ success: true });
+  } catch {
+    return NextResponse.json({ error: 'Failed to delete' }, { status: 500 });
+  }
+}

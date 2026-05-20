@@ -1,13 +1,37 @@
 'use client';
 
 import { useEffect, useState, useCallback } from 'react';
-import { Mail, Eye, CheckCheck } from 'lucide-react';
+import { Mail, Trash2 } from 'lucide-react';
+
+function Toast({ msg, type, onClose }) {
+  useEffect(() => { const t = setTimeout(onClose, 3000); return () => clearTimeout(t); }, [onClose]);
+  return <div className={`admin-toast admin-toast-${type}`}>{type === 'success' ? '✓ ' : '✕ '}{msg}</div>;
+}
+
+function ConfirmModal({ message, onConfirm, onCancel }) {
+  return (
+    <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.65)', zIndex: 1000, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+      <div style={{ background: '#1c1c1c', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '14px', padding: '1.75rem 2rem', maxWidth: '380px', width: '90%' }}>
+        <h3 style={{ color: '#fff', fontWeight: 700, marginBottom: '0.5rem', fontSize: '1rem' }}>Delete Inquiry</h3>
+        <p style={{ color: 'rgba(255,255,255,0.55)', fontSize: '0.875rem', marginBottom: '1.5rem' }}>{message}</p>
+        <div style={{ display: 'flex', gap: '8px', justifyContent: 'flex-end' }}>
+          <button onClick={onCancel} className="admin-btn admin-btn-ghost">Cancel</button>
+          <button onClick={onConfirm} className="admin-btn admin-btn-danger">Delete</button>
+        </div>
+      </div>
+    </div>
+  );
+}
 
 export default function AdminInquiriesPage() {
   const [inquiries, setInquiries] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selected, setSelected] = useState(null);
-  const [filter, setFilter] = useState('all'); // all | unread
+  const [filter, setFilter] = useState('all');
+  const [toast, setToast] = useState(null);
+  const [confirm, setConfirm] = useState(null);
+
+  const showToast = (msg, type = 'success') => setToast({ msg, type });
 
   const fetchData = useCallback(async () => {
     const res = await fetch('/api/inquiries');
@@ -20,26 +44,57 @@ export default function AdminInquiriesPage() {
 
   const markRead = async (inq) => {
     if (inq.read) return;
-    // For now, mark locally (a PATCH endpoint can be added)
+    // Optimistic update
     setInquiries(prev => prev.map(i => i.id === inq.id ? { ...i, read: true } : i));
     setSelected(prev => prev?.id === inq.id ? { ...prev, read: true } : prev);
+    // Persist to file
+    await fetch('/api/inquiries', {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ id: inq.id, read: true }),
+    });
+  };
+
+  const deleteInquiry = (inq) => {
+    setConfirm({
+      message: `Delete inquiry from "${inq.name}"? This cannot be undone.`,
+      onConfirm: async () => {
+        setConfirm(null);
+        try {
+          const res = await fetch('/api/inquiries', {
+            method: 'DELETE',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ id: inq.id }),
+          });
+          if (res.ok) {
+            setInquiries(prev => prev.filter(i => i.id !== inq.id));
+            if (selected?.id === inq.id) setSelected(null);
+            showToast('Inquiry deleted');
+          } else showToast('Failed to delete', 'error');
+        } catch { showToast('Failed', 'error'); }
+      },
+    });
   };
 
   const filtered = filter === 'unread' ? inquiries.filter(i => !i.read) : inquiries;
+  const unreadCount = inquiries.filter(i => !i.read).length;
 
   if (loading) return <div style={{ color: 'rgba(255,255,255,0.4)', padding: '2rem' }}>Loading inquiries...</div>;
 
   return (
     <div>
+      {toast && <Toast msg={toast.msg} type={toast.type} onClose={() => setToast(null)} />}
+      {confirm && <ConfirmModal message={confirm.message} onConfirm={confirm.onConfirm} onCancel={() => setConfirm(null)} />}
+
       <div className="admin-page-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem' }}>
         <div>
           <h1 className="admin-page-title">Inquiries</h1>
-          <p className="admin-page-sub">{inquiries.filter(i => !i.read).length} unread · {inquiries.length} total</p>
+          <p className="admin-page-sub">{unreadCount} unread · {inquiries.length} total</p>
         </div>
         <div style={{ display: 'flex', gap: '6px' }}>
           {['all', 'unread'].map(f => (
             <button key={f} onClick={() => setFilter(f)} className={`admin-btn ${filter === f ? 'admin-btn-primary' : 'admin-btn-ghost'}`}>
-              {f === 'all' ? 'All' : 'Unread'}
+              {f === 'all' ? `All (${inquiries.length})` : `Unread (${unreadCount})`}
             </button>
           ))}
         </div>
@@ -49,7 +104,7 @@ export default function AdminInquiriesPage() {
         {/* List */}
         <div className="admin-card" style={{ padding: 0, overflow: 'hidden' }}>
           {filtered.length === 0
-            ? <p style={{ color: 'rgba(255,255,255,0.3)', textAlign: 'center', padding: '2rem' }}>No inquiries {filter === 'unread' ? 'unread' : 'yet'}.</p>
+            ? <p style={{ color: 'rgba(255,255,255,0.3)', textAlign: 'center', padding: '2rem' }}>No {filter === 'unread' ? 'unread ' : ''}inquiries.</p>
             : filtered.map(inq => (
               <div
                 key={inq.id}
@@ -81,7 +136,7 @@ export default function AdminInquiriesPage() {
           <div className="admin-card">
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '1.25rem' }}>
               <h2 style={{ fontWeight: 700, color: '#fff', fontSize: '1.1rem' }}>{selected.name}</h2>
-              <button onClick={() => setSelected(null)} style={{ background: 'none', border: 'none', color: 'rgba(255,255,255,0.4)', cursor: 'pointer', fontSize: '1.2rem' }}>×</button>
+              <button onClick={() => setSelected(null)} style={{ background: 'none', border: 'none', color: 'rgba(255,255,255,0.4)', cursor: 'pointer', fontSize: '1.2rem', lineHeight: 1 }}>×</button>
             </div>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
               {[
@@ -101,9 +156,14 @@ export default function AdminInquiriesPage() {
                   {selected.message}
                 </div>
               </div>
-              <a href={`mailto:${selected.email}?subject=Re: Your Inquiry — Papa Roma`} className="admin-btn admin-btn-primary" style={{ textDecoration: 'none', justifyContent: 'center', marginTop: '0.5rem' }}>
-                <Mail size={14} /> Reply via Email
-              </a>
+              <div style={{ display: 'flex', gap: '8px', marginTop: '0.5rem' }}>
+                <a href={`mailto:${selected.email}?subject=Re: Your Inquiry — Papa Roma`} className="admin-btn admin-btn-primary" style={{ textDecoration: 'none', justifyContent: 'center', flex: 1 }}>
+                  <Mail size={14} /> Reply via Email
+                </a>
+                <button onClick={() => deleteInquiry(selected)} className="admin-btn admin-btn-danger" style={{ padding: '9px 14px' }}>
+                  <Trash2 size={14} />
+                </button>
+              </div>
             </div>
           </div>
         )}

@@ -35,6 +35,20 @@ export async function POST(request) {
       await prisma.offer.update({ where: { id: data.id }, data: { active: data.active } });
       return NextResponse.json({ success: true });
     }
+    if (action === 'update') {
+      await prisma.offer.update({
+        where: { id: data.id },
+        data: {
+          title: data.title,
+          description: data.description || null,
+          code: data.code || null,
+          discount: parseFloat(data.discount) || 0,
+          startDate: data.startDate ? new Date(data.startDate) : null,
+          endDate: data.endDate ? new Date(data.endDate) : null,
+        },
+      });
+      return NextResponse.json({ success: true });
+    }
     if (action === 'delete') {
       await prisma.offer.delete({ where: { id: data.id } });
       return NextResponse.json({ success: true });

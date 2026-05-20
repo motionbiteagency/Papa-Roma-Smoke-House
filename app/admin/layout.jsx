@@ -3,11 +3,11 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname, useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { signOut } from 'next-auth/react';
 import {
   LayoutDashboard, UtensilsCrossed, Tag, Settings, Video,
-  MessageSquare, Mail, Crown, LogOut, Menu, X, ChevronRight
+  MessageSquare, Mail, Crown, LogOut, Menu, X, ChevronRight, Calendar
 } from 'lucide-react';
 import styles from './layout.module.css';
 
@@ -18,7 +18,8 @@ const NAV_ITEMS = [
   { href: '/admin/settings',     label: 'Site Settings', icon: <Settings size={18} /> },
   { href: '/admin/videos',       label: 'Videos',        icon: <Video size={18} /> },
   { href: '/admin/testimonials', label: 'Testimonials',  icon: <MessageSquare size={18} /> },
-  { href: '/admin/inquiries',    label: 'Inquiries',     icon: <Mail size={18} /> },
+  { href: '/admin/inquiries',    label: 'Inquiries',     icon: <Mail size={18} />, badgeKey: 'inquiries' },
+  { href: '/admin/events',       label: 'Events',        icon: <Calendar size={18} />, badgeKey: 'events' },
   { href: '/admin/members',      label: 'Club Members',  icon: <Crown size={18} /> },
 ];
 
@@ -26,6 +27,20 @@ export default function AdminLayout({ children }) {
   const pathname = usePathname();
   const router = useRouter();
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [badges, setBadges] = useState({ inquiries: 0, events: 0 });
+
+  useEffect(() => {
+    // Fetch unread counts for sidebar badges
+    Promise.all([
+      fetch('/api/inquiries').then(r => r.json()).catch(() => ({ inquiries: [] })),
+      fetch('/api/admin/events').then(r => r.json()).catch(() => ({ bookings: [] })),
+    ]).then(([inqData, evtData]) => {
+      setBadges({
+        inquiries: (inqData.inquiries || []).filter(i => !i.read).length,
+        events: (evtData.bookings || []).filter(b => b.status === 'PENDING').length,
+      });
+    });
+  }, [pathname]); // refresh counts whenever user navigates
 
   // Don't render the shell on the login page
   if (pathname === '/admin/login') return <>{children}</>;
@@ -62,7 +77,12 @@ export default function AdminLayout({ children }) {
               >
                 <span className={styles.navIcon}>{item.icon}</span>
                 <span className={styles.navLabel}>{item.label}</span>
-                {isActive && <ChevronRight size={14} className={styles.navChevron} />}
+                {item.badgeKey && badges[item.badgeKey] > 0 && (
+                  <span style={{ marginLeft: 'auto', background: '#c62d39', color: '#fff', fontSize: '0.65rem', fontWeight: 700, borderRadius: '100px', padding: '2px 7px', minWidth: 20, textAlign: 'center' }}>
+                    {badges[item.badgeKey]}
+                  </span>
+                )}
+                {isActive && !badges[item.badgeKey] && <ChevronRight size={14} className={styles.navChevron} />}
               </Link>
             );
           })}

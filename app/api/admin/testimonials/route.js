@@ -27,6 +27,13 @@ export async function POST(request) {
       await prisma.testimonial.update({ where: { id: data.id }, data: { active: data.active } });
       return NextResponse.json({ success: true });
     }
+    if (action === 'update') {
+      await prisma.testimonial.update({
+        where: { id: data.id },
+        data: { name: data.name, image: data.image || null, rating: data.rating || 5, comment: data.comment },
+      });
+      return NextResponse.json({ success: true });
+    }
     if (action === 'delete') {
       await prisma.testimonial.delete({ where: { id: data.id } });
       return NextResponse.json({ success: true });

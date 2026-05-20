@@ -48,6 +48,30 @@ export async function POST(request) {
   return NextResponse.json({ success: true, memberId: member.id }, { status: 201 });
 }
 
+// PATCH — update member status
+export async function PATCH(request) {
+  if (!await isAdmin()) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  try {
+    const { id, status } = await request.json();
+    await prisma.clubMember.update({ where: { id }, data: { status } });
+    return NextResponse.json({ success: true });
+  } catch (e) {
+    return NextResponse.json({ error: e.message }, { status: 500 });
+  }
+}
+
+// DELETE — remove a member
+export async function DELETE(request) {
+  if (!await isAdmin()) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  try {
+    const { id } = await request.json();
+    await prisma.clubMember.delete({ where: { id } });
+    return NextResponse.json({ success: true });
+  } catch (e) {
+    return NextResponse.json({ error: e.message }, { status: 500 });
+  }
+}
+
 // Admin GET — list all members
 export async function GET() {
   if (!await isAdmin()) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });

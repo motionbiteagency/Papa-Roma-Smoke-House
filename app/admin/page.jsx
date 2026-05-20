@@ -2,10 +2,10 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { UtensilsCrossed, Tag, Mail, Crown, MessageSquare, Video, Settings, ArrowRight, RefreshCw } from 'lucide-react';
+import { UtensilsCrossed, Tag, Mail, Crown, MessageSquare, Video, Settings, ArrowRight, RefreshCw, Calendar } from 'lucide-react';
 
 export default function AdminOverviewPage() {
-  const [stats, setStats] = useState({ menus: 0, items: 0, offers: 0, inquiries: 0, unreadInquiries: 0, testimonials: 0, members: 0, videos: 0 });
+  const [stats, setStats] = useState({ menus: 0, items: 0, offers: 0, inquiries: 0, unreadInquiries: 0, testimonials: 0, members: 0, videos: 0, events: 0, pendingEvents: 0 });
   const [recentInquiries, setRecentInquiries] = useState([]);
   const [recentMembers, setRecentMembers] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -13,13 +13,14 @@ export default function AdminOverviewPage() {
   const fetchStats = async () => {
     setLoading(true);
     try {
-      const [menus, offers, inquiries, testimonials, members, config] = await Promise.all([
+      const [menus, offers, inquiries, testimonials, members, config, events] = await Promise.all([
         fetch('/api/admin/menus').then(r => r.json()),
         fetch('/api/admin/offers').then(r => r.json()),
         fetch('/api/inquiries').then(r => r.json()),
         fetch('/api/admin/testimonials').then(r => r.json()),
         fetch('/api/admin/members').then(r => r.json()),
         fetch('/api/admin/siteconfig').then(r => r.json()),
+        fetch('/api/admin/events').then(r => r.json()),
       ]);
 
       const totalItems = menus.menuTypes?.reduce((sum, mt) =>
@@ -34,6 +35,8 @@ export default function AdminOverviewPage() {
         testimonials: testimonials.testimonials?.length ?? 0,
         members: members.members?.length ?? 0,
         videos: config.cookingVideos?.videos?.length ?? 0,
+        events: events.bookings?.length ?? 0,
+        pendingEvents: events.bookings?.filter(b => b.status === 'PENDING').length ?? 0,
       });
 
       setRecentInquiries((inquiries.inquiries ?? []).slice(-5).reverse());
@@ -55,6 +58,7 @@ export default function AdminOverviewPage() {
     { label: 'Testimonials', value: stats.testimonials, icon: <MessageSquare size={20} />, href: '/admin/testimonials', color: '#a855f7' },
     { label: 'Club Members', value: stats.members, icon: <Crown size={20} />, href: '/admin/members', color: '#c62d39' },
     { label: 'Videos', value: stats.videos, icon: <Video size={20} />, href: '/admin/videos', color: '#f97316' },
+    { label: 'Event Bookings', value: stats.events, icon: <Calendar size={20} />, href: '/admin/events', color: '#3b82f6', badge: stats.pendingEvents > 0 ? `${stats.pendingEvents} pending` : null },
   ];
 
   const QUICK_LINKS = [
@@ -64,6 +68,7 @@ export default function AdminOverviewPage() {
     { href: '/admin/inquiries',    label: 'View Inquiries',        icon: <Mail size={16} /> },
     { href: '/admin/members',      label: 'Club Members',          icon: <Crown size={16} /> },
     { href: '/admin/testimonials', label: 'Manage Testimonials',   icon: <MessageSquare size={16} /> },
+    { href: '/admin/events',       label: 'Event Bookings',         icon: <Calendar size={16} /> },
   ];
 
   return (

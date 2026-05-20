@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState, useCallback } from 'react';
-import { Save, Loader2 } from 'lucide-react';
+import { Save, Loader2, Eye, EyeOff } from 'lucide-react';
 
 function Toast({ msg, type, onClose }) {
   useEffect(() => { const t = setTimeout(onClose, 3000); return () => clearTimeout(t); }, [onClose]);
@@ -22,16 +22,36 @@ function Field({ label, type = 'text', value, onChange, placeholder, rows }) {
 
 export default function AdminSettingsPage() {
   const [config, setConfig] = useState(null);
+  const [menuItems, setMenuItems] = useState([]); // flat list for Hot Picks
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [toast, setToast] = useState(null);
   const [activeTab, setActiveTab] = useState('restaurant');
+  // Change password state
+  const [pw, setPw] = useState({ current: '', next: '', confirm: '' });
+  const [pwSaving, setPwSaving] = useState(false);
+  const [showPw, setShowPw] = useState(false);
 
   const showToast = (msg, type = 'success') => setToast({ msg, type });
 
   const fetchData = useCallback(async () => {
-    const res = await fetch('/api/admin/siteconfig');
-    setConfig(await res.json());
+    const [cfgRes, menuRes] = await Promise.all([
+      fetch('/api/admin/siteconfig'),
+      fetch('/api/admin/menus'),
+    ]);
+    const cfg = await cfgRes.json();
+    const menu = await menuRes.json();
+    setConfig(cfg);
+    // Flatten menu items for Hot Picks selector
+    const flat = (menu.menuTypes || []).flatMap(mt =>
+      mt.categories.flatMap(cat =>
+        cat.items.map(item => ({
+          id: item.itemId || item.id,
+          label: `${item.name} — ${mt.name} / ${cat.name}`,
+        }))
+      )
+    );
+    setMenuItems(flat);
     setLoading(false);
   }, []);
 
@@ -58,12 +78,40 @@ export default function AdminSettingsPage() {
     finally { setSaving(false); }
   };
 
+  const changePassword = async () => {
+    if (!pw.current || !pw.next || !pw.confirm) { showToast('All password fields are required', 'error'); return; }
+    if (pw.next !== pw.confirm) { showToast('New passwords do not match', 'error'); return; }
+    if (pw.next.length < 8) { showToast('New password must be at least 8 characters', 'error'); return; }
+    setPwSaving(true);
+    try {
+      const res = await fetch('/api/admin/account', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ currentPassword: pw.current, newPassword: pw.next }),
+      });
+      const json = await res.json();
+      if (res.ok) { showToast('Password changed successfully!'); setPw({ current: '', next: '', confirm: '' }); }
+      else showToast(json.error || 'Failed to change password', 'error');
+    } catch { showToast('Failed to change password', 'error'); }
+    finally { setPwSaving(false); }
+  };
+
+  const toggleHotPick = (itemId) => {
+    const current = config.hotPicksItemIds || [];
+    const updated = current.includes(itemId)
+      ? current.filter(id => id !== itemId)
+      : [...current, itemId];
+    set('hotPicksItemIds', updated);
+  };
+
   const TABS = [
     { id: 'restaurant', label: 'Restaurant Info' },
     { id: 'hero', label: 'Hero Slides' },
     { id: 'popup', label: 'Pop-up Offer' },
     { id: 'banner', label: 'Image Banner' },
     { id: 'payment', label: 'Payment Methods' },
+    { id: 'hotpicks', label: 'Hot Picks' },
+    { id: 'password', label: 'Change Password' },
   ];
 
   if (loading) return <div style={{ color: 'rgba(255,255,255,0.4)', padding: '2rem' }}>Loading settings...</div>;
@@ -183,6 +231,63 @@ export default function AdminSettingsPage() {
                 <Field label="Branch Name" value={bank?.branchName || ''} onChange={e => set('paymentMethods.bank.branchName', e.target.value)} />
                 <Field label="Routing Number" value={bank?.routingNumber || ''} onChange={e => set('paymentMethods.bank.routingNumber', e.target.value)} />
               </div>
+            </div>
+          </div>
+        )}
+        {activeTab === 'hotpicks' && (
+          <div>
+            <p style={{ color: 'rgba(255,255,255,0.45)', fontSize: '0.875rem', marginBottom: '1.25rem' }}>
+              Select items to feature in the <strong style={{ color: '#fff' }}>Hot Picks</strong> section on the homepage. Currently {(config.hotPicksItemIds || []).length} selected.
+            </p>
+            {menuItems.length === 0 && <p style={{ color: 'rgba(255,255,255,0.3)' }}>No menu items found.</p>}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', maxHeight: '60vh', overflowY: 'auto' }}>
+              {menuItems.map(item => {
+                const selected = (config.hotPicksItemIds || []).includes(item.id);
+                return (
+                  <label key={item.id} style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '10px 14px', borderRadius: '8px', background: selected ? 'rgba(198,45,57,0.08)' : 'rgba(255,255,255,0.02)', border: `1px solid ${selected ? 'rgba(198,45,57,0.3)' : 'rgba(255,255,255,0.06)'}`, cursor: 'pointer', transition: 'all 0.2s' }}>
+                    <input type="checkbox" checked={selected} onChange={() => toggleHotPick(item.id)} style={{ width: 16, height: 16, accentColor: '#c62d39' }} />
+                    <span style={{ color: selected ? '#fff' : 'rgba(255,255,255,0.6)', fontSize: '0.875rem' }}>{item.label}</span>
+                    <span style={{ marginLeft: 'auto', fontSize: '0.72rem', fontFamily: 'monospace', color: 'rgba(255,255,255,0.25)' }}>{item.id}</span>
+                  </label>
+                );
+              })}
+            </div>
+            <p style={{ color: 'rgba(255,255,255,0.35)', fontSize: '0.8rem', marginTop: '1rem' }}>
+              Click <strong style={{ color: '#fff' }}>Save Changes</strong> above to apply.
+            </p>
+          </div>
+        )}
+
+        {activeTab === 'password' && (
+          <div style={{ maxWidth: 420 }}>
+            <p style={{ color: 'rgba(255,255,255,0.45)', fontSize: '0.875rem', marginBottom: '1.5rem' }}>
+              Change the admin account password. You will stay logged in after saving.
+            </p>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+              {[
+                { label: 'Current Password', key: 'current' },
+                { label: 'New Password (min. 8 chars)', key: 'next' },
+                { label: 'Confirm New Password', key: 'confirm' },
+              ].map(f => (
+                <div key={f.key} className="admin-field-group">
+                  <label className="admin-label">{f.label}</label>
+                  <div style={{ position: 'relative' }}>
+                    <input
+                      className="admin-input"
+                      type={showPw ? 'text' : 'password'}
+                      style={{ paddingRight: 42 }}
+                      value={pw[f.key]}
+                      onChange={e => setPw(p => ({ ...p, [f.key]: e.target.value }))}
+                    />
+                    <button type="button" onClick={() => setShowPw(v => !v)} style={{ position: 'absolute', right: 12, top: '50%', transform: 'translateY(-50%)', background: 'none', border: 'none', color: 'rgba(255,255,255,0.4)', cursor: 'pointer', padding: 0, lineHeight: 1 }}>
+                      {showPw ? <EyeOff size={16} /> : <Eye size={16} />}
+                    </button>
+                  </div>
+                </div>
+              ))}
+              <button onClick={changePassword} className="admin-btn admin-btn-primary" disabled={pwSaving} style={{ alignSelf: 'flex-start', marginTop: '0.25rem' }}>
+                {pwSaving ? <><Loader2 size={14} style={{ animation: 'spin 0.8s linear infinite' }} /> Saving...</> : <><Save size={14} /> Change Password</>}
+              </button>
             </div>
           </div>
         )}
