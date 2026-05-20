@@ -3,6 +3,7 @@
 import { useEffect, useState, useCallback } from 'react';
 import { Plus, Trash2, Pencil, X, ChevronDown, ChevronRight, Star, Loader2, Check } from 'lucide-react';
 import ImageUploader from '@/app/components/admin/ImageUploader';
+import { getItemImage } from '@/data/itemImages';
 
 function Toast({ msg, type, onClose }) {
   useEffect(() => { const t = setTimeout(onClose, 3000); return () => clearTimeout(t); }, [onClose]);
@@ -242,12 +243,13 @@ export default function AdminMenuPage() {
                                 ) : (
                                   <>
                                     <td>
-                                      {item.imageUrl ? (
-                                        /* eslint-disable-next-line @next/next/no-img-element */
-                                        <img src={item.imageUrl} alt={item.name} style={{ width: 50, height: 50, borderRadius: 8, objectFit: 'cover', display: 'block', border: '1px solid rgba(255,255,255,0.08)' }} onError={e => { e.target.style.display = 'none'; }} />
-                                      ) : (
-                                        <div style={{ width: 50, height: 50, borderRadius: 8, background: 'rgba(255,255,255,0.04)', border: '1px dashed rgba(255,255,255,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'rgba(255,255,255,0.2)', fontSize: '0.65rem' }}>No img</div>
-                                      )}
+                                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                                      <img
+                                        src={item.imageUrl || getItemImage(item.itemId)}
+                                        alt={item.name}
+                                        style={{ width: 56, height: 56, borderRadius: 8, objectFit: 'cover', display: 'block', border: '1px solid rgba(255,255,255,0.08)' }}
+                                        onError={e => { e.target.src = 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=500&q=80'; }}
+                                      />
                                     </td>
                                     <td>
                                       <div style={{ fontWeight: 600, color: '#fff' }}>{item.name}</div>
