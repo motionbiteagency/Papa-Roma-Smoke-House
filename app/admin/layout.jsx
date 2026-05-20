@@ -58,7 +58,11 @@ export default function AdminLayout({ children }) {
       <aside className={`${styles.sidebar} ${sidebarOpen ? styles.sidebarOpen : ''}`}>
         <div className={styles.sidebarHeader}>
           <div className={styles.sidebarLogo}>
-            <Image src="/images/beef-club-logo.png" alt="Papa Roma" width={140} height={44} style={{ objectFit: 'contain' }} />
+            <Image src="/images/logo.png" alt="Papa Roma" width={36} height={36} style={{ objectFit: 'contain', flexShrink: 0 }} />
+            <div style={{ lineHeight: 1.2 }}>
+              <div style={{ fontSize: '0.8rem', fontWeight: 800, color: '#fff', letterSpacing: '1px' }}>PAPA ROMA</div>
+              <div style={{ fontSize: '0.62rem', color: 'rgba(255,255,255,0.45)', letterSpacing: '0.5px' }}>FOOD ENGINEERING</div>
+            </div>
           </div>
           <div className={styles.adminBadge}>Admin Panel</div>
         </div>

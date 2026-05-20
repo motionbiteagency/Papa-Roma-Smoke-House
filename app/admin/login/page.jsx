@@ -34,7 +34,13 @@ export default function AdminLoginPage() {
       <div className={styles.bg} />
       <div className={styles.card}>
         <div className={styles.logoWrap}>
-          <Image src="/images/beef-club-logo.png" alt="Papa Roma" width={200} height={60} style={{ objectFit: 'contain' }} />
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '12px' }}>
+            <Image src="/images/logo.png" alt="Papa Roma" width={52} height={52} style={{ objectFit: 'contain' }} />
+            <div style={{ textAlign: 'left', lineHeight: 1.25 }}>
+              <div style={{ fontSize: '1.1rem', fontWeight: 800, color: '#fff', letterSpacing: '1.5px' }}>PAPA ROMA</div>
+              <div style={{ fontSize: '0.7rem', color: 'rgba(255,255,255,0.45)', letterSpacing: '1px' }}>FOOD ENGINEERING</div>
+            </div>
+          </div>
         </div>
         <div className={styles.iconWrap}><ShieldCheck size={32} /></div>
         <h1 className={styles.title}>Admin Portal</h1>
