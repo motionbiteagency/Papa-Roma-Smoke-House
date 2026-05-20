@@ -5,13 +5,13 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { Menu, X, Flame, ShoppingBag, CalendarDays } from 'lucide-react';
-import siteConfig from '@/data/siteConfig.json';
-import menuData from '@/data/menus.json';
+import { usePublicData } from '@/app/context/PublicDataContext';
 import { getItemImage } from '@/data/itemImages';
 import { useCart } from '@/app/context/CartContext';
 import styles from './Navbar.module.css';
 
 export default function Navbar() {
+  const { config, menuData } = usePublicData();
   const { getCount, toggleDrawer } = useCart();
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
@@ -55,11 +55,11 @@ export default function Navbar() {
 
         {/* Desktop Navigation */}
         <ul className={styles.navLinks}>
-          {siteConfig.navLinks.map((link) => {
+          {(config.navLinks || []).map((link) => {
             // Check if this link corresponds to a menu category
             const isMenuLink = link.href.startsWith('/menu/');
             const menuSlug = isMenuLink ? link.href.replace('/menu/', '') : null;
-            const menuCategory = menuSlug ? menuData.menuTypes.find(m => m.slug === menuSlug) : null;
+            const menuCategory = menuSlug ? (menuData.menuTypes || []).find(m => m.slug === menuSlug) : null;
             
             // Get up to 4 items from the first category of this menu to feature
             const featuredItems = menuCategory 
@@ -98,7 +98,7 @@ export default function Navbar() {
                           </div>
                           <h4 className={styles.megaItemName}>{item.name}</h4>
                           <span className={styles.megaItemPrice}>
-                            {siteConfig.restaurant.currency} {item.price} {item.unit ? `(${item.unit})` : ''}
+                            ৳{item.price} {item.unit ? `(${item.unit})` : ''}
                           </span>
                         </Link>
                       ))}
@@ -118,7 +118,7 @@ export default function Navbar() {
           </Link>
 
           <a
-            href={`https://wa.me/${siteConfig.restaurant.whatsapp}?text=Hi! I'd like to make a reservation at PAPA ROMA FOOD ENGINEERING 🔥`}
+            href={`https://wa.me/${config.restaurant?.whatsapp}?text=Hi! I'd like to make a reservation at PAPA ROMA FOOD ENGINEERING 🔥`}
             target="_blank"
             rel="noopener noreferrer"
             className={styles.ctaBtn}
@@ -148,7 +148,7 @@ export default function Navbar() {
       {/* Mobile Menu Overlay */}
       <div className={`${styles.mobileMenu} ${isOpen ? styles.mobileOpen : ''}`}>
         <ul className={styles.mobileLinks}>
-          {siteConfig.navLinks.map((link, i) => (
+          {(config.navLinks || []).map((link, i) => (
             <li key={link.href} style={{ transitionDelay: `${i * 0.06}s` }}>
               <Link
                 href={link.href}
@@ -163,7 +163,7 @@ export default function Navbar() {
 
         <div 
           className={styles.mobileActions} 
-          style={{ transitionDelay: `${siteConfig.navLinks.length * 0.06}s` }}
+          style={{ transitionDelay: `${(config.navLinks || []).length * 0.06}s` }}
         >
           <button 
             className={styles.mobileCartBtn} 
@@ -181,7 +181,7 @@ export default function Navbar() {
           </Link>
 
           <a
-            href={`https://wa.me/${siteConfig.restaurant.whatsapp}?text=Hi! I'd like to make a reservation at PAPA ROMA FOOD ENGINEERING 🔥`}
+            href={`https://wa.me/${config.restaurant?.whatsapp}?text=Hi! I'd like to make a reservation at PAPA ROMA FOOD ENGINEERING 🔥`}
             target="_blank"
             rel="noopener noreferrer"
             className={`btn btn-primary ${styles.mobileCta}`}

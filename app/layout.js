@@ -3,6 +3,8 @@ import AppWrapper from './components/layout/AppWrapper';
 import PublicShell from './components/layout/PublicShell';
 import { CartProvider } from './context/CartContext';
 import Providers from './components/Providers';
+import { PublicDataProvider } from './context/PublicDataContext';
+import { getPublicConfig, getMenuData, getTestimonials } from '@/lib/public-data';
 
 export const metadata = {
   title: 'PAPA ROMA FOOD ENGINEERING | Premium BBQ & Restaurant in Dhanmondi, Dhaka',
@@ -15,7 +17,13 @@ export const metadata = {
   },
 };
 
-export default function RootLayout({ children }) {
+export default async function RootLayout({ children }) {
+  const [config, menuData, testimonials] = await Promise.all([
+    getPublicConfig(),
+    getMenuData(),
+    getTestimonials(),
+  ]);
+
   return (
     <html lang="en">
       <head>
@@ -25,9 +33,11 @@ export default function RootLayout({ children }) {
       <body>
         <Providers>
           <CartProvider>
-            <AppWrapper>
-              <PublicShell>{children}</PublicShell>
-            </AppWrapper>
+            <PublicDataProvider config={config} menuData={menuData} testimonials={testimonials}>
+              <AppWrapper>
+                <PublicShell>{children}</PublicShell>
+              </AppWrapper>
+            </PublicDataProvider>
           </CartProvider>
         </Providers>
       </body>

@@ -5,7 +5,7 @@ import Image from 'next/image';
 import { useState } from 'react';
 import { Flame, ArrowLeft, Download, ShoppingCart, Check } from 'lucide-react';
 import { AnimateOnScroll, StaggerContainer, StaggerItem } from '@/app/components/ui/AnimateOnScroll';
-import menuData from '@/data/menus.json';
+import { usePublicData } from '@/app/context/PublicDataContext';
 import { getItemImage } from '@/data/itemImages';
 import { useCart } from '@/app/context/CartContext';
 import styles from './menu.module.css';
@@ -43,9 +43,10 @@ function AddToOrderButton({ item, menuName }) {
 }
 
 export default function MenuClient({ slug }) {
+  const { menuData } = usePublicData();
   const [activeCategory, setActiveCategory] = useState(null);
 
-  const menuType = menuData.menuTypes.find((m) => m.slug === slug);
+  const menuType = (menuData.menuTypes || []).find((m) => m.slug === slug);
 
   if (!menuType) {
     return (

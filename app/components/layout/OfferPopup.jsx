@@ -3,16 +3,17 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { X } from 'lucide-react';
-import siteConfig from '@/data/siteConfig.json';
+import { usePublicData } from '@/app/context/PublicDataContext';
 import styles from './OfferPopup.module.css';
 
 export default function OfferPopup() {
+  const { config } = usePublicData();
   const [isVisible, setIsVisible] = useState(false);
   const [hasHydrated, setHasHydrated] = useState(false);
 
   useEffect(() => {
     setHasHydrated(true);
-    const { popupOffer } = siteConfig;
+    const popupOffer = config.popupOffer;
     
     if (!popupOffer?.enabled) return;
 
@@ -39,7 +40,7 @@ export default function OfferPopup() {
 
   if (!hasHydrated || !isVisible) return null;
 
-  const { popupOffer } = siteConfig;
+  const popupOffer = config.popupOffer || {};
 
   return (
     <div className={styles.overlay} onClick={handleClose}>

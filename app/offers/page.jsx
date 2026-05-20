@@ -5,17 +5,17 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { Tag, Plus, Check, ShoppingBag, ArrowLeft } from 'lucide-react';
 import { useCart } from '@/app/context/CartContext';
-import menuData from '@/data/menus.json';
-import siteConfig from '@/data/siteConfig.json';
+import { usePublicData } from '@/app/context/PublicDataContext';
 import { getItemImage } from '@/data/itemImages';
 import styles from './offers.module.css';
 
 export default function OffersPage() {
+  const { config, menuData } = usePublicData();
   const { addItem, items: cartItems, openDrawer } = useCart();
   const [addedItems, setAddedItems] = useState({});
 
   // Flatten the entire menu to find offer items
-  const allItems = menuData.menuTypes.flatMap(type =>
+  const allItems = (menuData.menuTypes || []).flatMap(type =>
     type.categories.flatMap(cat =>
       cat.items.map(item => ({
         ...item,
@@ -29,7 +29,7 @@ export default function OffersPage() {
   );
 
   const offerItems = allItems.filter(item => 
-    siteConfig.offerItemIds && siteConfig.offerItemIds.includes(item.id)
+    config.offerItemIds && config.offerItemIds.includes(item.id)
   );
 
   const handleAddToCart = (item) => {

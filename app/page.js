@@ -7,9 +7,7 @@ import { useState, useEffect, useCallback, useRef } from 'react';
 import { motion, AnimatePresence, useScroll, useTransform, useMotionValueEvent } from 'framer-motion';
 import { AnimateOnScroll, StaggerContainer, StaggerItem } from './components/ui/AnimateOnScroll';
 import { useCart } from '@/app/context/CartContext';
-import siteConfig from '@/data/siteConfig.json';
-import menuData from '@/data/menus.json';
-import testimonialData from '@/data/testimonials.json';
+import { usePublicData } from '@/app/context/PublicDataContext';
 import { getItemImage } from '@/data/itemImages';
 import styles from './page.module.css';
 import FloatingFoodParticles from './components/ui/FloatingFoodParticles';
@@ -43,10 +41,9 @@ function AnimatedCounter({ to }) {
 }
 
 /* ===================== HERO SLIDER ===================== */
-// Hero slides come from siteConfig.json — edit there to update
-const heroSlides = siteConfig.heroSlides;
-
 function HeroSection() {
+  const { config } = usePublicData();
+  const heroSlides = config.heroSlides || [];
   const [currentSlide, setCurrentSlide] = useState(0);
 
   const nextSlide = useCallback(() => {
@@ -70,7 +67,7 @@ function HeroSection() {
         muted
         playsInline
         className={styles.heroVideo}
-        poster={heroSlides[0].image}
+        poster={heroSlides[0]?.image}
       >
         {/* Place your high-quality video in the public/videos folder */}
         <source src="/videos/hero-bg.mp4" type="video/mp4" />
@@ -130,7 +127,7 @@ function HeroSection() {
 
         <div className={styles.heroCtas}>
           <a
-            href={`https://wa.me/${siteConfig.restaurant.whatsapp}?text=Hi! I'd like to make a reservation at PAPA ROMA FOOD ENGINEERING 🔥`}
+            href={`https://wa.me/${config.restaurant?.whatsapp}?text=Hi! I'd like to make a reservation at PAPA ROMA FOOD ENGINEERING 🔥`}
             target="_blank"
             rel="noopener noreferrer"
             className="btn btn-primary"
@@ -253,17 +250,14 @@ function BrandHeroSection() {
 
 /* ===================== HOT ITEMS ===================== */
 function HotItemsSection() {
-  // Hot Picks item IDs come from siteConfig.json — edit hotPicksItemIds to change which items appear
-  // Item data (name, desc, price, menuSlug) comes from menus.json
-  // Item images come from data/itemImages.js
-  // Change any of those three sources to update the section everywhere
-  const allItems = menuData.menuTypes.flatMap((menu) =>
+  const { config, menuData } = usePublicData();
+  const allItems = (menuData.menuTypes || []).flatMap((menu) =>
     menu.categories.flatMap((cat) =>
       cat.items.map((item) => ({ ...item, menuSlug: menu.slug }))
     )
   );
 
-  const items = siteConfig.hotPicksItemIds
+  const items = (config.hotPicksItemIds || [])
     .map((id) => allItems.find((item) => item.id === id))
     .filter(Boolean)
     .map((item) => ({
@@ -400,6 +394,7 @@ function BeefEaterClubSection() {
 
 /* ===================== RECENT OFFER ===================== */
 function OfferSection() {
+  const { config } = usePublicData();
   return (
     <section style={{ width: '100%', marginTop: 'clamp(6rem, 10vw, 10rem)', marginBottom: 'clamp(6rem, 10vw, 10rem)' }}>
       <div className="container">
@@ -411,17 +406,17 @@ function OfferSection() {
           </div>
         </AnimateOnScroll>
       </div>
-      
+
       <div style={{ width: '100%' }}>
-      {siteConfig.imageBanner?.enabled && (
+      {config.imageBanner?.enabled && (
         <AnimateOnScroll style={{ maxWidth: '1600px', margin: '0 auto', padding: '0 clamp(1rem, 4vw, 2rem)' }}>
-          <Link href={siteConfig.imageBanner.link || '#'}>
+          <Link href={config.imageBanner.link || '#'}>
             <div className={styles.imageBannerWrapper}>
-              <Image 
-                src={siteConfig.imageBanner.imageSrc} 
-                alt="Special Offer Banner" 
-                fill 
-                style={{ objectFit: 'contain' }} 
+              <Image
+                src={config.imageBanner.imageSrc}
+                alt="Special Offer Banner"
+                fill
+                style={{ objectFit: 'contain' }}
                 sizes="(max-width: 768px) 100vw, 90vw"
                 priority
               />
@@ -430,9 +425,9 @@ function OfferSection() {
         </AnimateOnScroll>
       )}
 
-      {siteConfig.currentOffer?.enabled && (
+      {config.currentOffer?.enabled && (
         <div className="container" style={{ padding: '0 20px' }}>
-          <OfferBillboard offer={siteConfig.currentOffer} />
+          <OfferBillboard offer={config.currentOffer} />
         </div>
       )}
       </div>
@@ -449,6 +444,7 @@ const menuImages = {
 };
 
 function MenuCategoriesSection() {
+  const { menuData } = usePublicData();
   return (
     <section className={`section ${styles.menuCategories}`} style={{ paddingTop: 'clamp(4rem, 8vw, 8rem)', paddingBottom: 0 }}>
       <div className="container">
@@ -461,7 +457,7 @@ function MenuCategoriesSection() {
         </AnimateOnScroll>
       </div>
       <div className={styles.stickyContainer}>
-        {menuData.menuTypes.map((menu, index) => (
+        {(menuData.menuTypes || []).map((menu, index) => (
           <div key={menu.id} className={styles.stickyPanel} style={{ zIndex: index + 10 }}>
             <div className={styles.stickyPanelImage}>
               <Image
@@ -763,8 +759,9 @@ function SignatureDishesMobile({ dishes }) {
 }
 
 function SignatureDishesSection() {
+  const { menuData } = usePublicData();
   const featuredItems = [];
-  menuData.menuTypes.forEach((mt) => {
+  (menuData.menuTypes || []).forEach((mt) => {
     mt.categories.forEach((cat) => {
       cat.items.forEach((item) => {
         if (item.featured) {
@@ -809,7 +806,8 @@ function SignatureDishesSection() {
 
 /* ===================== COOKING VIDEOS SECTION ===================== */
 function CookingVideosSection() {
-  const { cookingVideos } = siteConfig;
+  const { config } = usePublicData();
+  const cookingVideos = config.cookingVideos || {};
   const [activeVideo, setActiveVideo] = useState(null);
   const [hoveredVideoId, setHoveredVideoId] = useState(null);
 
@@ -928,8 +926,9 @@ function CookingVideosSection() {
 
 /* ===================== TESTIMONIALS ===================== */
 function TestimonialsSection() {
+  const { testimonials: testimonialsData } = usePublicData();
   const [currentIndex, setCurrentIndex] = useState(0);
-  const testimonials = testimonialData.testimonials.filter((t) => t.active);
+  const testimonials = (testimonialsData.testimonials || []).filter((t) => t.active);
 
   const next = useCallback(() => {
     setCurrentIndex((prev) => (prev + 1) % testimonials.length);
@@ -1020,6 +1019,7 @@ function TestimonialsSection() {
 
 /* ===================== POSTER CTA SECTION ===================== */
 function PosterCTASection() {
+  const { config } = usePublicData();
   const containerRef = useRef(null);
   const { scrollYProgress } = useScroll({
     target: containerRef,
@@ -1101,7 +1101,7 @@ function PosterCTASection() {
             variants={lineVariants}
           >
             <motion.a 
-              href={`https://wa.me/${siteConfig.restaurant.whatsapp}`}
+              href={`https://wa.me/${config.restaurant?.whatsapp}`}
               target="_blank"
               rel="noopener noreferrer"
               className={styles.posterMainButton}
@@ -1130,14 +1130,15 @@ function PosterCTASection() {
 
 /* ===================== MAP & CTA ===================== */
 function MapCtaSection() {
-  const { restaurant } = siteConfig;
+  const { config } = usePublicData();
+  const restaurant = config.restaurant || {};
   return (
     <section className={`section ${styles.mapCta}`}>
       <div className="container">
         <div className={styles.mapGrid}>
           <AnimateOnScroll direction="left" className={styles.mapEmbed}>
             <iframe
-              src={siteConfig.restaurant.mapEmbed}
+              src={config.restaurant?.mapEmbed}
               width="100%" height="400" style={{ border: 0, borderRadius: 'var(--radius-lg)' }}
               allowFullScreen="" loading="lazy" referrerPolicy="no-referrer-when-downgrade"
               title="PAPA ROMA FOOD ENGINEERING Location"

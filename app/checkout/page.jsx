@@ -4,12 +4,10 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { ArrowLeft, MessageCircle, ShoppingBag, Trash2, Loader2, CreditCard, Truck, CheckCircle2, Copy, Check, ChevronDown, ChevronUp } from 'lucide-react';
 import { useCart } from '@/app/context/CartContext';
-import siteConfig from '@/data/siteConfig.json';
+import { usePublicData } from '@/app/context/PublicDataContext';
 import styles from './checkout.module.css';
 
-// Payment details are now fetched from siteConfig.paymentMethods
-
-function buildWhatsAppMessage(form, items, total) {
+function buildWhatsAppMessage(form, items, total, paymentMethods, whatsapp) {
   const itemLines = items
     .map(i => `  • ${i.name}${i.unit ? ` (${i.unit})` : ''} x${i.quantity} — ৳${(i.price * i.quantity).toLocaleString()}`)
     .join('\n');
@@ -17,7 +15,7 @@ function buildWhatsAppMessage(form, items, total) {
   const paymentLine =
     form.paymentMethod === 'cod'
       ? '💵 *Payment:* Cash on Delivery'
-      : `💳 *Payment:* ${siteConfig.paymentMethods[form.selectedGateway]?.name || 'Online'}\n🧾 *Transaction ID:* ${form.transactionId}`;
+      : `💳 *Payment:* ${paymentMethods[form.selectedGateway]?.name || 'Online'}\n🧾 *Transaction ID:* ${form.transactionId}`;
 
   const lines = [
     `🍽️ *NEW ORDER — PAPA ROMA FOOD ENGINEERING*`,
@@ -42,7 +40,7 @@ function buildWhatsAppMessage(form, items, total) {
     .filter(l => l !== null)
     .join('\n');
 
-  return `https://wa.me/${siteConfig.restaurant.whatsapp}?text=${encodeURIComponent(lines)}`;
+  return `https://wa.me/${whatsapp}?text=${encodeURIComponent(lines)}`;
 }
 
 function CopyButton({ text }) {
@@ -60,6 +58,9 @@ function CopyButton({ text }) {
 }
 
 export default function CheckoutPage() {
+  const { config } = usePublicData();
+  const paymentMethods = config.paymentMethods || {};
+  const whatsapp = config.restaurant?.whatsapp || '';
   const { items, getTotal, updateQty, removeItem, clearCart } = useCart();
   const [form, setForm] = useState({
     name: '',
@@ -90,7 +91,7 @@ export default function CheckoutPage() {
     if (!isValid || items.length === 0) return;
 
     setLoading(true);
-    const url = buildWhatsAppMessage(form, items, getTotal());
+    const url = buildWhatsAppMessage(form, items, getTotal(), paymentMethods, whatsapp);
 
     setTimeout(() => {
       window.open(url, '_blank');
@@ -115,7 +116,7 @@ export default function CheckoutPage() {
     );
   }
 
-  const gateway = siteConfig.paymentMethods[form.selectedGateway];
+  const gateway = paymentMethods[form.selectedGateway] || {};
   const totalAmount = getTotal();
 
   return (
@@ -230,7 +231,7 @@ export default function CheckoutPage() {
 
                     {/* Gateway pills */}
                     <div className={styles.gatewayGroup}>
-                      {Object.entries(siteConfig.paymentMethods).map(([key, method]) => (
+                      {Object.entries(paymentMethods).map(([key, method]) => (
                         <label
                           key={key}
                           className={`${styles.gatewayCard} ${form.selectedGateway === key ? styles.gatewayCardActive : ''}`}

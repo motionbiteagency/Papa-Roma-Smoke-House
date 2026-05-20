@@ -1,7 +1,9 @@
+'use client';
+
 import Link from 'next/link';
 import Image from 'next/image';
 import { Flame, MapPin, Clock, Phone, Mail } from 'lucide-react';
-import siteConfig from '@/data/siteConfig.json';
+import { usePublicData } from '@/app/context/PublicDataContext';
 import styles from './Footer.module.css';
 
 function FacebookIcon({ size = 18 }) {
@@ -23,7 +25,8 @@ function InstagramIcon({ size = 18 }) {
 }
 
 export default function Footer() {
-  const { restaurant, navLinks } = siteConfig;
+  const { config } = usePublicData();
+  const { restaurant = {}, navLinks = [] } = config;
 
   return (
     <footer className={styles.footer}>

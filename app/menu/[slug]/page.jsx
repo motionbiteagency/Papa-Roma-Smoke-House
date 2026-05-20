@@ -1,19 +1,18 @@
-import menuData from '@/data/menus.json';
+import { getMenuData } from '@/lib/public-data';
 import MenuClient from './MenuClient';
 
-// This function tells Next.js to pre-build all menu pages at build time
-export function generateStaticParams() {
-  return menuData.menuTypes.map((menu) => ({
-    slug: menu.slug,
-  }));
+// Pre-build all menu pages at build time using DB slugs
+export async function generateStaticParams() {
+  const { menuTypes } = await getMenuData();
+  return menuTypes.map((menu) => ({ slug: menu.slug }));
 }
 
-// Optional: Generate SEO metadata dynamically for each menu
+// SEO metadata from DB
 export async function generateMetadata({ params }) {
   const { slug } = await params;
-  const menuType = menuData.menuTypes.find((m) => m.slug === slug);
+  const { menuTypes } = await getMenuData();
+  const menuType = menuTypes.find((m) => m.slug === slug);
   if (!menuType) return { title: 'Menu Not Found | Papa Roma Smoke House' };
-  
   return {
     title: `${menuType.name} Menu | Papa Roma Smoke House`,
     description: menuType.description,
