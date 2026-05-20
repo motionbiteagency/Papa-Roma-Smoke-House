@@ -2,6 +2,7 @@
 
 import { useEffect, useState, useCallback } from 'react';
 import { Save, Loader2, Eye, EyeOff } from 'lucide-react';
+import ImageUploader from '@/app/components/admin/ImageUploader';
 
 function Toast({ msg, type, onClose }) {
   useEffect(() => { const t = setTimeout(onClose, 3000); return () => clearTimeout(t); }, [onClose]);
@@ -22,12 +23,11 @@ function Field({ label, type = 'text', value, onChange, placeholder, rows }) {
 
 export default function AdminSettingsPage() {
   const [config, setConfig] = useState(null);
-  const [menuItems, setMenuItems] = useState([]); // flat list for Hot Picks
+  const [menuItems, setMenuItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [toast, setToast] = useState(null);
   const [activeTab, setActiveTab] = useState('restaurant');
-  // Change password state
   const [pw, setPw] = useState({ current: '', next: '', confirm: '' });
   const [pwSaving, setPwSaving] = useState(false);
   const [showPw, setShowPw] = useState(false);
@@ -42,7 +42,6 @@ export default function AdminSettingsPage() {
     const cfg = await cfgRes.json();
     const menu = await menuRes.json();
     setConfig(cfg);
-    // Flatten menu items for Hot Picks selector
     const flat = (menu.menuTypes || []).flatMap(mt =>
       mt.categories.flatMap(cat =>
         cat.items.map(item => ({
@@ -106,22 +105,17 @@ export default function AdminSettingsPage() {
 
   const TABS = [
     { id: 'restaurant', label: 'Restaurant Info' },
-    { id: 'hero', label: 'Hero Slides' },
-    { id: 'popup', label: 'Pop-up Offer' },
-    { id: 'banner', label: 'Image Banner' },
-    { id: 'payment', label: 'Payment Methods' },
-    { id: 'hotpicks', label: 'Hot Picks' },
-    { id: 'password', label: 'Change Password' },
+    { id: 'payment',    label: 'Payment Methods' },
+    { id: 'hotpicks',   label: 'Hot Picks' },
+    { id: 'password',   label: 'Change Password' },
   ];
 
   if (loading) return <div style={{ color: 'rgba(255,255,255,0.4)', padding: '2rem' }}>Loading settings...</div>;
 
-  const r = config.restaurant;
-  const popup = config.popupOffer;
-  const banner = config.imageBanner;
+  const r = config.restaurant || {};
   const bkash = config.paymentMethods?.bkash;
-  const nagad = config.paymentMethods?.nagad;
-  const bank = config.paymentMethods?.bank;
+  const nagad  = config.paymentMethods?.nagad;
+  const bank   = config.paymentMethods?.bank;
 
   return (
     <div>
@@ -129,7 +123,7 @@ export default function AdminSettingsPage() {
       <div className="admin-page-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '1rem' }}>
         <div>
           <h1 className="admin-page-title">Site Settings</h1>
-          <p className="admin-page-sub">Update restaurant info, hero slides, payment numbers, and more.</p>
+          <p className="admin-page-sub">Update restaurant info, social links, payment numbers, and more.</p>
         </div>
         <button onClick={save} className="admin-btn admin-btn-primary" disabled={saving}>
           {saving ? <><Loader2 size={14} style={{ animation: 'spin 0.8s linear infinite' }} /> Saving...</> : <><Save size={14} /> Save Changes</>}
@@ -147,65 +141,42 @@ export default function AdminSettingsPage() {
       </div>
 
       <div className="admin-card">
+        {/* ── Restaurant Info ── */}
         {activeTab === 'restaurant' && (
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
-            <div style={{ gridColumn: '1/-1' }}><Field label="Restaurant Name" value={r.name} onChange={e => set('restaurant.name', e.target.value)} /></div>
-            <Field label="Tagline" value={r.tagline} onChange={e => set('restaurant.tagline', e.target.value)} />
-            <Field label="Phone" value={r.phone} onChange={e => set('restaurant.phone', e.target.value)} />
-            <Field label="WhatsApp Number (digits only)" value={r.whatsapp} onChange={e => set('restaurant.whatsapp', e.target.value)} />
-            <Field label="Email" type="email" value={r.email} onChange={e => set('restaurant.email', e.target.value)} />
-            <div style={{ gridColumn: '1/-1' }}><Field label="Address" value={r.address} onChange={e => set('restaurant.address', e.target.value)} /></div>
-            <Field label="Opening Hours" value={r.hours} onChange={e => set('restaurant.hours', e.target.value)} />
-            <Field label="Facebook URL" value={r.facebook} onChange={e => set('restaurant.facebook', e.target.value)} />
-            <Field label="Instagram URL" value={r.instagram || ''} onChange={e => set('restaurant.instagram', e.target.value)} />
-            <div style={{ gridColumn: '1/-1' }}><Field label="Description" value={r.description} onChange={e => set('restaurant.description', e.target.value)} rows={3} /></div>
-          </div>
-        )}
-
-        {activeTab === 'hero' && (
-          <div>
-            {config.heroSlides.map((slide, i) => (
-              <div key={i} style={{ padding: '1rem', border: '1px solid rgba(255,255,255,0.07)', borderRadius: '10px', marginBottom: '1rem' }}>
-                <div style={{ fontWeight: 700, color: '#fff', marginBottom: '0.75rem' }}>Slide {i + 1}</div>
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem' }}>
-                  <Field label="Image Path" value={slide.image} onChange={e => set(`heroSlides.${i}.image`, e.target.value)} placeholder="/images/hero-xxx.png" />
-                  <Field label="Subtitle" value={slide.subtitle} onChange={e => set(`heroSlides.${i}.subtitle`, e.target.value)} />
-                  <div style={{ gridColumn: '1/-1' }}>
-                    <label className="admin-label">Title Words (comma-separated)</label>
-                    <input className="admin-input" value={slide.title.join(', ')} onChange={e => set(`heroSlides.${i}.title`, e.target.value.split(',').map(s => s.trim()))} placeholder="Where, Smoke, Meets, Flavor" />
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        )}
-
-        {activeTab === 'popup' && (
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
-            <div style={{ gridColumn: '1/-1', display: 'flex', alignItems: 'center', gap: '12px', padding: '12px', background: 'rgba(255,255,255,0.03)', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.07)' }}>
-              <input type="checkbox" id="popupEnabled" checked={popup.enabled} onChange={e => set('popupOffer.enabled', e.target.checked)} style={{ width: 18, height: 18 }} />
-              <label htmlFor="popupEnabled" style={{ color: '#fff', fontWeight: 600, cursor: 'pointer' }}>Pop-up Offer Enabled</label>
+            <div style={{ gridColumn: '1/-1' }}>
+              <ImageUploader
+                label="Restaurant Logo"
+                value={r.logo || ''}
+                onChange={(url) => set('restaurant.logo', url)}
+                size="md"
+                aspect="1 / 1"
+                hint="Square logo works best. Used in navbar, footer, and admin panel."
+              />
             </div>
-            <Field label="Title" value={popup.title} onChange={e => set('popupOffer.title', e.target.value)} />
-            <Field label="Subtitle" value={popup.subtitle} onChange={e => set('popupOffer.subtitle', e.target.value)} />
-            <Field label="Button Text" value={popup.buttonText} onChange={e => set('popupOffer.buttonText', e.target.value)} />
-            <Field label="Link (URL)" value={popup.link} onChange={e => set('popupOffer.link', e.target.value)} />
-            <Field label="Image Path" value={popup.image} onChange={e => set('popupOffer.image', e.target.value)} />
-            <Field label="Delay (seconds)" type="number" value={popup.delaySeconds} onChange={e => set('popupOffer.delaySeconds', parseInt(e.target.value))} />
-          </div>
-        )}
+            <div style={{ gridColumn: '1/-1' }}><Field label="Restaurant Name" value={r.name || ''} onChange={e => set('restaurant.name', e.target.value)} /></div>
+            <Field label="Tagline" value={r.tagline || ''} onChange={e => set('restaurant.tagline', e.target.value)} />
+            <Field label="Phone" value={r.phone || ''} onChange={e => set('restaurant.phone', e.target.value)} />
+            <Field label="WhatsApp Number (digits only)" value={r.whatsapp || ''} onChange={e => set('restaurant.whatsapp', e.target.value)} />
+            <Field label="Email" type="email" value={r.email || ''} onChange={e => set('restaurant.email', e.target.value)} />
+            <div style={{ gridColumn: '1/-1' }}><Field label="Address" value={r.address || ''} onChange={e => set('restaurant.address', e.target.value)} /></div>
+            <Field label="Opening Hours" value={r.hours || ''} onChange={e => set('restaurant.hours', e.target.value)} />
 
-        {activeTab === 'banner' && (
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
-            <div style={{ gridColumn: '1/-1', display: 'flex', alignItems: 'center', gap: '12px', padding: '12px', background: 'rgba(255,255,255,0.03)', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.07)' }}>
-              <input type="checkbox" id="bannerEnabled" checked={banner.enabled} onChange={e => set('imageBanner.enabled', e.target.checked)} style={{ width: 18, height: 18 }} />
-              <label htmlFor="bannerEnabled" style={{ color: '#fff', fontWeight: 600, cursor: 'pointer' }}>Image Banner Enabled</label>
+            {/* Social media */}
+            <div style={{ gridColumn: '1/-1', marginTop: '0.5rem', paddingTop: '1rem', borderTop: '1px solid rgba(255,255,255,0.07)' }}>
+              <p style={{ fontSize: '0.75rem', fontWeight: 700, color: 'rgba(255,255,255,0.35)', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '0.75rem' }}>Social Media Links</p>
             </div>
-            <Field label="Banner Image Path" value={banner.imageSrc} onChange={e => set('imageBanner.imageSrc', e.target.value)} placeholder="/images/banar/xxx.png" />
-            <Field label="Link (URL)" value={banner.link} onChange={e => set('imageBanner.link', e.target.value)} placeholder="/menu/smoke-house" />
+            <Field label="Facebook URL" value={r.facebook || ''} onChange={e => set('restaurant.facebook', e.target.value)} placeholder="https://facebook.com/..." />
+            <Field label="Instagram URL" value={r.instagram || ''} onChange={e => set('restaurant.instagram', e.target.value)} placeholder="https://instagram.com/..." />
+            <Field label="YouTube URL" value={r.youtube || ''} onChange={e => set('restaurant.youtube', e.target.value)} placeholder="https://youtube.com/@..." />
+            <Field label="TikTok URL" value={r.tiktok || ''} onChange={e => set('restaurant.tiktok', e.target.value)} placeholder="https://tiktok.com/@..." />
+            <Field label="Twitter / X URL" value={r.twitter || ''} onChange={e => set('restaurant.twitter', e.target.value)} placeholder="https://x.com/..." />
+
+            <div style={{ gridColumn: '1/-1' }}><Field label="Description" value={r.description || ''} onChange={e => set('restaurant.description', e.target.value)} rows={3} /></div>
           </div>
         )}
 
+        {/* ── Payment Methods ── */}
         {activeTab === 'payment' && (
           <div>
             <div style={{ padding: '1rem', border: '1px solid rgba(255,255,255,0.07)', borderRadius: '10px', marginBottom: '1rem' }}>
@@ -234,23 +205,27 @@ export default function AdminSettingsPage() {
             </div>
           </div>
         )}
+
+        {/* ── Hot Picks ── */}
         {activeTab === 'hotpicks' && (
           <div>
             <p style={{ color: 'rgba(255,255,255,0.45)', fontSize: '0.875rem', marginBottom: '1.25rem' }}>
-              Select items to feature in the <strong style={{ color: '#fff' }}>Hot Picks</strong> section on the homepage. Currently {(config.hotPicksItemIds || []).length} selected.
+              Select items to feature in the <strong style={{ color: '#fff' }}>Hot Picks</strong> section on the homepage. Currently <strong style={{ color: '#c62d39' }}>{(config.hotPicksItemIds || []).length}</strong> selected.
             </p>
             {menuItems.length === 0 && <p style={{ color: 'rgba(255,255,255,0.3)' }}>No menu items found.</p>}
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', maxHeight: '60vh', overflowY: 'auto' }}>
-              {menuItems.map(item => {
-                const selected = (config.hotPicksItemIds || []).includes(item.id);
-                return (
-                  <label key={item.id} style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '10px 14px', borderRadius: '8px', background: selected ? 'rgba(198,45,57,0.08)' : 'rgba(255,255,255,0.02)', border: `1px solid ${selected ? 'rgba(198,45,57,0.3)' : 'rgba(255,255,255,0.06)'}`, cursor: 'pointer', transition: 'all 0.2s' }}>
-                    <input type="checkbox" checked={selected} onChange={() => toggleHotPick(item.id)} style={{ width: 16, height: 16, accentColor: '#c62d39' }} />
-                    <span style={{ color: selected ? '#fff' : 'rgba(255,255,255,0.6)', fontSize: '0.875rem' }}>{item.label}</span>
-                    <span style={{ marginLeft: 'auto', fontSize: '0.72rem', fontFamily: 'monospace', color: 'rgba(255,255,255,0.25)' }}>{item.id}</span>
-                  </label>
-                );
-              })}
+            <div style={{ height: '420px', overflowY: 'auto', border: '1px solid rgba(255,255,255,0.07)', borderRadius: '10px' }}>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', padding: '8px' }}>
+                {menuItems.map(item => {
+                  const selected = (config.hotPicksItemIds || []).includes(item.id);
+                  return (
+                    <label key={item.id} style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '10px 14px', borderRadius: '8px', background: selected ? 'rgba(198,45,57,0.08)' : 'rgba(255,255,255,0.02)', border: `1px solid ${selected ? 'rgba(198,45,57,0.3)' : 'rgba(255,255,255,0.06)'}`, cursor: 'pointer', transition: 'all 0.2s' }}>
+                      <input type="checkbox" checked={selected} onChange={() => toggleHotPick(item.id)} style={{ width: 16, height: 16, accentColor: '#c62d39', flexShrink: 0 }} />
+                      <span style={{ color: selected ? '#fff' : 'rgba(255,255,255,0.6)', fontSize: '0.875rem', flex: 1 }}>{item.label}</span>
+                      <span style={{ fontSize: '0.72rem', fontFamily: 'monospace', color: 'rgba(255,255,255,0.25)', flexShrink: 0 }}>{item.id}</span>
+                    </label>
+                  );
+                })}
+              </div>
             </div>
             <p style={{ color: 'rgba(255,255,255,0.35)', fontSize: '0.8rem', marginTop: '1rem' }}>
               Click <strong style={{ color: '#fff' }}>Save Changes</strong> above to apply.
@@ -258,6 +233,7 @@ export default function AdminSettingsPage() {
           </div>
         )}
 
+        {/* ── Change Password ── */}
         {activeTab === 'password' && (
           <div style={{ maxWidth: 420 }}>
             <p style={{ color: 'rgba(255,255,255,0.45)', fontSize: '0.875rem', marginBottom: '1.5rem' }}>

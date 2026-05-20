@@ -2,6 +2,7 @@
 
 import { useEffect, useState, useCallback } from 'react';
 import { Plus, Trash2, Pencil, X, ChevronDown, ChevronRight, Star, Loader2, Check } from 'lucide-react';
+import ImageUploader from '@/app/components/admin/ImageUploader';
 
 function Toast({ msg, type, onClose }) {
   useEffect(() => { const t = setTimeout(onClose, 3000); return () => clearTimeout(t); }, [onClose]);
@@ -23,7 +24,7 @@ function ConfirmModal({ message, onConfirm, onCancel }) {
   );
 }
 
-const EMPTY_ITEM = { name: '', nameBn: '', description: '', price: '', unit: '', featured: false };
+const EMPTY_ITEM = { name: '', nameBn: '', description: '', price: '', unit: '', imageUrl: '', featured: false };
 
 async function apiCall(action, data) {
   const res = await fetch('/api/admin/menus', {
@@ -109,15 +110,15 @@ export default function AdminMenuPage() {
   const saveEditItem = async () => {
     if (!editItem) return;
     await withSaving(async () => {
-      const { id, name, nameBn, description, price, unit, featured } = editItem;
-      await apiCall('updateItem', { id, name, nameBn, description, price: parseFloat(price) || 0, unit, featured });
+      const { id, name, nameBn, description, price, unit, imageUrl, featured } = editItem;
+      await apiCall('updateItem', { id, name, nameBn, description, price: parseFloat(price) || 0, unit, imageUrl: imageUrl || null, featured });
       setData(prev => {
         const clone = JSON.parse(JSON.stringify(prev));
         for (const mt of clone.menuTypes)
           for (const cat of mt.categories)
             for (let i = 0; i < cat.items.length; i++)
               if (cat.items[i].id === id)
-                cat.items[i] = { ...cat.items[i], name, nameBn, description, price: parseFloat(price) || 0, unit, featured };
+                cat.items[i] = { ...cat.items[i], name, nameBn, description, price: parseFloat(price) || 0, unit, imageUrl: imageUrl || null, featured };
         return clone;
       });
       showToast('Item updated!');
@@ -137,6 +138,7 @@ export default function AdminMenuPage() {
         description: newItem.description || null,
         price: parseFloat(newItem.price) || 0,
         unit: newItem.unit || null,
+        imageUrl: newItem.imageUrl || null,
         featured: newItem.featured,
         active: true,
         order,
@@ -198,6 +200,7 @@ export default function AdminMenuPage() {
                         <table className="admin-table">
                           <thead>
                             <tr>
+                              <th style={{ width: 70 }}>Image</th>
                               <th>Name</th>
                               <th>Description</th>
                               <th>Price (৳)</th>
@@ -211,6 +214,14 @@ export default function AdminMenuPage() {
                               <tr key={item.id}>
                                 {editItem?.id === item.id ? (
                                   <>
+                                    <td style={{ minWidth: 120 }}>
+                                      <ImageUploader
+                                        value={editItem.imageUrl || ''}
+                                        onChange={(url) => setEditItem(p => ({ ...p, imageUrl: url }))}
+                                        size="sm"
+                                        aspect="1 / 1"
+                                      />
+                                    </td>
                                     <td>
                                       <input className="admin-input" value={editItem.name} onChange={e => setEditItem(p => ({ ...p, name: e.target.value }))} style={{ marginBottom: 4 }} placeholder="Name *" />
                                       <input className="admin-input" value={editItem.nameBn || ''} onChange={e => setEditItem(p => ({ ...p, nameBn: e.target.value }))} placeholder="Bangla name" />
@@ -230,6 +241,14 @@ export default function AdminMenuPage() {
                                   </>
                                 ) : (
                                   <>
+                                    <td>
+                                      {item.imageUrl ? (
+                                        /* eslint-disable-next-line @next/next/no-img-element */
+                                        <img src={item.imageUrl} alt={item.name} style={{ width: 50, height: 50, borderRadius: 8, objectFit: 'cover', display: 'block', border: '1px solid rgba(255,255,255,0.08)' }} onError={e => { e.target.style.display = 'none'; }} />
+                                      ) : (
+                                        <div style={{ width: 50, height: 50, borderRadius: 8, background: 'rgba(255,255,255,0.04)', border: '1px dashed rgba(255,255,255,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'rgba(255,255,255,0.2)', fontSize: '0.65rem' }}>No img</div>
+                                      )}
+                                    </td>
                                     <td>
                                       <div style={{ fontWeight: 600, color: '#fff' }}>{item.name}</div>
                                       {item.nameBn && <div style={{ fontSize: '0.75rem', color: 'rgba(255,255,255,0.35)' }}>{item.nameBn}</div>}
@@ -258,6 +277,14 @@ export default function AdminMenuPage() {
                             {/* Add new item row */}
                             {addTarget?.catId === cat.id ? (
                               <tr style={{ background: 'rgba(198,45,57,0.05)' }}>
+                                <td style={{ minWidth: 120 }}>
+                                  <ImageUploader
+                                    value={newItem.imageUrl || ''}
+                                    onChange={(url) => setNewItem(p => ({ ...p, imageUrl: url }))}
+                                    size="sm"
+                                    aspect="1 / 1"
+                                  />
+                                </td>
                                 <td>
                                   <input className="admin-input" placeholder="Name *" value={newItem.name} onChange={e => setNewItem(p => ({ ...p, name: e.target.value }))} style={{ marginBottom: 4 }} />
                                   <input className="admin-input" placeholder="Bangla name" value={newItem.nameBn} onChange={e => setNewItem(p => ({ ...p, nameBn: e.target.value }))} />
@@ -277,7 +304,7 @@ export default function AdminMenuPage() {
                               </tr>
                             ) : (
                               <tr>
-                                <td colSpan={6}>
+                                <td colSpan={7}>
                                   <button
                                     onClick={() => { setAddTarget({ menuIdx: mIdx, catIdx: cIdx, catId: cat.id }); setEditItem(null); setNewItem(EMPTY_ITEM); }}
                                     className="admin-btn admin-btn-ghost"

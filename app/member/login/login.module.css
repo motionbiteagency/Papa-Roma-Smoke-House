@@ -30,10 +30,7 @@
 }
 .logoWrap {
   margin-bottom: 1.25rem;
-  background: #fff;
-  border-radius: 10px;
-  padding: 8px 12px;
-  display: inline-flex;
+  display: flex;
   align-items: center;
   justify-content: center;
 }

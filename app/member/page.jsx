@@ -52,7 +52,7 @@ export default function MemberDashboard() {
           <div>
             <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8 }}>
               <Crown size={20} style={{ color: '#b8913a' }} />
-              <span style={{ fontSize: '0.8rem', fontWeight: 700, color: '#b8913a', textTransform: 'uppercase', letterSpacing: '1.5px' }}>Beef Eater Club</span>
+              <span style={{ fontSize: '0.8rem', fontWeight: 700, color: '#b8913a', textTransform: 'uppercase', letterSpacing: '1.5px' }}>Members Club</span>
             </div>
             <h1 style={{ fontSize: '1.75rem', fontWeight: 800, color: '#fff', marginBottom: 6 }}>
               Welcome back, {member?.name?.split(' ')[0]}! 🥩

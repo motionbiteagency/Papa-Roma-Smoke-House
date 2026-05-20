@@ -34,11 +34,17 @@ export default function MemberLoginPage() {
       <div className={styles.bg} />
       <div className={styles.card}>
         <div className={styles.logoWrap}>
-          <Image src="/images/beef-club-logo.png" alt="Beef Eater Club" width={200} height={60} style={{ objectFit: 'contain' }} />
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '12px' }}>
+            <Image src="/images/logo.png" alt="Papa Roma" width={48} height={48} style={{ objectFit: 'contain' }} />
+            <div style={{ textAlign: 'left', lineHeight: 1.25 }}>
+              <div style={{ fontSize: '1rem', fontWeight: 800, color: '#fff', letterSpacing: '1.5px' }}>PAPA ROMA</div>
+              <div style={{ fontSize: '0.65rem', color: 'rgba(255,255,255,0.45)', letterSpacing: '1px' }}>FOOD ENGINEERING</div>
+            </div>
+          </div>
         </div>
         <div className={styles.iconWrap}><Crown size={28} /></div>
         <h1 className={styles.title}>Member Login</h1>
-        <p className={styles.subtitle}>Sign in to access your Beef Eater Club benefits</p>
+        <p className={styles.subtitle}>Sign in to access your exclusive member benefits</p>
 
         <form onSubmit={handleSubmit} className={styles.form} noValidate>
           <div className={styles.fieldWrap}>
@@ -63,7 +69,7 @@ export default function MemberLoginPage() {
         </form>
 
         <div className={styles.divider}><span>Don't have membership?</span></div>
-        <a href="/beef-club" className={styles.joinLink}>Join the Beef Eater Club →</a>
+        <a href="/beef-club" className={styles.joinLink}>Join the Members Club →</a>
         <p className={styles.footer}>Papa Roma Smoke House · Members Portal</p>
       </div>
     </div>

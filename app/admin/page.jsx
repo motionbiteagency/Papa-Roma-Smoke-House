@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { UtensilsCrossed, Tag, Mail, Crown, MessageSquare, Video, Settings, ArrowRight, RefreshCw, Calendar } from 'lucide-react';
 
 export default function AdminOverviewPage() {
-  const [stats, setStats] = useState({ menus: 0, items: 0, offers: 0, inquiries: 0, unreadInquiries: 0, testimonials: 0, members: 0, videos: 0, events: 0, pendingEvents: 0 });
+  const [stats, setStats] = useState({ menus: 0, items: 0, inquiries: 0, unreadInquiries: 0, testimonials: 0, members: 0, videos: 0, events: 0, pendingEvents: 0 });
   const [recentInquiries, setRecentInquiries] = useState([]);
   const [recentMembers, setRecentMembers] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -13,9 +13,8 @@ export default function AdminOverviewPage() {
   const fetchStats = async () => {
     setLoading(true);
     try {
-      const [menus, offers, inquiries, testimonials, members, config, events] = await Promise.all([
+      const [menus, inquiries, testimonials, members, config, events] = await Promise.all([
         fetch('/api/admin/menus').then(r => r.json()),
-        fetch('/api/admin/offers').then(r => r.json()),
         fetch('/api/inquiries').then(r => r.json()),
         fetch('/api/admin/testimonials').then(r => r.json()),
         fetch('/api/admin/members').then(r => r.json()),
@@ -29,7 +28,6 @@ export default function AdminOverviewPage() {
       setStats({
         menus: menus.menuTypes?.length ?? 0,
         items: totalItems,
-        offers: offers.offers?.filter(o => o.active).length ?? 0,
         inquiries: inquiries.inquiries?.length ?? 0,
         unreadInquiries: inquiries.inquiries?.filter(i => !i.read).length ?? 0,
         testimonials: testimonials.testimonials?.length ?? 0,
@@ -53,7 +51,6 @@ export default function AdminOverviewPage() {
   const STAT_CARDS = [
     { label: 'Menu Sections', value: stats.menus, icon: <UtensilsCrossed size={20} />, href: '/admin/menu', color: '#c62d39' },
     { label: 'Total Menu Items', value: stats.items, icon: <UtensilsCrossed size={20} />, href: '/admin/menu', color: '#b8913a' },
-    { label: 'Active Offers', value: stats.offers, icon: <Tag size={20} />, href: '/admin/offers', color: '#22c55e' },
     { label: 'Inquiries', value: stats.inquiries, icon: <Mail size={20} />, href: '/admin/inquiries', color: '#3b82f6', badge: stats.unreadInquiries > 0 ? `${stats.unreadInquiries} new` : null },
     { label: 'Testimonials', value: stats.testimonials, icon: <MessageSquare size={20} />, href: '/admin/testimonials', color: '#a855f7' },
     { label: 'Club Members', value: stats.members, icon: <Crown size={20} />, href: '/admin/members', color: '#c62d39' },
@@ -160,7 +157,7 @@ export default function AdminOverviewPage() {
                     <td style={{ fontWeight: 600, color: '#fff' }}>{m.name}</td>
                     <td>{m.phone}</td>
                     <td>{m.preference}</td>
-                    <td><span className={`admin-badge ${m.status === 'active' ? 'admin-badge-green' : m.status === 'rejected' ? 'admin-badge-red' : 'admin-badge-gold'}`}>{m.status}</span></td>
+                    <td><span className={`admin-badge ${m.status === 'ACTIVE' ? 'admin-badge-green' : m.status === 'REJECTED' || m.status === 'SUSPENDED' ? 'admin-badge-red' : 'admin-badge-gold'}`}>{m.status}</span></td>
                     <td style={{ fontSize: '0.78rem' }}>{new Date(m.joinedAt).toLocaleDateString()}</td>
                   </tr>
                 ))}

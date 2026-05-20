@@ -2,6 +2,7 @@
 
 import { useEffect, useState, useCallback } from 'react';
 import { Plus, Trash2, Pencil, Check, X } from 'lucide-react';
+import ImageUploader from '@/app/components/admin/ImageUploader';
 
 function Toast({ msg, type, onClose }) {
   useEffect(() => { const t = setTimeout(onClose, 3000); return () => clearTimeout(t); }, [onClose]);
@@ -49,9 +50,15 @@ function TestimonialForm({ title: formTitle, initial, onSave, onCancel, saving }
           <label className="admin-label">Rating (1–5)</label>
           <input className="admin-input" type="number" min={1} max={5} value={form.rating} onChange={e => setForm(p => ({ ...p, rating: parseInt(e.target.value) || 5 }))} />
         </div>
-        <div className="admin-field-group" style={{ gridColumn: '1/-1' }}>
-          <label className="admin-label">Photo URL (optional)</label>
-          <input className="admin-input" value={form.image} onChange={e => setForm(p => ({ ...p, image: e.target.value }))} placeholder="https://..." />
+        <div style={{ gridColumn: '1/-1' }}>
+          <ImageUploader
+            label="Customer Photo (optional)"
+            value={form.image}
+            onChange={(url) => setForm(p => ({ ...p, image: url }))}
+            size="md"
+            aspect="1 / 1"
+            hint="Square photo works best for the avatar. Optional."
+          />
         </div>
         <div className="admin-field-group" style={{ gridColumn: '1/-1' }}>
           <label className="admin-label">Review *</label>

@@ -20,8 +20,12 @@ export default function MemberLayout({ children }) {
       <header className={styles.header}>
         <div className={styles.headerInner}>
           <div className={styles.headerLogo}>
-            <div className={styles.logoBg}>
-              <Image src="/images/beef-club-logo.png" alt="Beef Eater Club" width={130} height={40} style={{ objectFit: 'contain' }} />
+            <div className={styles.logoRow}>
+              <Image src="/images/logo.png" alt="Papa Roma" width={32} height={32} style={{ objectFit: 'contain', flexShrink: 0 }} />
+              <div style={{ lineHeight: 1.2 }}>
+                <div style={{ fontSize: '0.78rem', fontWeight: 800, color: '#fff', letterSpacing: '1px' }}>PAPA ROMA</div>
+                <div style={{ fontSize: '0.58rem', color: 'rgba(255,255,255,0.4)', letterSpacing: '0.5px' }}>FOOD ENGINEERING</div>
+              </div>
             </div>
           </div>
           <nav className={styles.headerNav}>

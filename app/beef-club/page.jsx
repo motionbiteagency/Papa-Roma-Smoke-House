@@ -224,7 +224,8 @@ export default function BeefClubPage() {
                   </div>
                 </div>
                 <p style={{ fontSize: '0.75rem', color: 'rgba(255,255,255,0.35)', marginTop: '-0.5rem', marginBottom: '0.25rem' }}>
-                  🔑 You'll use this password to log in to your member portal at <strong>/member/login</strong>
+                  🔑 You'll use this password to log in to your member portal —{' '}
+                  <Link href="/member/login" style={{ color: '#b8913a', fontWeight: 600, textDecoration: 'underline' }}>login here</Link>
                 </p>
 
                 <button type="submit" className={styles.submitBtn} disabled={loading}>

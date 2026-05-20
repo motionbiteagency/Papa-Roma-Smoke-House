@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { signIn } from 'next-auth/react';
 import Image from 'next/image';
-import { Lock, Eye, EyeOff, Loader2, ShieldCheck } from 'lucide-react';
+import { Lock, Eye, EyeOff, Loader2 } from 'lucide-react';
 import styles from './login.module.css';
 
 export default function AdminLoginPage() {
@@ -34,15 +34,10 @@ export default function AdminLoginPage() {
       <div className={styles.bg} />
       <div className={styles.card}>
         <div className={styles.logoWrap}>
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '12px' }}>
-            <Image src="/images/logo.png" alt="Papa Roma" width={52} height={52} style={{ objectFit: 'contain' }} />
-            <div style={{ textAlign: 'left', lineHeight: 1.25 }}>
-              <div style={{ fontSize: '1.1rem', fontWeight: 800, color: '#fff', letterSpacing: '1.5px' }}>PAPA ROMA</div>
-              <div style={{ fontSize: '0.7rem', color: 'rgba(255,255,255,0.45)', letterSpacing: '1px' }}>FOOD ENGINEERING</div>
-            </div>
+          <div className={styles.logoCircle}>
+            <Image src="/images/logo.png" alt="Papa Roma" width={72} height={72} style={{ objectFit: 'cover', width: '100%', height: '100%' }} />
           </div>
         </div>
-        <div className={styles.iconWrap}><ShieldCheck size={32} /></div>
         <h1 className={styles.title}>Admin Portal</h1>
         <p className={styles.subtitle}>Enter your password to access the dashboard</p>
 

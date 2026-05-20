@@ -37,6 +37,16 @@
   margin-bottom: 0.75rem;
 }
 
+.sidebarLogoCircle {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 1.5px solid rgba(198,45,57,0.4);
+  box-shadow: 0 0 0 3px rgba(198,45,57,0.08);
+  flex-shrink: 0;
+}
+
 .adminBadge {
   display: inline-flex;
   align-items: center;

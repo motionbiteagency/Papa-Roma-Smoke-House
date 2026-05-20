@@ -14,7 +14,7 @@ import styles from './layout.module.css';
 const NAV_ITEMS = [
   { href: '/admin',              label: 'Overview',      icon: <LayoutDashboard size={18} /> },
   { href: '/admin/menu',         label: 'Menu Manager',  icon: <UtensilsCrossed size={18} /> },
-  { href: '/admin/offers',       label: 'Offers',        icon: <Tag size={18} /> },
+  { href: '/admin/offers',       label: 'Offers',           icon: <Tag size={18} /> },
   { href: '/admin/settings',     label: 'Site Settings', icon: <Settings size={18} /> },
   { href: '/admin/videos',       label: 'Videos',        icon: <Video size={18} /> },
   { href: '/admin/testimonials', label: 'Testimonials',  icon: <MessageSquare size={18} /> },
@@ -58,7 +58,9 @@ export default function AdminLayout({ children }) {
       <aside className={`${styles.sidebar} ${sidebarOpen ? styles.sidebarOpen : ''}`}>
         <div className={styles.sidebarHeader}>
           <div className={styles.sidebarLogo}>
-            <Image src="/images/logo.png" alt="Papa Roma" width={36} height={36} style={{ objectFit: 'contain', flexShrink: 0 }} />
+            <div className={styles.sidebarLogoCircle}>
+              <Image src="/images/logo.png" alt="Papa Roma" width={36} height={36} style={{ objectFit: 'cover', width: '100%', height: '100%' }} />
+            </div>
             <div style={{ lineHeight: 1.2 }}>
               <div style={{ fontSize: '0.8rem', fontWeight: 800, color: '#fff', letterSpacing: '1px' }}>PAPA ROMA</div>
               <div style={{ fontSize: '0.62rem', color: 'rgba(255,255,255,0.45)', letterSpacing: '0.5px' }}>FOOD ENGINEERING</div>

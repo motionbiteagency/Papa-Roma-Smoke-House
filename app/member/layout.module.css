@@ -11,7 +11,7 @@
   padding: 0 1.5rem; height: 62px;
   display: flex; align-items: center; justify-content: space-between; gap: 1rem;
 }
-.logoBg { background: #fff; border-radius: 8px; padding: 5px 10px; display: flex; align-items: center; }
+.logoRow { display: flex; align-items: center; gap: 9px; }
 
 .headerNav { display: flex; align-items: center; gap: 6px; }
 
