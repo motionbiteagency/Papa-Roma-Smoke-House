@@ -123,13 +123,13 @@ export default function MenuClient({ slug }) {
                   <StaggerItem key={item.id}>
                     <div className={`${styles.menuItem} ${item.featured ? styles.menuItemFeatured : ''}`}>
                       <div className={styles.itemImageWrapper}>
-                        <Image 
-                          src={getItemImage(item.id)} 
-                          alt={item.name} 
-                          fill 
-                          style={{ objectFit: 'cover' }} 
+                        <Image
+                          src={item.imageUrl || getItemImage(item.id)}
+                          alt={item.name}
+                          fill
+                          style={{ objectFit: 'cover' }}
                           className={styles.itemImage}
-                          sizes="(max-width: 768px) 100vw, 300px" 
+                          sizes="(max-width: 768px) 100vw, 300px"
                         />
                       </div>
                       <div className={styles.itemContent}>

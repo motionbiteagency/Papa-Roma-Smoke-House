@@ -1,6 +1,8 @@
 import { NextResponse } from 'next/server';
 import { auth } from '@/auth';
 
+export const dynamic = 'force-dynamic';
+
 // Allowed mime types (whitelist — anything else rejected)
 const ALLOWED_MIME = new Set([
   'image/jpeg',
@@ -14,9 +16,13 @@ const ALLOWED_MIME = new Set([
 const MAX_SIZE_BYTES = 5 * 1024 * 1024;
 
 export async function POST(request) {
+  console.log('[upload] POST received');
+
   // 1) Auth — admin only
   const session = await auth();
+  console.log('[upload] session role:', session?.user?.role);
   if (session?.user?.role !== 'admin') {
+    console.error('[upload] Unauthorized — role:', session?.user?.role);
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
@@ -24,17 +30,21 @@ export async function POST(request) {
   let formData;
   try {
     formData = await request.formData();
-  } catch {
+    console.log('[upload] formData keys:', [...formData.keys()]);
+  } catch (e) {
+    console.error('[upload] formData parse error:', e.message);
     return NextResponse.json({ error: 'Invalid form data' }, { status: 400 });
   }
 
   const file = formData.get('file');
+  console.log('[upload] file:', file?.name, 'type:', file?.type, 'size:', file?.size);
   if (!file || typeof file === 'string') {
     return NextResponse.json({ error: 'No file provided' }, { status: 400 });
   }
 
   // 3) Validate type
   if (!ALLOWED_MIME.has(file.type)) {
+    console.error('[upload] invalid mime:', file.type);
     return NextResponse.json(
       { error: `Invalid file type "${file.type}". Allowed: JPG, PNG, WEBP, GIF.` },
       { status: 400 }
@@ -54,6 +64,7 @@ export async function POST(request) {
 
   // 5) Check API key on the server
   const apiKey = process.env.IMGBB_API_KEY;
+  console.log('[upload] apiKey present:', !!apiKey);
   if (!apiKey) {
     console.error('[upload] IMGBB_API_KEY not configured in environment');
     return NextResponse.json({ error: 'Image upload service is not configured.' }, { status: 500 });
@@ -69,6 +80,7 @@ export async function POST(request) {
   }
 
   // 7) Forward to ImgBB
+  console.log('[upload] sending to ImgBB, base64 length:', base64.length);
   try {
     const imgbbForm = new URLSearchParams();
     imgbbForm.append('image', base64);
@@ -89,6 +101,7 @@ export async function POST(request) {
     }
 
     // Success — return the public URL
+    console.log('[upload] success:', json.data?.url);
     return NextResponse.json({
       success: true,
       url: json.data.url,
