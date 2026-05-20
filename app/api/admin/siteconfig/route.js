@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import { revalidateTag } from 'next/cache';
 import { auth } from '@/auth';
 import { prisma } from '@/lib/prisma';
 
@@ -31,6 +32,7 @@ export async function POST(request) {
         create: { key, value: JSON.stringify(value) },
       });
     }
+    revalidateTag('siteconfig');
     return NextResponse.json({ success: true });
   } catch (e) {
     return NextResponse.json({ error: e.message }, { status: 500 });

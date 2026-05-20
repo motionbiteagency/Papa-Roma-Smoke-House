@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import { revalidateTag } from 'next/cache';
 import { auth } from '@/auth';
 import { prisma } from '@/lib/prisma';
 
@@ -21,10 +22,12 @@ export async function POST(request) {
       const t = await prisma.testimonial.create({
         data: { name: data.name, image: data.image || null, rating: data.rating || 5, comment: data.comment, active: true },
       });
+      revalidateTag('testimonials');
       return NextResponse.json({ success: true, testimonial: t });
     }
     if (action === 'toggle') {
       await prisma.testimonial.update({ where: { id: data.id }, data: { active: data.active } });
+      revalidateTag('testimonials');
       return NextResponse.json({ success: true });
     }
     if (action === 'update') {
@@ -32,10 +35,12 @@ export async function POST(request) {
         where: { id: data.id },
         data: { name: data.name, image: data.image || null, rating: data.rating || 5, comment: data.comment },
       });
+      revalidateTag('testimonials');
       return NextResponse.json({ success: true });
     }
     if (action === 'delete') {
       await prisma.testimonial.delete({ where: { id: data.id } });
+      revalidateTag('testimonials');
       return NextResponse.json({ success: true });
     }
     return NextResponse.json({ error: 'Unknown action' }, { status: 400 });
