@@ -47,16 +47,35 @@ function ItemModal({ mode, item, catName, onSave, onClose, saving }) {
     setImageError('');
     if (!file.type.startsWith('image/')) { setImageError('Only image files allowed.'); return; }
     if (file.size > 5 * 1024 * 1024) { setImageError('Max file size is 5 MB.'); return; }
+
     setUploading(true);
-    try {
-      const fd = new FormData();
-      fd.append('file', file);
-      const res = await fetch('/api/admin/upload', { method: 'POST', body: fd });
-      const json = await res.json();
-      if (!res.ok || !json.success) { setImageError(json.error || 'Upload failed.'); return; }
-      set('imageUrl', json.url);
-    } catch { setImageError('Upload failed. Check your connection.'); }
-    finally { setUploading(false); }
+    const MAX_ATTEMPTS = 3;
+    let lastErr = '';
+
+    for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
+      try {
+        const fd = new FormData();
+        fd.append('file', file);
+        const res = await fetch('/api/admin/upload', { method: 'POST', body: fd });
+        const json = await res.json();
+
+        if (res.ok && json.success) {
+          set('imageUrl', json.url);
+          setUploading(false);
+          return; // done
+        }
+        lastErr = json.error || 'Upload failed.';
+        // Don't retry validation errors (4xx)
+        if (res.status >= 400 && res.status < 500) break;
+      } catch (e) {
+        lastErr = 'Connection error.';
+      }
+      // Brief pause before retry
+      if (attempt < MAX_ATTEMPTS) await new Promise(r => setTimeout(r, 1500));
+    }
+
+    setImageError(`${lastErr} (tried ${MAX_ATTEMPTS}×)`);
+    setUploading(false);
   };
 
   return (
@@ -124,12 +143,14 @@ function ItemModal({ mode, item, catName, onSave, onClose, saving }) {
               <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', paddingTop: 4 }}>
                 <button
                   type="button"
-                  onClick={() => document.getElementById('modal-file-input').click()}
+                  onClick={() => !uploading && document.getElementById('modal-file-input').click()}
                   disabled={uploading}
                   className="admin-btn admin-btn-ghost"
                   style={{ fontSize: '0.82rem' }}
                 >
-                  {uploading ? <><Loader2 size={13} style={{ animation: 'spin 0.8s linear infinite' }} /> Uploading…</> : '↑ Upload Image'}
+                  {uploading
+                    ? <><Loader2 size={13} style={{ animation: 'spin 0.8s linear infinite' }} /> Uploading…</>
+                    : '↑ Upload Image'}
                 </button>
                 {form.imageUrl && !uploading && (
                   <button
