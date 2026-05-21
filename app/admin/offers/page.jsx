@@ -100,7 +100,8 @@ export default function AdminOffersPage() {
       {/* ── Pop-up Offer ── */}
       {activeTab === 'popup' && (
         <div className="admin-card">
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '1.5rem', flexWrap: 'wrap', gap: '1rem' }}>
+          {/* Card header */}
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '1.25rem', flexWrap: 'wrap', gap: '1rem' }}>
             <div>
               <h2 style={{ color: '#fff', fontWeight: 700, fontSize: '1rem', marginBottom: '0.25rem' }}>Pop-up Offer</h2>
               <p style={{ fontSize: '0.8rem', color: 'rgba(255,255,255,0.4)' }}>Shown as a modal overlay on the homepage after a set delay.</p>
@@ -110,27 +111,93 @@ export default function AdminOffersPage() {
             </button>
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
-            <div style={{ gridColumn: '1/-1', display: 'flex', alignItems: 'center', gap: '12px', padding: '12px 16px', background: popup.enabled ? 'rgba(198,45,57,0.08)' : 'rgba(255,255,255,0.03)', borderRadius: '8px', border: `1px solid ${popup.enabled ? 'rgba(198,45,57,0.3)' : 'rgba(255,255,255,0.07)'}` }}>
-              <input type="checkbox" id="popupEnabled" checked={!!popup.enabled} onChange={e => setField('popupOffer.enabled', e.target.checked)} style={{ width: 18, height: 18, accentColor: '#c62d39' }} />
-              <label htmlFor="popupEnabled" style={{ color: '#fff', fontWeight: 600, cursor: 'pointer', flex: 1 }}>Enable Pop-up Offer</label>
-              <span className={`admin-badge ${popup.enabled ? 'admin-badge-green' : 'admin-badge-gray'}`}>{popup.enabled ? 'Active' : 'Hidden'}</span>
+          {/* Enable toggle */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '12px 16px', background: popup.enabled ? 'rgba(198,45,57,0.08)' : 'rgba(255,255,255,0.03)', borderRadius: '8px', border: `1px solid ${popup.enabled ? 'rgba(198,45,57,0.3)' : 'rgba(255,255,255,0.07)'}`, marginBottom: '1.5rem' }}>
+            <input type="checkbox" id="popupEnabled" checked={!!popup.enabled} onChange={e => setField('popupOffer.enabled', e.target.checked)} style={{ width: 18, height: 18, accentColor: '#c62d39' }} />
+            <label htmlFor="popupEnabled" style={{ color: '#fff', fontWeight: 600, cursor: 'pointer', flex: 1 }}>Enable Pop-up Offer</label>
+            <span className={`admin-badge ${popup.enabled ? 'admin-badge-green' : 'admin-badge-gray'}`}>{popup.enabled ? 'Active' : 'Hidden'}</span>
+          </div>
+
+          {/* Two-column: form fields + live preview */}
+          <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 1fr) 300px', gap: '1.5rem', alignItems: 'start' }}>
+
+            {/* ── Left: form fields ── */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.85rem' }}>
+              <Field label="Title" value={popup.title || ''} onChange={e => setField('popupOffer.title', e.target.value)} placeholder="e.g. 🔥 Special Weekend Deal" />
+              <Field label="Subtitle" value={popup.subtitle || ''} onChange={e => setField('popupOffer.subtitle', e.target.value)} placeholder="e.g. Get 20% off this weekend only" />
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.85rem' }}>
+                <Field label="Button Text" value={popup.buttonText || ''} onChange={e => setField('popupOffer.buttonText', e.target.value)} placeholder="e.g. Claim Offer" />
+                <Field label="Show Delay (seconds)" type="number" value={popup.delaySeconds ?? 3} onChange={e => setField('popupOffer.delaySeconds', parseInt(e.target.value) || 0)} hint="Seconds after page load" />
+              </div>
+              <Field label="Button Link (URL)" value={popup.link || ''} onChange={e => setField('popupOffer.link', e.target.value)} placeholder="/menu/smoke-house" />
+
+              {/* Image uploader + Canva guidance */}
+              <div>
+                <ImageUploader
+                  label="Pop-up Image"
+                  value={popup.image || ''}
+                  onChange={(url) => setField('popupOffer.image', url)}
+                  size="md"
+                  aspect="4 / 3"
+                />
+                <div style={{ marginTop: '0.6rem', padding: '10px 14px', background: 'rgba(255,255,255,0.03)', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.06)' }}>
+                  <p style={{ fontSize: '0.78rem', color: 'rgba(255,255,255,0.55)', margin: '0 0 3px', fontWeight: 600 }}>📐 Recommended size: 800 × 600 px (4:3 ratio)</p>
+                  <p style={{ fontSize: '0.72rem', color: 'rgba(255,255,255,0.3)', margin: 0, lineHeight: 1.5 }}>
+                    Design free on{' '}
+                    <a href="https://www.canva.com/design/?type=TABhyuMoStw" target="_blank" rel="noopener noreferrer" style={{ color: '#c62d39', textDecoration: 'underline' }}>Canva</a>
+                    {' '}→ create a custom size → set <strong style={{ color: 'rgba(255,255,255,0.5)' }}>800 × 600 px</strong> → download as PNG or JPG → upload here.
+                    Leave empty for a text-only pop-up.
+                  </p>
+                </div>
+              </div>
             </div>
 
-            <Field label="Title" value={popup.title || ''} onChange={e => setField('popupOffer.title', e.target.value)} placeholder="e.g. 🔥 Special Weekend Deal" />
-            <Field label="Subtitle" value={popup.subtitle || ''} onChange={e => setField('popupOffer.subtitle', e.target.value)} placeholder="e.g. Get 20% off this weekend only" />
-            <Field label="Button Text" value={popup.buttonText || ''} onChange={e => setField('popupOffer.buttonText', e.target.value)} placeholder="e.g. Claim Offer" />
-            <Field label="Button Link (URL)" value={popup.link || ''} onChange={e => setField('popupOffer.link', e.target.value)} placeholder="/menu/smoke-house" />
-            <Field label="Show Delay (seconds)" type="number" value={popup.delaySeconds ?? 3} onChange={e => setField('popupOffer.delaySeconds', parseInt(e.target.value) || 0)} hint="Seconds after page load before the pop-up appears" />
-            <div style={{ gridColumn: '1/-1' }}>
-              <ImageUploader
-                label="Pop-up Image"
-                value={popup.image || ''}
-                onChange={(url) => setField('popupOffer.image', url)}
-                size="lg"
-                aspect="4 / 3"
-                hint="Optional. Leave empty for a text-only pop-up. JPG, PNG, WEBP up to 5 MB."
-              />
+            {/* ── Right: live preview ── */}
+            <div>
+              <p style={{ fontSize: '0.72rem', fontWeight: 700, color: 'rgba(255,255,255,0.4)', textTransform: 'uppercase', letterSpacing: '0.07em', margin: '0 0 0.75rem' }}>Live Preview</p>
+
+              {/* Simulated dark overlay background */}
+              <div style={{ background: 'rgba(0,0,0,0.6)', borderRadius: '12px', padding: '1.25rem', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                {/* Popup card */}
+                <div style={{
+                  background: 'linear-gradient(180deg, #111 0%, #0a0a0a 100%)',
+                  border: '1px solid rgba(212,168,83,0.3)',
+                  borderRadius: '16px',
+                  width: '100%',
+                  overflow: 'hidden',
+                  boxShadow: '0 10px 30px rgba(0,0,0,0.6)',
+                }}>
+                  {/* Image area */}
+                  {popup.image ? (
+                    <div style={{ width: '100%', aspectRatio: '4/3', overflow: 'hidden', background: '#000' }}>
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img src={popup.image} alt="Preview" style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
+                    </div>
+                  ) : (
+                    <div style={{ width: '100%', aspectRatio: '4/3', background: 'rgba(255,255,255,0.04)', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '6px' }}>
+                      <span style={{ fontSize: '1.75rem' }}>🖼️</span>
+                      <span style={{ fontSize: '0.7rem', color: 'rgba(255,255,255,0.2)' }}>No image uploaded</span>
+                    </div>
+                  )}
+
+                  {/* Text + button */}
+                  <div style={{ padding: '1rem 1.25rem 1.5rem', textAlign: 'center' }}>
+                    <h3 style={{ color: '#f5f0e8', fontWeight: 900, fontSize: '0.95rem', margin: '0 0 0.4rem', lineHeight: 1.3 }}>
+                      {popup.title || <span style={{ color: 'rgba(255,255,255,0.2)', fontWeight: 400 }}>Offer title…</span>}
+                    </h3>
+                    <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: '0.73rem', margin: '0 0 1rem', lineHeight: 1.4 }}>
+                      {popup.subtitle || <span style={{ color: 'rgba(255,255,255,0.2)' }}>Subtitle text…</span>}
+                    </p>
+                    <span style={{ display: 'inline-block', background: '#d4a853', color: '#000', fontWeight: 800, padding: '0.45rem 1.25rem', borderRadius: '100px', fontSize: '0.78rem' }}>
+                      {popup.buttonText || 'Claim Offer'}
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              <p style={{ fontSize: '0.68rem', color: 'rgba(255,255,255,0.2)', textAlign: 'center', marginTop: '0.5rem', margin: '0.5rem 0 0' }}>
+                Updates live as you type
+              </p>
             </div>
           </div>
         </div>
@@ -163,8 +230,16 @@ export default function AdminOffersPage() {
                 onChange={(url) => setField('imageBanner.imageSrc', url)}
                 size="lg"
                 aspect="16 / 9"
-                hint="Wide image looks best (e.g. 1600×600). JPG, PNG, WEBP up to 5 MB."
               />
+              <div style={{ marginTop: '0.6rem', padding: '10px 14px', background: 'rgba(255,255,255,0.03)', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.06)' }}>
+                <p style={{ fontSize: '0.78rem', color: 'rgba(255,255,255,0.55)', margin: '0 0 3px', fontWeight: 600 }}>📐 Recommended size: 1600 × 600 px (wide banner)</p>
+                <p style={{ fontSize: '0.72rem', color: 'rgba(255,255,255,0.3)', margin: 0, lineHeight: 1.5 }}>
+                  Design free on{' '}
+                  <a href="https://www.canva.com/create/banners/" target="_blank" rel="noopener noreferrer" style={{ color: '#c62d39', textDecoration: 'underline' }}>Canva</a>
+                  {' '}→ select <strong style={{ color: 'rgba(255,255,255,0.5)' }}>Email Header</strong> or custom size <strong style={{ color: 'rgba(255,255,255,0.5)' }}>1600 × 600 px</strong> → download PNG or JPG → upload here.
+                  Keep text centred so it shows on all screen sizes.
+                </p>
+              </div>
             </div>
             <div style={{ gridColumn: '1/-1' }}>
               <Field
