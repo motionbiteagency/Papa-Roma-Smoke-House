@@ -28,10 +28,18 @@ function ConfirmModal({ message, onConfirm, onCancel }) {
 
 /* ─── Add / Edit item modal ──────────────────────────────── */
 function ItemModal({ mode, item, catName, onSave, onClose, saving }) {
-  // Lock background scroll while modal is open
+  // Lock background scroll while modal is open (lock both html + body)
   useEffect(() => {
-    document.body.style.overflow = 'hidden';
-    return () => { document.body.style.overflow = ''; };
+    const html = document.documentElement;
+    const body = document.body;
+    const prevHtml = html.style.overflow;
+    const prevBody = body.style.overflow;
+    html.style.overflow = 'hidden';
+    body.style.overflow = 'hidden';
+    return () => {
+      html.style.overflow = prevHtml;
+      body.style.overflow = prevBody;
+    };
   }, []);
 
   const [form, setForm] = useState(
@@ -127,12 +135,13 @@ function ItemModal({ mode, item, catName, onSave, onClose, saving }) {
 
   return (
     <div
-      style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.7)', zIndex: 1000, display: 'flex', alignItems: 'flex-start', justifyContent: 'center', padding: '2rem 1rem', overflowY: 'auto' }}
+      style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.7)', zIndex: 1000, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '1rem' }}
       onClick={e => { if (e.target === e.currentTarget) onClose(); }}
     >
-      <div style={{ background: '#181818', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '16px', width: '100%', maxWidth: '680px', flexShrink: 0 }}>
-        {/* Header */}
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '1.25rem 1.5rem', borderBottom: '1px solid rgba(255,255,255,0.07)' }}>
+      {/* Modal card — fixed max-height, flex-column so only body scrolls */}
+      <div style={{ background: '#181818', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '16px', width: '100%', maxWidth: '680px', maxHeight: 'calc(100vh - 2rem)', display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
+        {/* Header — never scrolls */}
+        <div style={{ flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '1.25rem 1.5rem', borderBottom: '1px solid rgba(255,255,255,0.07)' }}>
           <div>
             <h2 style={{ color: '#fff', fontWeight: 700, fontSize: '1.05rem', margin: 0 }}>
               {mode === 'add' ? 'Add New Item' : 'Edit Item'}
@@ -144,8 +153,8 @@ function ItemModal({ mode, item, catName, onSave, onClose, saving }) {
           </button>
         </div>
 
-        {/* Body */}
-        <div style={{ padding: '1.5rem', display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
+        {/* Body — THIS is the scroll container */}
+        <div style={{ flex: 1, overflowY: 'auto', padding: '1.5rem', display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
 
           {/* Image uploader — full width row so buttons never overlap fields */}
           <div>
@@ -264,8 +273,8 @@ function ItemModal({ mode, item, catName, onSave, onClose, saving }) {
           </div>
         </div>
 
-        {/* Footer */}
-        <div style={{ padding: '1rem 1.5rem', borderTop: '1px solid rgba(255,255,255,0.07)', display: 'flex', justifyContent: 'flex-end', gap: '8px' }}>
+        {/* Footer — never scrolls */}
+        <div style={{ flexShrink: 0, padding: '1rem 1.5rem', borderTop: '1px solid rgba(255,255,255,0.07)', display: 'flex', justifyContent: 'flex-end', gap: '8px' }}>
           <button onClick={onClose} className="admin-btn admin-btn-ghost">Cancel</button>
           <button
             onClick={() => onSave(form)}
