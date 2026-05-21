@@ -45,36 +45,83 @@ function ItemModal({ mode, item, catName, onSave, onClose, saving }) {
 
   const handleImageFile = async (file) => {
     setImageError('');
-    if (!file.type.startsWith('image/')) { setImageError('Only image files allowed.'); return; }
-    if (file.size > 5 * 1024 * 1024) { setImageError('Max file size is 5 MB.'); return; }
+
+    // ── Client-side validation (instant, no network needed) ──
+    if (!file.type.startsWith('image/')) {
+      setImageError(`"${file.name}" is not an image. Please choose a JPG, PNG or WEBP file.`);
+      return;
+    }
+    if (file.size === 0) {
+      setImageError('The selected file is empty. Please choose a different image.');
+      return;
+    }
+    if (file.size > 5 * 1024 * 1024) {
+      setImageError(`File is ${(file.size / 1024 / 1024).toFixed(1)} MB — max allowed is 5 MB. Please compress or resize the image.`);
+      return;
+    }
 
     setUploading(true);
     const MAX_ATTEMPTS = 3;
     let lastErr = '';
+    let isValidationError = false;
 
     for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
       try {
         const fd = new FormData();
         fd.append('file', file);
         const res = await fetch('/api/admin/upload', { method: 'POST', body: fd });
+
+        // Non-JSON or completely broken response
+        const contentType = res.headers.get('content-type') || '';
+        if (!contentType.includes('application/json')) {
+          lastErr = `Server returned an unexpected response (status ${res.status}). Try again.`;
+          break;
+        }
+
         const json = await res.json();
 
         if (res.ok && json.success) {
           set('imageUrl', json.url);
           setUploading(false);
-          return; // done
+          return; // ✅ success
         }
-        lastErr = json.error || 'Upload failed.';
-        // Don't retry validation errors (4xx)
-        if (res.status >= 400 && res.status < 500) break;
+
+        // Map server error codes to human messages
+        if (res.status === 401) {
+          lastErr = 'You are not logged in as admin. Please refresh and log in again.';
+          isValidationError = true;
+        } else if (res.status === 400) {
+          // Validation error from our server — use its message directly
+          lastErr = json.error || 'Invalid file.';
+          isValidationError = true;
+        } else if (res.status === 500) {
+          lastErr = 'Server error — the upload service may not be configured. Contact the developer.';
+          isValidationError = true;
+        } else if (res.status === 502 || res.status === 503) {
+          lastErr = json.error || 'The image hosting service is temporarily unavailable.';
+          // This one is retryable
+        } else {
+          lastErr = json.error || `Unexpected error (status ${res.status}).`;
+        }
+
+        if (isValidationError) break; // no point retrying
+
       } catch (e) {
-        lastErr = 'Connection error.';
+        if (e instanceof TypeError && e.message.includes('fetch')) {
+          lastErr = 'No internet connection. Check your network and try again.';
+        } else if (e.name === 'AbortError') {
+          lastErr = 'Upload timed out. Try a smaller image or check your connection.';
+        } else {
+          lastErr = 'Unexpected error while uploading. Please try again.';
+        }
       }
-      // Brief pause before retry
-      if (attempt < MAX_ATTEMPTS) await new Promise(r => setTimeout(r, 1500));
+
+      if (attempt < MAX_ATTEMPTS && !isValidationError) {
+        await new Promise(r => setTimeout(r, 1500));
+      }
     }
 
-    setImageError(`${lastErr} (tried ${MAX_ATTEMPTS}×)`);
+    setImageError(lastErr);
     setUploading(false);
   };
 
