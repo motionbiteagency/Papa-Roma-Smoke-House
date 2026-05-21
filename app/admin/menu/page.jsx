@@ -28,6 +28,12 @@ function ConfirmModal({ message, onConfirm, onCancel }) {
 
 /* ─── Add / Edit item modal ──────────────────────────────── */
 function ItemModal({ mode, item, catName, onSave, onClose, saving }) {
+  // Lock background scroll while modal is open
+  useEffect(() => {
+    document.body.style.overflow = 'hidden';
+    return () => { document.body.style.overflow = ''; };
+  }, []);
+
   const [form, setForm] = useState(
     item ?? { name: '', nameBn: '', description: '', price: '', unit: '', imageUrl: '', featured: false }
   );
@@ -55,10 +61,10 @@ function ItemModal({ mode, item, catName, onSave, onClose, saving }) {
 
   return (
     <div
-      style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.7)', zIndex: 1000, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '1rem' }}
+      style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.7)', zIndex: 1000, display: 'flex', alignItems: 'flex-start', justifyContent: 'center', padding: '2rem 1rem', overflowY: 'auto' }}
       onClick={e => { if (e.target === e.currentTarget) onClose(); }}
     >
-      <div style={{ background: '#181818', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '16px', width: '100%', maxWidth: '680px', maxHeight: '90vh', overflow: 'auto' }}>
+      <div style={{ background: '#181818', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '16px', width: '100%', maxWidth: '680px', flexShrink: 0 }}>
         {/* Header */}
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '1.25rem 1.5rem', borderBottom: '1px solid rgba(255,255,255,0.07)' }}>
           <div>
