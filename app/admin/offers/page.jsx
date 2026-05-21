@@ -232,11 +232,11 @@ export default function AdminOffersPage() {
                 aspect="16 / 9"
               />
               <div style={{ marginTop: '0.6rem', padding: '10px 14px', background: 'rgba(255,255,255,0.03)', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.06)' }}>
-                <p style={{ fontSize: '0.78rem', color: 'rgba(255,255,255,0.55)', margin: '0 0 3px', fontWeight: 600 }}>📐 Recommended size: 1600 × 600 px (wide banner)</p>
+                <p style={{ fontSize: '0.78rem', color: 'rgba(255,255,255,0.55)', margin: '0 0 3px', fontWeight: 600 }}>📐 Recommended size: 2000 × 600 px (wide banner)</p>
                 <p style={{ fontSize: '0.72rem', color: 'rgba(255,255,255,0.3)', margin: 0, lineHeight: 1.5 }}>
                   Design free on{' '}
                   <a href="https://www.canva.com/create/banners/" target="_blank" rel="noopener noreferrer" style={{ color: '#c62d39', textDecoration: 'underline' }}>Canva</a>
-                  {' '}→ select <strong style={{ color: 'rgba(255,255,255,0.5)' }}>Email Header</strong> or custom size <strong style={{ color: 'rgba(255,255,255,0.5)' }}>1600 × 600 px</strong> → download PNG or JPG → upload here.
+                  {' '}→ select <strong style={{ color: 'rgba(255,255,255,0.5)' }}>Email Header</strong> or custom size <strong style={{ color: 'rgba(255,255,255,0.5)' }}>2000 × 600 px</strong> → download PNG or JPG → upload here.
                   Keep text centred so it shows on all screen sizes.
                 </p>
               </div>
