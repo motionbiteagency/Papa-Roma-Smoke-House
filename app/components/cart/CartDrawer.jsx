@@ -9,10 +9,23 @@ import styles from './CartDrawer.module.css';
 export default function CartDrawer() {
   const { items, isDrawerOpen, closeDrawer, removeItem, updateQty, getTotal, getCount } = useCart();
 
-  // Lock body scroll when drawer is open
+  // Lock body scroll when drawer is open.
+  // Must also stop Lenis — overflow:hidden alone has no effect on it.
   useEffect(() => {
-    document.body.style.overflow = isDrawerOpen ? 'hidden' : '';
-    return () => { document.body.style.overflow = ''; };
+    if (isDrawerOpen) {
+      document.documentElement.style.overflow = 'hidden';
+      document.body.style.overflow = 'hidden';
+      window.__lenis?.stop();
+    } else {
+      document.documentElement.style.overflow = '';
+      document.body.style.overflow = '';
+      window.__lenis?.start();
+    }
+    return () => {
+      document.documentElement.style.overflow = '';
+      document.body.style.overflow = '';
+      window.__lenis?.start();
+    };
   }, [isDrawerOpen]);
 
   return (

@@ -10,6 +10,9 @@ export default function SmoothScroll({ children }) {
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
     });
 
+    // Expose globally so modals/drawers can call window.__lenis.stop() / .start()
+    window.__lenis = lenis;
+
     let rafId;
     const raf = (time) => {
       lenis.raf(time);
@@ -20,6 +23,7 @@ export default function SmoothScroll({ children }) {
     return () => {
       cancelAnimationFrame(rafId);
       lenis.destroy();
+      delete window.__lenis;
     };
   }, []);
 

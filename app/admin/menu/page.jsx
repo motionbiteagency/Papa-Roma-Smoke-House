@@ -28,7 +28,8 @@ function ConfirmModal({ message, onConfirm, onCancel }) {
 
 /* ─── Add / Edit item modal ──────────────────────────────── */
 function ItemModal({ mode, item, catName, onSave, onClose, saving }) {
-  // Lock background scroll while modal is open (lock both html + body)
+  // Lock background scroll while modal is open.
+  // Must stop Lenis (smooth-scroll library) — overflow:hidden alone has no effect on it.
   useEffect(() => {
     const html = document.documentElement;
     const body = document.body;
@@ -36,9 +37,11 @@ function ItemModal({ mode, item, catName, onSave, onClose, saving }) {
     const prevBody = body.style.overflow;
     html.style.overflow = 'hidden';
     body.style.overflow = 'hidden';
+    window.__lenis?.stop();
     return () => {
       html.style.overflow = prevHtml;
       body.style.overflow = prevBody;
+      window.__lenis?.start();
     };
   }, []);
 
