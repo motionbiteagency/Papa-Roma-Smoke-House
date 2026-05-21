@@ -18,6 +18,8 @@ import { Upload, Loader2, X, ImageIcon, AlertCircle } from 'lucide-react';
 export default function ImageUploader({
   value = '',
   onChange,
+  onUploadStart,
+  onUploadEnd,
   label,
   hint,
   size = 'md',
@@ -45,6 +47,7 @@ export default function ImageUploader({
     }
 
     setUploading(true);
+    onUploadStart?.();
     try {
       const form = new FormData();
       form.append('file', file);
@@ -59,6 +62,7 @@ export default function ImageUploader({
       setError('Upload failed. Check your connection.');
     } finally {
       setUploading(false);
+      onUploadEnd?.();
       if (inputRef.current) inputRef.current.value = '';
     }
   };
