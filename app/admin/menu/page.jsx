@@ -2,7 +2,6 @@
 
 import { useEffect, useState, useCallback } from 'react';
 import { Plus, Trash2, Pencil, X, ChevronDown, ChevronRight, Star, Loader2, Check } from 'lucide-react';
-import ImageUploader from '@/app/components/admin/ImageUploader';
 import { getItemImage } from '@/data/itemImages';
 
 /* ─── Toast ─────────────────────────────────────────────── */
@@ -33,9 +32,26 @@ function ItemModal({ mode, item, catName, onSave, onClose, saving }) {
     item ?? { name: '', nameBn: '', description: '', price: '', unit: '', imageUrl: '', featured: false }
   );
   const [uploading, setUploading] = useState(false);
+  const [imageError, setImageError] = useState('');
 
   const set = (key, val) => setForm(p => ({ ...p, [key]: val }));
   const canSave = !saving && !uploading && form.name.trim() && form.price;
+
+  const handleImageFile = async (file) => {
+    setImageError('');
+    if (!file.type.startsWith('image/')) { setImageError('Only image files allowed.'); return; }
+    if (file.size > 5 * 1024 * 1024) { setImageError('Max file size is 5 MB.'); return; }
+    setUploading(true);
+    try {
+      const fd = new FormData();
+      fd.append('file', file);
+      const res = await fetch('/api/admin/upload', { method: 'POST', body: fd });
+      const json = await res.json();
+      if (!res.ok || !json.success) { setImageError(json.error || 'Upload failed.'); return; }
+      set('imageUrl', json.url);
+    } catch { setImageError('Upload failed. Check your connection.'); }
+    finally { setUploading(false); }
+  };
 
   return (
     <div
@@ -57,61 +73,120 @@ function ItemModal({ mode, item, catName, onSave, onClose, saving }) {
         </div>
 
         {/* Body */}
-        <div style={{ padding: '1.5rem', display: 'grid', gridTemplateColumns: '160px 1fr', gap: '1.5rem' }}>
-          {/* Left — image uploader */}
+        <div style={{ padding: '1.5rem', display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
+
+          {/* Image uploader — full width row so buttons never overlap fields */}
           <div>
             <label className="admin-label" style={{ display: 'block', marginBottom: '0.5rem' }}>Item Image</label>
-            <ImageUploader
-              value={form.imageUrl || ''}
-              onChange={url => set('imageUrl', url)}
-              onUploadStart={() => setUploading(true)}
-              onUploadEnd={() => setUploading(false)}
-              size="lg"
-              aspect="1 / 1"
-              hint="JPG, PNG or WEBP · max 5 MB"
+            <div style={{ display: 'flex', alignItems: 'flex-start', gap: '1rem' }}>
+              {/* Square preview */}
+              <div
+                onClick={() => !uploading && document.getElementById('modal-file-input').click()}
+                onDragOver={e => { e.preventDefault(); }}
+                onDrop={e => {
+                  e.preventDefault();
+                  const file = e.dataTransfer.files?.[0];
+                  if (file) handleImageFile(file);
+                }}
+                style={{
+                  width: 120, height: 120, flexShrink: 0,
+                  borderRadius: 10, overflow: 'hidden',
+                  border: `2px dashed ${form.imageUrl ? 'rgba(255,255,255,0.1)' : 'rgba(255,255,255,0.2)'}`,
+                  background: form.imageUrl ? '#0a0a0a' : 'rgba(255,255,255,0.02)',
+                  cursor: uploading ? 'wait' : 'pointer',
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  position: 'relative',
+                }}
+              >
+                {form.imageUrl ? (
+                  /* eslint-disable-next-line @next/next/no-img-element */
+                  <img src={form.imageUrl} alt="preview" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                ) : (
+                  <div style={{ textAlign: 'center', color: 'rgba(255,255,255,0.3)', fontSize: '0.7rem', padding: 8 }}>
+                    <div style={{ fontSize: 24, marginBottom: 4 }}>🖼️</div>
+                    Click or drop
+                  </div>
+                )}
+                {uploading && (
+                  <div style={{ position: 'absolute', inset: 0, background: 'rgba(0,0,0,0.7)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    <Loader2 size={22} style={{ color: '#fff', animation: 'spin 0.8s linear infinite' }} />
+                  </div>
+                )}
+              </div>
+
+              {/* Buttons + status beside preview */}
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', paddingTop: 4 }}>
+                <button
+                  type="button"
+                  onClick={() => document.getElementById('modal-file-input').click()}
+                  disabled={uploading}
+                  className="admin-btn admin-btn-ghost"
+                  style={{ fontSize: '0.82rem' }}
+                >
+                  {uploading ? <><Loader2 size={13} style={{ animation: 'spin 0.8s linear infinite' }} /> Uploading…</> : '↑ Upload Image'}
+                </button>
+                {form.imageUrl && !uploading && (
+                  <button
+                    type="button"
+                    onClick={() => set('imageUrl', '')}
+                    className="admin-btn admin-btn-danger"
+                    style={{ fontSize: '0.82rem' }}
+                  >
+                    ✕ Remove
+                  </button>
+                )}
+                {uploading && (
+                  <p style={{ fontSize: '0.72rem', color: '#f59e0b', margin: 0, display: 'flex', alignItems: 'center', gap: 4 }}>
+                    <Loader2 size={11} style={{ animation: 'spin 0.8s linear infinite' }} /> Save button unlocks when done
+                  </p>
+                )}
+                {!uploading && (
+                  <p style={{ fontSize: '0.7rem', color: 'rgba(255,255,255,0.3)', margin: 0 }}>JPG, PNG or WEBP · max 5 MB</p>
+                )}
+                {imageError && (
+                  <p style={{ fontSize: '0.72rem', color: '#e05060', margin: 0 }}>⚠ {imageError}</p>
+                )}
+              </div>
+            </div>
+            <input
+              id="modal-file-input"
+              type="file"
+              accept="image/jpeg,image/jpg,image/png,image/webp"
+              style={{ display: 'none' }}
+              onChange={e => { const f = e.target.files?.[0]; if (f) handleImageFile(f); e.target.value = ''; }}
             />
-            {uploading && (
-              <p style={{ fontSize: '0.72rem', color: '#f59e0b', marginTop: 6, display: 'flex', alignItems: 'center', gap: 4 }}>
-                <Loader2 size={12} style={{ animation: 'spin 0.8s linear infinite' }} /> Uploading… save when done
-              </p>
-            )}
           </div>
 
-          {/* Right — fields */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.85rem' }}>
-            <div className="admin-field-group">
+          {/* Fields grid */}
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.85rem' }}>
+            <div className="admin-field-group" style={{ gridColumn: '1 / -1' }}>
               <label className="admin-label">Name <span style={{ color: '#c62d39' }}>*</span></label>
               <input className="admin-input" placeholder="e.g. Beef Brisket" value={form.name} onChange={e => set('name', e.target.value)} />
             </div>
-            <div className="admin-field-group">
+            <div className="admin-field-group" style={{ gridColumn: '1 / -1' }}>
               <label className="admin-label">Bangla Name</label>
               <input className="admin-input" placeholder="বাংলা নাম" value={form.nameBn || ''} onChange={e => set('nameBn', e.target.value)} />
             </div>
-            <div className="admin-field-group">
+            <div className="admin-field-group" style={{ gridColumn: '1 / -1' }}>
               <label className="admin-label">Description</label>
               <textarea className="admin-input" placeholder="Short description shown on menu page…" value={form.description || ''} onChange={e => set('description', e.target.value)} rows={3} style={{ resize: 'vertical' }} />
             </div>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem' }}>
-              <div className="admin-field-group">
-                <label className="admin-label">Price (৳) <span style={{ color: '#c62d39' }}>*</span></label>
-                <input className="admin-input" type="number" placeholder="e.g. 450" value={form.price} onChange={e => set('price', e.target.value)} />
-              </div>
-              <div className="admin-field-group">
-                <label className="admin-label">Unit</label>
-                <input className="admin-input" placeholder="e.g. per 100gm" value={form.unit || ''} onChange={e => set('unit', e.target.value)} />
-              </div>
+            <div className="admin-field-group">
+              <label className="admin-label">Price (৳) <span style={{ color: '#c62d39' }}>*</span></label>
+              <input className="admin-input" type="number" placeholder="e.g. 450" value={form.price} onChange={e => set('price', e.target.value)} />
             </div>
-            <label style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer', userSelect: 'none' }}>
-              <input
-                type="checkbox"
-                checked={!!form.featured}
-                onChange={e => set('featured', e.target.checked)}
-                style={{ width: 16, height: 16, accentColor: '#f59e0b' }}
-              />
-              <span style={{ color: 'rgba(255,255,255,0.7)', fontSize: '0.875rem' }}>
-                Mark as <strong style={{ color: '#f59e0b' }}>Featured</strong> (shows Popular badge)
-              </span>
-            </label>
+            <div className="admin-field-group">
+              <label className="admin-label">Unit</label>
+              <input className="admin-input" placeholder="e.g. per 100gm" value={form.unit || ''} onChange={e => set('unit', e.target.value)} />
+            </div>
+            <div style={{ gridColumn: '1 / -1' }}>
+              <label style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer', userSelect: 'none' }}>
+                <input type="checkbox" checked={!!form.featured} onChange={e => set('featured', e.target.checked)} style={{ width: 16, height: 16, accentColor: '#f59e0b' }} />
+                <span style={{ color: 'rgba(255,255,255,0.7)', fontSize: '0.875rem' }}>
+                  Mark as <strong style={{ color: '#f59e0b' }}>Featured</strong> (shows Popular badge)
+                </span>
+              </label>
+            </div>
           </div>
         </div>
 
