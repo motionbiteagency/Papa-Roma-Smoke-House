@@ -7,13 +7,14 @@ import { useState, useEffect } from 'react';
 import { signOut } from 'next-auth/react';
 import {
   LayoutDashboard, UtensilsCrossed, Tag, Settings, Video,
-  MessageSquare, Mail, Crown, LogOut, Menu, X, ChevronRight, Calendar
+  MessageSquare, Mail, Crown, LogOut, Menu, X, ChevronRight, Calendar, ClipboardList
 } from 'lucide-react';
 import styles from './layout.module.css';
 
 const NAV_ITEMS = [
-  { href: '/admin',              label: 'Overview',      icon: <LayoutDashboard size={18} /> },
-  { href: '/admin/menu',         label: 'Menu Manager',  icon: <UtensilsCrossed size={18} /> },
+  { href: '/admin',              label: 'Overview',         icon: <LayoutDashboard size={18} /> },
+  { href: '/admin/orders',       label: 'Order Management', icon: <ClipboardList size={18} />, badgeKey: 'orders' },
+  { href: '/admin/menu',         label: 'Menu Manager',     icon: <UtensilsCrossed size={18} /> },
   { href: '/admin/offers',       label: 'Offers',           icon: <Tag size={18} /> },
   { href: '/admin/settings',     label: 'Site Settings', icon: <Settings size={18} /> },
   { href: '/admin/videos',       label: 'Videos',        icon: <Video size={18} /> },
@@ -27,17 +28,19 @@ export default function AdminLayout({ children }) {
   const pathname = usePathname();
   const router = useRouter();
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [badges, setBadges] = useState({ inquiries: 0, events: 0 });
+  const [badges, setBadges] = useState({ inquiries: 0, events: 0, orders: 0 });
 
   useEffect(() => {
-    // Fetch unread counts for sidebar badges
+    // Fetch unread/pending counts for sidebar badges
     Promise.all([
       fetch('/api/inquiries').then(r => r.json()).catch(() => ({ inquiries: [] })),
       fetch('/api/admin/events').then(r => r.json()).catch(() => ({ bookings: [] })),
-    ]).then(([inqData, evtData]) => {
+      fetch('/api/admin/orders?status=PENDING').then(r => r.json()).catch(() => ({ orders: [] })),
+    ]).then(([inqData, evtData, ordData]) => {
       setBadges({
         inquiries: (inqData.inquiries || []).filter(i => !i.read).length,
-        events: (evtData.bookings || []).filter(b => b.status === 'PENDING').length,
+        events:    (evtData.bookings  || []).filter(b => b.status === 'PENDING').length,
+        orders:    (ordData.orders    || []).length,
       });
     });
   }, [pathname]); // refresh counts whenever user navigates

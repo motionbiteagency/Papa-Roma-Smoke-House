@@ -164,6 +164,51 @@ model Video {
   createdAt DateTime @default(now())
 }
 
+// ─── ORDERS ───────────────────────────────────────────────
+
+model Order {
+  id            String      @id @default(cuid())
+  orderNumber   String      @unique
+  status        OrderStatus @default(PENDING)
+  type          OrderType   @default(DINE_IN)
+
+  // Customer info
+  customerName  String
+  customerPhone String
+  customerEmail String?
+  tableNumber   String?
+  notes         String?
+
+  // Items snapshot (JSON array so history is preserved even if menu changes)
+  items         Json
+
+  // Financials
+  subtotal      Float
+  discount      Float       @default(0)
+  total         Float
+
+  // Staff use
+  adminNote     String?
+
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+}
+
+enum OrderStatus {
+  PENDING
+  CONFIRMED
+  PREPARING
+  READY
+  DELIVERED
+  CANCELLED
+}
+
+enum OrderType {
+  DINE_IN
+  TAKEAWAY
+  DELIVERY
+}
+
 // ─── SITE CONFIG (key/value JSON blobs) ───────────────────
 
 model SiteConfig {
