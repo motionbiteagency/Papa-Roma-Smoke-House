@@ -216,14 +216,16 @@ export default function AdminOffersPage() {
             </button>
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
-            <div style={{ gridColumn: '1/-1', display: 'flex', alignItems: 'center', gap: '12px', padding: '12px 16px', background: banner.enabled ? 'rgba(198,45,57,0.08)' : 'rgba(255,255,255,0.03)', borderRadius: '8px', border: `1px solid ${banner.enabled ? 'rgba(198,45,57,0.3)' : 'rgba(255,255,255,0.07)'}` }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+            {/* Enable toggle */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '12px 16px', background: banner.enabled ? 'rgba(198,45,57,0.08)' : 'rgba(255,255,255,0.03)', borderRadius: '8px', border: `1px solid ${banner.enabled ? 'rgba(198,45,57,0.3)' : 'rgba(255,255,255,0.07)'}` }}>
               <input type="checkbox" id="bannerEnabled" checked={!!banner.enabled} onChange={e => setField('imageBanner.enabled', e.target.checked)} style={{ width: 18, height: 18, accentColor: '#c62d39' }} />
               <label htmlFor="bannerEnabled" style={{ color: '#fff', fontWeight: 600, cursor: 'pointer', flex: 1 }}>Enable Banner Offer</label>
               <span className={`admin-badge ${banner.enabled ? 'admin-badge-green' : 'admin-badge-gray'}`}>{banner.enabled ? 'Visible' : 'Hidden'}</span>
             </div>
 
-            <div style={{ gridColumn: '1/-1' }}>
+            {/* Image uploader + Canva guidance */}
+            <div>
               <ImageUploader
                 label="Banner Image"
                 value={banner.imageSrc || ''}
@@ -241,14 +243,33 @@ export default function AdminOffersPage() {
                 </p>
               </div>
             </div>
-            <div style={{ gridColumn: '1/-1' }}>
-              <Field
-                label="Click Link (URL)"
-                value={banner.link || ''}
-                onChange={e => setField('imageBanner.link', e.target.value)}
-                placeholder="/menu/smoke-house"
-                hint="Where the banner links to when clicked"
-              />
+
+            {/* Click link */}
+            <Field
+              label="Click Link (URL)"
+              value={banner.link || ''}
+              onChange={e => setField('imageBanner.link', e.target.value)}
+              placeholder="/menu/smoke-house"
+              hint="Where the banner links to when clicked"
+            />
+
+            {/* Live preview */}
+            <div>
+              <p style={{ fontSize: '0.72rem', fontWeight: 700, color: 'rgba(255,255,255,0.4)', textTransform: 'uppercase', letterSpacing: '0.07em', margin: '0 0 0.75rem' }}>Live Preview</p>
+              <div style={{ background: 'rgba(0,0,0,0.5)', borderRadius: '12px', padding: '1.25rem' }}>
+                {banner.imageSrc ? (
+                  <div style={{ width: '100%', aspectRatio: '2000/600', overflow: 'hidden', borderRadius: '8px', background: '#000' }}>
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src={banner.imageSrc} alt="Banner preview" style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
+                  </div>
+                ) : (
+                  <div style={{ width: '100%', aspectRatio: '2000/600', borderRadius: '8px', background: 'rgba(255,255,255,0.04)', border: '1px dashed rgba(255,255,255,0.1)', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '6px' }}>
+                    <span style={{ fontSize: '1.75rem' }}>🖼️</span>
+                    <span style={{ fontSize: '0.75rem', color: 'rgba(255,255,255,0.2)' }}>No image uploaded yet</span>
+                  </div>
+                )}
+              </div>
+              <p style={{ fontSize: '0.68rem', color: 'rgba(255,255,255,0.2)', textAlign: 'center', marginTop: '0.5rem' }}>Updates live as you upload</p>
             </div>
           </div>
         </div>
