@@ -156,8 +156,8 @@ function ItemModal({ mode, item, catName, onSave, onClose, saving }) {
           </button>
         </div>
 
-        {/* Body — THIS is the scroll container */}
-        <div style={{ flex: 1, overflowY: 'auto', padding: '1.5rem', display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
+        {/* Body — THIS is the scroll container. data-lenis-prevent tells Lenis not to intercept wheel events here. */}
+        <div data-lenis-prevent style={{ flex: 1, overflowY: 'auto', padding: '1.5rem', display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
 
           {/* Image uploader — full width row so buttons never overlap fields */}
           <div>
