@@ -8,6 +8,7 @@ import { Menu, X, Flame, ShoppingBag, CalendarDays } from 'lucide-react';
 import { usePublicData } from '@/app/context/PublicDataContext';
 import { getItemImage } from '@/data/itemImages';
 import { useCart } from '@/app/context/CartContext';
+import { RESTAURANT_INFO } from '@/lib/constants';
 import styles from './Navbar.module.css';
 
 export default function Navbar() {
@@ -118,7 +119,7 @@ export default function Navbar() {
           </Link>
 
           <a
-            href={`https://wa.me/${config.restaurant?.whatsapp}?text=Hi! I'd like to make a reservation at PAPA ROMA FOOD ENGINEERING 🔥`}
+            href={`https://wa.me/${RESTAURANT_INFO.whatsapp}?text=Hi! I'd like to make a reservation at PAPA ROMA FOOD ENGINEERING 🔥`}
             target="_blank"
             rel="noopener noreferrer"
             className={styles.ctaBtn}
@@ -181,7 +182,7 @@ export default function Navbar() {
           </Link>
 
           <a
-            href={`https://wa.me/${config.restaurant?.whatsapp}?text=Hi! I'd like to make a reservation at PAPA ROMA FOOD ENGINEERING 🔥`}
+            href={`https://wa.me/${RESTAURANT_INFO.whatsapp}?text=Hi! I'd like to make a reservation at PAPA ROMA FOOD ENGINEERING 🔥`}
             target="_blank"
             rel="noopener noreferrer"
             className={`btn btn-primary ${styles.mobileCta}`}

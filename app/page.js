@@ -8,6 +8,7 @@ import { motion, AnimatePresence, useScroll, useTransform, useMotionValueEvent }
 import { AnimateOnScroll, StaggerContainer, StaggerItem } from './components/ui/AnimateOnScroll';
 import { useCart } from '@/app/context/CartContext';
 import { usePublicData } from '@/app/context/PublicDataContext';
+import { RESTAURANT_INFO } from '@/lib/constants';
 import { getItemImage } from '@/data/itemImages';
 import styles from './page.module.css';
 import FloatingFoodParticles from './components/ui/FloatingFoodParticles';
@@ -127,7 +128,7 @@ function HeroSection() {
 
         <div className={styles.heroCtas}>
           <a
-            href={`https://wa.me/${config.restaurant?.whatsapp}?text=Hi! I'd like to make a reservation at PAPA ROMA FOOD ENGINEERING 🔥`}
+            href={`https://wa.me/${RESTAURANT_INFO.whatsapp}?text=Hi! I'd like to make a reservation at PAPA ROMA FOOD ENGINEERING 🔥`}
             target="_blank"
             rel="noopener noreferrer"
             className="btn btn-primary"
@@ -1101,7 +1102,7 @@ function PosterCTASection() {
             variants={lineVariants}
           >
             <motion.a 
-              href={`https://wa.me/${config.restaurant?.whatsapp}`}
+              href={`https://wa.me/${RESTAURANT_INFO.whatsapp}`}
               target="_blank"
               rel="noopener noreferrer"
               className={styles.posterMainButton}
@@ -1130,15 +1131,14 @@ function PosterCTASection() {
 
 /* ===================== MAP & CTA ===================== */
 function MapCtaSection() {
-  const { config } = usePublicData();
-  const restaurant = config.restaurant || {};
+  const restaurant = RESTAURANT_INFO;
   return (
     <section className={`section ${styles.mapCta}`}>
       <div className="container">
         <div className={styles.mapGrid}>
           <AnimateOnScroll direction="left" className={styles.mapEmbed}>
             <iframe
-              src={config.restaurant?.mapEmbed}
+              src={restaurant.mapEmbed}
               width="100%" height="400" style={{ border: 0, borderRadius: 'var(--radius-lg)' }}
               allowFullScreen="" loading="lazy" referrerPolicy="no-referrer-when-downgrade"
               title="PAPA ROMA FOOD ENGINEERING Location"

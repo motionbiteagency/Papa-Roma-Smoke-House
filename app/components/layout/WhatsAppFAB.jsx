@@ -2,13 +2,12 @@
 
 import { usePathname } from 'next/navigation';
 import { MessageCircle } from 'lucide-react';
-import { usePublicData } from '@/app/context/PublicDataContext';
+import { RESTAURANT_INFO } from '@/lib/constants';
 import styles from './WhatsAppFAB.module.css';
 
 export default function WhatsAppFAB() {
   const pathname = usePathname();
-  const { config } = usePublicData();
-  const { whatsapp } = config.restaurant || {};
+  const whatsapp = RESTAURANT_INFO.whatsapp;
   
   // Hide the general WhatsApp chat button on the checkout page
   // to avoid overlapping the "Place Order" sticky bar.

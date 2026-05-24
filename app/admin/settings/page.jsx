@@ -27,7 +27,7 @@ export default function AdminSettingsPage() {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [toast, setToast] = useState(null);
-  const [activeTab, setActiveTab] = useState('restaurant');
+  const [activeTab, setActiveTab] = useState('payment');
   const [pw, setPw] = useState({ current: '', next: '', confirm: '' });
   const [pwSaving, setPwSaving] = useState(false);
   const [showPw, setShowPw] = useState(false);
@@ -104,7 +104,6 @@ export default function AdminSettingsPage() {
   };
 
   const TABS = [
-    { id: 'restaurant', label: 'Restaurant Info' },
     { id: 'payment',    label: 'Payment Methods' },
     { id: 'hotpicks',   label: 'Hot Picks' },
     { id: 'password',   label: 'Change Password' },
@@ -112,7 +111,6 @@ export default function AdminSettingsPage() {
 
   if (loading) return <div style={{ color: 'rgba(255,255,255,0.4)', padding: '2rem' }}>Loading settings...</div>;
 
-  const r = config.restaurant || {};
   const bkash = config.paymentMethods?.bkash;
   const nagad  = config.paymentMethods?.nagad;
   const bank   = config.paymentMethods?.bank;
@@ -141,41 +139,6 @@ export default function AdminSettingsPage() {
       </div>
 
       <div className="admin-card">
-        {/* ── Restaurant Info ── */}
-        {activeTab === 'restaurant' && (
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
-            <div style={{ gridColumn: '1/-1' }}>
-              <ImageUploader
-                label="Restaurant Logo"
-                value={r.logo || ''}
-                onChange={(url) => set('restaurant.logo', url)}
-                size="md"
-                aspect="1 / 1"
-                hint="Square logo works best. Used in navbar, footer, and admin panel."
-              />
-            </div>
-            <div style={{ gridColumn: '1/-1' }}><Field label="Restaurant Name" value={r.name || ''} onChange={e => set('restaurant.name', e.target.value)} /></div>
-            <Field label="Tagline" value={r.tagline || ''} onChange={e => set('restaurant.tagline', e.target.value)} />
-            <Field label="Phone" value={r.phone || ''} onChange={e => set('restaurant.phone', e.target.value)} />
-            <Field label="WhatsApp Number (digits only)" value={r.whatsapp || ''} onChange={e => set('restaurant.whatsapp', e.target.value)} />
-            <Field label="Email" type="email" value={r.email || ''} onChange={e => set('restaurant.email', e.target.value)} />
-            <div style={{ gridColumn: '1/-1' }}><Field label="Address" value={r.address || ''} onChange={e => set('restaurant.address', e.target.value)} /></div>
-            <Field label="Opening Hours" value={r.hours || ''} onChange={e => set('restaurant.hours', e.target.value)} />
-
-            {/* Social media */}
-            <div style={{ gridColumn: '1/-1', marginTop: '0.5rem', paddingTop: '1rem', borderTop: '1px solid rgba(255,255,255,0.07)' }}>
-              <p style={{ fontSize: '0.75rem', fontWeight: 700, color: 'rgba(255,255,255,0.35)', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '0.75rem' }}>Social Media Links</p>
-            </div>
-            <Field label="Facebook URL" value={r.facebook || ''} onChange={e => set('restaurant.facebook', e.target.value)} placeholder="https://facebook.com/..." />
-            <Field label="Instagram URL" value={r.instagram || ''} onChange={e => set('restaurant.instagram', e.target.value)} placeholder="https://instagram.com/..." />
-            <Field label="YouTube URL" value={r.youtube || ''} onChange={e => set('restaurant.youtube', e.target.value)} placeholder="https://youtube.com/@..." />
-            <Field label="TikTok URL" value={r.tiktok || ''} onChange={e => set('restaurant.tiktok', e.target.value)} placeholder="https://tiktok.com/@..." />
-            <Field label="Twitter / X URL" value={r.twitter || ''} onChange={e => set('restaurant.twitter', e.target.value)} placeholder="https://x.com/..." />
-
-            <div style={{ gridColumn: '1/-1' }}><Field label="Description" value={r.description || ''} onChange={e => set('restaurant.description', e.target.value)} rows={3} /></div>
-          </div>
-        )}
-
         {/* ── Payment Methods ── */}
         {activeTab === 'payment' && (
           <div>
@@ -213,7 +176,7 @@ export default function AdminSettingsPage() {
               Select items to feature in the <strong style={{ color: '#fff' }}>Hot Picks</strong> section on the homepage. Currently <strong style={{ color: '#c62d39' }}>{(config.hotPicksItemIds || []).length}</strong> selected.
             </p>
             {menuItems.length === 0 && <p style={{ color: 'rgba(255,255,255,0.3)' }}>No menu items found.</p>}
-            <div style={{ height: '420px', overflowY: 'auto', border: '1px solid rgba(255,255,255,0.07)', borderRadius: '10px' }}>
+            <div data-lenis-prevent="true" style={{ height: '420px', overflowY: 'auto', border: '1px solid rgba(255,255,255,0.07)', borderRadius: '10px' }}>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', padding: '8px' }}>
                 {menuItems.map(item => {
                   const selected = (config.hotPicksItemIds || []).includes(item.id);

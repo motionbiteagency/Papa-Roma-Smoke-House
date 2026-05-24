@@ -3,12 +3,11 @@
 import { useState } from 'react';
 import { MapPin, Phone, Mail, Clock, Send, CheckCircle } from 'lucide-react';
 import { AnimateOnScroll } from '@/app/components/ui/AnimateOnScroll';
-import { usePublicData } from '@/app/context/PublicDataContext';
+import { RESTAURANT_INFO } from '@/lib/constants';
 import styles from './contact.module.css';
 
 export default function ContactPage() {
-  const { config } = usePublicData();
-  const restaurant = config.restaurant || {};
+  const restaurant = RESTAURANT_INFO;
   const [formData, setFormData] = useState({
     name: '', email: '', phone: '', eventType: '', message: '',
   });

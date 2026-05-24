@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { ArrowLeft, MessageCircle, ShoppingBag, Trash2, Loader2, CreditCard, Truck, CheckCircle2, Copy, Check, ChevronDown, ChevronUp } from 'lucide-react';
 import { useCart } from '@/app/context/CartContext';
 import { usePublicData } from '@/app/context/PublicDataContext';
+import { RESTAURANT_INFO } from '@/lib/constants';
 import styles from './checkout.module.css';
 
 function buildWhatsAppMessage(form, items, total, paymentMethods, whatsapp) {
@@ -60,7 +61,7 @@ function CopyButton({ text }) {
 export default function CheckoutPage() {
   const { config } = usePublicData();
   const paymentMethods = config.paymentMethods || {};
-  const whatsapp = config.restaurant?.whatsapp || '';
+  const whatsapp = RESTAURANT_INFO.whatsapp;
   const { items, getTotal, updateQty, removeItem, clearCart } = useCart();
   const [form, setForm] = useState({
     name: '',
