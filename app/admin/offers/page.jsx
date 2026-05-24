@@ -2,6 +2,7 @@
 
 import { useEffect, useState, useCallback } from 'react';
 import { Loader2, Save, Megaphone, Image } from 'lucide-react';
+import AdminLoading from '@/app/components/admin/AdminLoading';
 import ImageUploader from '@/app/components/admin/ImageUploader';
 
 function Toast({ msg, type, onClose }) {
@@ -73,7 +74,7 @@ export default function AdminOffersPage() {
     { id: 'banner', label: 'Banner Offer',  icon: <Image size={14} /> },
   ];
 
-  if (loading) return <div style={{ color: 'rgba(255,255,255,0.4)', padding: '2rem' }}>Loading...</div>;
+  if (loading) return <AdminLoading text="Loading offers..." />;
 
   const popup  = config?.popupOffer  || {};
   const banner = config?.imageBanner || {};

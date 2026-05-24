@@ -2,6 +2,7 @@
 
 import { useEffect, useState, useCallback } from 'react';
 import { Crown, Trash2, Check, Search, KeyRound, X, Loader2 } from 'lucide-react';
+import AdminLoading from '@/app/components/admin/AdminLoading';
 
 function Toast({ msg, type, onClose }) {
   useEffect(() => { const t = setTimeout(onClose, 3000); return () => clearTimeout(t); }, [onClose]);
@@ -156,7 +157,7 @@ export default function AdminMembersPage() {
     suspended: members.filter(m => m.status === 'SUSPENDED').length,
   };
 
-  if (loading) return <div style={{ color: 'rgba(255,255,255,0.4)', padding: '2rem' }}>Loading members...</div>;
+  if (loading) return <AdminLoading text="Loading members..." />;
 
   return (
     <div>

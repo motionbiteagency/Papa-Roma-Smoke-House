@@ -2,6 +2,7 @@
 
 import { useEffect, useState, useCallback } from 'react';
 import { Mail, Trash2 } from 'lucide-react';
+import AdminLoading from '@/app/components/admin/AdminLoading';
 
 function Toast({ msg, type, onClose }) {
   useEffect(() => { const t = setTimeout(onClose, 3000); return () => clearTimeout(t); }, [onClose]);
@@ -79,7 +80,7 @@ export default function AdminInquiriesPage() {
   const filtered = filter === 'unread' ? inquiries.filter(i => !i.read) : inquiries;
   const unreadCount = inquiries.filter(i => !i.read).length;
 
-  if (loading) return <div style={{ color: 'rgba(255,255,255,0.4)', padding: '2rem' }}>Loading inquiries...</div>;
+  if (loading) return <AdminLoading text="Loading inquiries..." />;
 
   return (
     <div>

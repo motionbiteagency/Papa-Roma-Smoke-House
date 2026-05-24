@@ -2,6 +2,7 @@
 
 import { useEffect, useState, useCallback, useRef } from 'react';
 import { Plus, Search, X, Loader2, Check, Trash2, Pencil, ChevronDown, RefreshCw, Phone, Mail, FileText } from 'lucide-react';
+import AdminLoading from '@/app/components/admin/AdminLoading';
 
 /* ─── Helpers ─────────────────────────────────────────────────── */
 const STATUS_META = {
@@ -565,10 +566,7 @@ export default function AdminOrdersPage() {
       {/* Orders table */}
       <div className="admin-card" style={{ padding: 0, overflow: 'hidden' }}>
         {loading ? (
-          <div style={{ padding: '3rem', textAlign: 'center', color: 'rgba(255,255,255,0.3)' }}>
-            <Loader2 size={20} style={{ animation: 'spin 0.8s linear infinite' }} />
-            <p style={{ marginTop: 8 }}>Loading orders…</p>
-          </div>
+          <AdminLoading text="Loading orders..." />
         ) : orders.length === 0 ? (
           <div style={{ padding: '3rem', textAlign: 'center', color: 'rgba(255,255,255,0.3)' }}>
             <p style={{ fontSize: '2rem', marginBottom: 8 }}>📋</p>

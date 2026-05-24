@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { UtensilsCrossed, Tag, Mail, Crown, MessageSquare, Video, Settings, ArrowRight, RefreshCw, Calendar } from 'lucide-react';
+import AdminLoading from '@/app/components/admin/AdminLoading';
 
 export default function AdminOverviewPage() {
   const [stats, setStats] = useState({ menus: 0, items: 0, inquiries: 0, unreadInquiries: 0, testimonials: 0, members: 0, videos: 0, events: 0, pendingEvents: 0 });
@@ -67,6 +68,10 @@ export default function AdminOverviewPage() {
     { href: '/admin/testimonials', label: 'Manage Testimonials',   icon: <MessageSquare size={16} /> },
     { href: '/admin/events',       label: 'Event Bookings',         icon: <Calendar size={16} /> },
   ];
+
+  if (loading) {
+    return <AdminLoading text="Loading Dashboard..." />;
+  }
 
   return (
     <div>

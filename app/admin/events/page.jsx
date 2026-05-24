@@ -2,6 +2,7 @@
 
 import { useEffect, useState, useCallback } from 'react';
 import { Calendar, Check, RefreshCw } from 'lucide-react';
+import AdminLoading from '@/app/components/admin/AdminLoading';
 
 function Toast({ msg, type, onClose }) {
   useEffect(() => { const t = setTimeout(onClose, 3000); return () => clearTimeout(t); }, [onClose]);
@@ -101,7 +102,7 @@ export default function AdminEventsPage() {
       </div>
 
       {loading ? (
-        <div style={{ color: 'rgba(255,255,255,0.4)', padding: '2rem' }}>Loading bookings...</div>
+        <AdminLoading text="Loading bookings..." />
       ) : (
         <div style={{ display: 'grid', gridTemplateColumns: selected ? '1fr 1.4fr' : '1fr', gap: '1rem' }}>
           {/* List */}

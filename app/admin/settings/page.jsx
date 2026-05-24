@@ -3,6 +3,7 @@
 import { useEffect, useState, useCallback } from 'react';
 import { Save, Loader2, Eye, EyeOff } from 'lucide-react';
 import ImageUploader from '@/app/components/admin/ImageUploader';
+import AdminLoading from '@/app/components/admin/AdminLoading';
 
 function Toast({ msg, type, onClose }) {
   useEffect(() => { const t = setTimeout(onClose, 3000); return () => clearTimeout(t); }, [onClose]);
@@ -109,7 +110,7 @@ export default function AdminSettingsPage() {
     { id: 'password',   label: 'Change Password' },
   ];
 
-  if (loading) return <div style={{ color: 'rgba(255,255,255,0.4)', padding: '2rem' }}>Loading settings...</div>;
+  if (loading) return <AdminLoading text="Loading settings..." />;
 
   const bkash = config.paymentMethods?.bkash;
   const nagad  = config.paymentMethods?.nagad;

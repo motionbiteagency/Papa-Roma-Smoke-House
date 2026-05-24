@@ -1,0 +1,79 @@
+.loadingContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 2rem;
+  min-height: 400px;
+  height: 100%;
+  gap: 1.5rem;
+}
+
+.loadingPulse {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: rgba(198, 45, 57, 0.1);
+  box-shadow: 0 0 30px rgba(198, 45, 57, 0.2);
+}
+
+.loadingPulse::before,
+.loadingPulse::after {
+  content: '';
+  position: absolute;
+  inset: -10px;
+  border-radius: 50%;
+  border: 2px solid rgba(198, 45, 57, 0.3);
+  animation: pulseRipple 2s linear infinite;
+}
+
+.loadingPulse::after {
+  animation-delay: 1s;
+}
+
+.flameIcon {
+  color: #c62d39;
+  animation: flameFlicker 1.5s ease-in-out infinite alternate;
+}
+
+.loadingTextContainer {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  background: rgba(255, 255, 255, 0.03);
+  padding: 10px 20px;
+  border-radius: 100px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px);
+}
+
+.spinner {
+  color: #c62d39;
+  animation: spin 1s linear infinite;
+}
+
+.loadingText {
+  color: rgba(255, 255, 255, 0.8);
+  font-weight: 500;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  font-size: 0.85rem;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes pulseRipple {
+  0% { transform: scale(0.8); opacity: 1; }
+  100% { transform: scale(1.5); opacity: 0; }
+}
+
+@keyframes flameFlicker {
+  0% { transform: scale(0.95) rotate(-3deg); filter: drop-shadow(0 0 10px rgba(198, 45, 57, 0.4)); }
+  100% { transform: scale(1.05) rotate(3deg); filter: drop-shadow(0 0 20px rgba(198, 45, 57, 0.8)); }
+}

@@ -1,7 +1,8 @@
 'use client';
 
 import { useEffect, useState, useCallback } from 'react';
-import { Plus, Trash2, Pencil, X, ChevronDown, ChevronRight, Star, Loader2, Check } from 'lucide-react';
+import { Plus, Edit2, Trash2, Save, X, Image as ImageIcon, Loader2 } from 'lucide-react';
+import AdminLoading from '@/app/components/admin/AdminLoading';
 import { getItemImage } from '@/data/itemImages';
 
 /* ─── Toast ─────────────────────────────────────────────── */
@@ -418,7 +419,7 @@ export default function AdminMenuPage() {
     }
   };
 
-  if (loading) return <div style={{ color: 'rgba(255,255,255,0.4)', padding: '2rem' }}>Loading menu data...</div>;
+  if (loading) return <AdminLoading text="Loading menu data..." />;
 
   return (
     <div>
