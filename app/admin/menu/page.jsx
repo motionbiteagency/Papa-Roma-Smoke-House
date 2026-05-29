@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState, useCallback } from 'react';
-import { Plus, Edit2, Trash2, Save, X, Image as ImageIcon, Loader2 } from 'lucide-react';
+import { Plus, Edit2, Trash2, Save, X, Image as ImageIcon, Loader2, Check, ChevronDown, ChevronRight, Star, Pencil } from 'lucide-react';
 import AdminLoading from '@/app/components/admin/AdminLoading';
 import { getItemImage } from '@/data/itemImages';
 
