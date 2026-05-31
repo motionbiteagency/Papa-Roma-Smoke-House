@@ -13,9 +13,22 @@ export async function generateMetadata({ params }) {
   const { menuTypes } = await getMenuData();
   const menuType = menuTypes.find((m) => m.slug === slug);
   if (!menuType) return { title: 'Menu Not Found | Papa Roma Smoke House' };
+  
+  const title = `${menuType.name} Menu | Papa Roma Smoke House`;
+  const description = menuType.description || `Explore our delicious ${menuType.name} menu.`;
+  
   return {
-    title: `${menuType.name} Menu | Papa Roma Smoke House`,
-    description: menuType.description,
+    title,
+    description,
+    openGraph: {
+      title,
+      description,
+      url: `/menu/${slug}`,
+    },
+    twitter: {
+      title,
+      description,
+    }
   };
 }
 
