@@ -125,7 +125,7 @@ export default function MemberDashboard() {
         <span style={{ fontSize: '0.85rem', color: 'rgba(255,255,255,0.5)' }}>Quick links:</span>
         <a href="/" style={{ fontSize: '0.85rem', color: '#b8913a', textDecoration: 'none', fontWeight: 600 }}>🏠 Restaurant Home</a>
         <a href="/menu/smoke-house" style={{ fontSize: '0.85rem', color: '#b8913a', textDecoration: 'none', fontWeight: 600 }}>🍖 View Menu</a>
-        <a href="/member/submit-review" style={{ fontSize: '0.85rem', color: '#b8913a', textDecoration: 'none', fontWeight: 600 }}>⭐ Submit Review</a>
+        <a href="/submit-review" style={{ fontSize: '0.85rem', color: '#b8913a', textDecoration: 'none', fontWeight: 600 }}>⭐ Submit Review</a>
         <a href="/events" style={{ fontSize: '0.85rem', color: '#b8913a', textDecoration: 'none', fontWeight: 600 }}>🎉 Book an Event</a>
       </div>
     </div>

@@ -1015,7 +1015,7 @@ function TestimonialsSection() {
         </AnimateOnScroll>
         <AnimateOnScroll>
           <div style={{ textAlign: 'center', marginTop: '3rem' }}>
-            <Link href="/member/submit-review" className="btn btn-secondary">
+            <Link href="/submit-review" className="btn btn-secondary">
               Leave a Review
             </Link>
           </div>

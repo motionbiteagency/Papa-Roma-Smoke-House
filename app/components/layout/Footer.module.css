@@ -216,9 +216,29 @@
   z-index: 1;
 }
 
+.bottomBarInner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
 .bottomBar p {
   font-size: var(--fs-xs);
   color: var(--color-text-muted);
+  margin: 0;
+}
+
+.credit a {
+  color: var(--color-gold);
+  text-decoration: none;
+  font-weight: 500;
+  transition: opacity var(--transition-fast);
+}
+
+.credit a:hover {
+  opacity: 0.8;
+  text-decoration: underline;
 }
 
 /* Responsive */
