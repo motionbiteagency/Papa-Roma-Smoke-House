@@ -513,24 +513,43 @@ function DishImageLayer({ dish, index, total, progress }) {
   const tStart = Math.max(0, (index - 0.5) * slot);
   const tEnd = Math.min(1, (index + 1.5) * slot);
 
-  const xFrom  = index === 0 ? '14vw'  : index === 1 ? '18vw'  : '45vw';
-  const yFrom  = index === 0 ? '10vh'  : index === 1 ? '14vh'  : '38vh';
-  const opFrom = index === 0 ? 0.8     : index === 1 ? 0.75    : 0;
-  const scFrom = index === 0 ? 0.9     : index === 1 ? 0.88    : 0.72;
+  const isFirst = index === 0;
+  const isLast = index === total - 1;
+
+  // First image starts near-center; others enter from the right
+  const xFrom = isFirst ? '5vw' : '45vw';
+  const yFrom = isFirst ? '2vh' : '38vh';
 
   const imageX = useTransform(progress, [tStart, tEnd], [xFrom, '-45vw']);
   const imageY = useTransform(progress, [tStart, tEnd], [yFrom, '-38vh']);
-  const imageRotate = useTransform(progress, [tStart, tEnd], [4, -4]);
-  const imageRotateY = useTransform(progress, [tStart, tEnd], [14, -14]);
-  const imageOpacity = useTransform(
-    progress,
-    [tStart, Math.min(tEnd, tStart + slot * 0.35), Math.max(tStart, tEnd - slot * 0.35), tEnd],
-    [opFrom, 1, 1, 0]
-  );
+  const imageRotate = useTransform(progress, [tStart, tEnd], [isFirst ? 0 : 4, -4]);
+  const imageRotateY = useTransform(progress, [tStart, tEnd], [isFirst ? 0 : 14, -14]);
+
+  // Fade timing
+  const fadeIn = Math.min(tEnd, tStart + slot * 0.4);
+  const fadeOut = Math.max(tStart, tEnd - slot * 0.4);
+
+  // Opacity: first starts visible, last stays visible, middles fade in+out
+  let opKeyframes, opValues;
+  if (isFirst) {
+    // Start at full opacity, hold, then fade out
+    opKeyframes = [tStart, fadeOut, tEnd];
+    opValues = [1, 1, 0];
+  } else if (isLast) {
+    // Fade in, then stay at full opacity until end
+    opKeyframes = [tStart, fadeIn, tEnd];
+    opValues = [0, 1, 1];
+  } else {
+    // Fade in, hold, fade out
+    opKeyframes = [tStart, fadeIn, fadeOut, tEnd];
+    opValues = [0, 1, 1, 0];
+  }
+
+  const imageOpacity = useTransform(progress, opKeyframes, opValues);
   const imageScale = useTransform(
     progress,
     [tStart, (tStart + tEnd) / 2, tEnd],
-    [scFrom, 1, 0.78]
+    [isFirst ? 1 : 0.72, 1, 0.78]
   );
 
   return (
