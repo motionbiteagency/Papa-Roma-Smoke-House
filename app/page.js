@@ -508,15 +508,14 @@ function MenuCategoriesSection() {
 
 /* ===================== SIGNATURE DISHES (Cinematic Scroll) ===================== */
 
-function DishImageLayer({ dish, index, total, progress }) {
+function DishImageLayer({ dish, index, total, progress, activeDish }) {
   const slot = 1 / total;
   const tStart = Math.max(0, (index - 0.5) * slot);
   const tEnd = Math.min(1, (index + 1.5) * slot);
 
   const isFirst = index === 0;
-  const isLast = index === total - 1;
 
-  // First image starts near-center; others enter from the right
+  // Position & transforms stay scroll-driven
   const xFrom = isFirst ? '5vw' : '45vw';
   const yFrom = isFirst ? '2vh' : '38vh';
 
@@ -524,38 +523,21 @@ function DishImageLayer({ dish, index, total, progress }) {
   const imageY = useTransform(progress, [tStart, tEnd], [yFrom, '-38vh']);
   const imageRotate = useTransform(progress, [tStart, tEnd], [isFirst ? 0 : 4, -4]);
   const imageRotateY = useTransform(progress, [tStart, tEnd], [isFirst ? 0 : 14, -14]);
-
-  // Fade timing
-  const fadeIn = Math.min(tEnd, tStart + slot * 0.4);
-  const fadeOut = Math.max(tStart, tEnd - slot * 0.4);
-
-  // Opacity: first starts visible, last stays visible, middles fade in+out
-  let opKeyframes, opValues;
-  if (isFirst) {
-    // Start at full opacity, hold, then fade out
-    opKeyframes = [tStart, fadeOut, tEnd];
-    opValues = [1, 1, 0];
-  } else if (isLast) {
-    // Fade in, then stay at full opacity until end
-    opKeyframes = [tStart, fadeIn, tEnd];
-    opValues = [0, 1, 1];
-  } else {
-    // Fade in, hold, fade out
-    opKeyframes = [tStart, fadeIn, fadeOut, tEnd];
-    opValues = [0, 1, 1, 0];
-  }
-
-  const imageOpacity = useTransform(progress, opKeyframes, opValues);
   const imageScale = useTransform(
     progress,
     [tStart, (tStart + tEnd) / 2, tEnd],
     [isFirst ? 1 : 0.72, 1, 0.78]
   );
 
+  // Opacity is state-driven (not scroll-driven) to avoid float precision bugs
+  const isActive = activeDish === index;
+
   return (
     <motion.div
       className={styles.cineImage}
-      style={{ x: imageX, y: imageY, opacity: imageOpacity, scale: imageScale, rotate: imageRotate, rotateY: imageRotateY }}
+      style={{ x: imageX, y: imageY, scale: imageScale, rotate: imageRotate, rotateY: imageRotateY }}
+      animate={{ opacity: isActive ? 1 : 0 }}
+      transition={{ duration: 0.5, ease: 'easeInOut' }}
     >
       <Image
         src={getItemImage(dish.itemId || dish.id)}
@@ -569,6 +551,7 @@ function DishImageLayer({ dish, index, total, progress }) {
     </motion.div>
   );
 }
+
 
 function SignatureDishesCinematic({ dishes }) {
   const containerRef = useRef(null);
@@ -625,6 +608,7 @@ function SignatureDishesCinematic({ dishes }) {
             index={i}
             total={N}
             progress={scrollYProgress}
+            activeDish={activeDish}
           />
         ))}
 
