@@ -2,6 +2,7 @@
 
 import { useEffect, useState, useCallback } from 'react';
 import { Plus, Trash2, Check, X, Eye, EyeOff, GripVertical } from 'lucide-react';
+import AdminLoading from '@/app/components/admin/AdminLoading';
 
 function Toast({ msg, type, onClose }) {
   useEffect(() => { const t = setTimeout(onClose, 3000); return () => clearTimeout(t); }, [onClose]);
@@ -89,7 +90,7 @@ export default function AdminVideosPage() {
     } catch { showToast('Failed to update — DB may be offline', 'error'); }
   };
 
-  if (loading) return <div style={{ color: 'rgba(255,255,255,0.4)', padding: '2rem' }}>Loading videos...</div>;
+  if (loading) return <AdminLoading text="Loading videos..." />;
 
   return (
     <div>

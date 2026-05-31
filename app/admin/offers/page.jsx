@@ -126,11 +126,7 @@ export default function AdminOffersPage() {
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.85rem' }}>
               <Field label="Title" value={popup.title || ''} onChange={e => setField('popupOffer.title', e.target.value)} placeholder="e.g. 🔥 Special Weekend Deal" />
               <Field label="Subtitle" value={popup.subtitle || ''} onChange={e => setField('popupOffer.subtitle', e.target.value)} placeholder="e.g. Get 20% off this weekend only" />
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.85rem' }}>
-                <Field label="Button Text" value={popup.buttonText || ''} onChange={e => setField('popupOffer.buttonText', e.target.value)} placeholder="e.g. Claim Offer" />
-                <Field label="Show Delay (seconds)" type="number" value={popup.delaySeconds ?? 3} onChange={e => setField('popupOffer.delaySeconds', parseInt(e.target.value) || 0)} hint="Seconds after page load" />
-              </div>
-              <Field label="Button Link (URL)" value={popup.link || ''} onChange={e => setField('popupOffer.link', e.target.value)} placeholder="/menu/smoke-house" />
+
 
               {/* Image uploader + Canva guidance */}
               <div>

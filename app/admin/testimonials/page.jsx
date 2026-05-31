@@ -3,6 +3,7 @@
 import { useEffect, useState, useCallback } from 'react';
 import { Plus, Trash2, Pencil, Check, X } from 'lucide-react';
 import ImageUploader from '@/app/components/admin/ImageUploader';
+import AdminLoading from '@/app/components/admin/AdminLoading';
 
 function Toast({ msg, type, onClose }) {
   useEffect(() => { const t = setTimeout(onClose, 3000); return () => clearTimeout(t); }, [onClose]);
@@ -140,7 +141,7 @@ export default function AdminTestimonialsPage() {
     });
   };
 
-  if (loading) return <div style={{ color: 'rgba(255,255,255,0.4)', padding: '2rem' }}>Loading...</div>;
+  if (loading) return <AdminLoading text="Loading testimonials..." />;
 
   return (
     <div>

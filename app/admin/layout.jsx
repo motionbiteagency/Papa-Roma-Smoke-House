@@ -16,12 +16,12 @@ const NAV_ITEMS = [
   { href: '/admin/orders',       label: 'Order Management', icon: <ClipboardList size={18} />, badgeKey: 'orders' },
   { href: '/admin/menu',         label: 'Menu Manager',     icon: <UtensilsCrossed size={18} /> },
   { href: '/admin/offers',       label: 'Offers',           icon: <Tag size={18} /> },
-  { href: '/admin/settings',     label: 'Site Settings', icon: <Settings size={18} /> },
   { href: '/admin/videos',       label: 'Videos',        icon: <Video size={18} /> },
   { href: '/admin/testimonials', label: 'Testimonials',  icon: <MessageSquare size={18} /> },
   { href: '/admin/inquiries',    label: 'Inquiries',     icon: <Mail size={18} />, badgeKey: 'inquiries' },
   { href: '/admin/events',       label: 'Events',        icon: <Calendar size={18} />, badgeKey: 'events' },
   { href: '/admin/members',      label: 'Club Members',  icon: <Crown size={18} /> },
+  { href: '/admin/settings',     label: 'Site Settings', icon: <Settings size={18} /> },
 ];
 
 export default function AdminLayout({ children }) {
