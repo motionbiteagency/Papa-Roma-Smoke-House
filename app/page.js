@@ -507,32 +507,6 @@ function MenuCategoriesSection() {
 }
 
 /* ===================== SIGNATURE DISHES (Cinematic Scroll) ===================== */
-const dishImages = {
-  sm1: '/images/hero-brisket.png',
-  sm2: '/images/gallery-grill.png',
-  sm5: '/images/hero-platter.png',
-  bs1: '/images/food-burger.png',
-  bs4: '/images/food-burger.png',
-  pl1: '/images/hero-platter.png',
-  bl8: '/images/food-bengali.png',
-  bl9: '/images/food-bengali.png',
-  bl11: '/images/food-bengali.png',
-  bm4: '/images/food-bengali.png',
-  bm5: '/images/food-bengali.png',
-  bm6: '/images/food-bengali.png',
-  ps5: '/images/food-pasta.png',
-  ps8: '/images/gallery-grill.png',
-  pm2: '/images/food-pasta.png',
-  pm4: '/images/food-pasta.png',
-  pm8: '/images/hero-platter.png',
-  mk4: '/images/food-drinks.png',
-  mk9: '/images/food-drinks.png',
-  mk12: '/images/food-drinks.png',
-  ds4: '/images/food-dessert.png',
-  ds6: '/images/food-dessert.png',
-  ds8: '/images/food-dessert.png',
-  ds12: '/images/food-dessert.png',
-};
 
 function DishImageLayer({ dish, index, total, progress }) {
   const slot = 1 / total;
@@ -565,7 +539,7 @@ function DishImageLayer({ dish, index, total, progress }) {
       style={{ x: imageX, y: imageY, opacity: imageOpacity, scale: imageScale, rotate: imageRotate, rotateY: imageRotateY }}
     >
       <Image
-        src={dishImages[dish.id] || '/images/hero-brisket.png'}
+        src={getItemImage(dish.itemId || dish.id)}
         alt={dish.name}
         fill
         style={{ objectFit: 'cover' }}
@@ -716,7 +690,7 @@ function SignatureDishesMobile({ dishes }) {
                 <article className={styles.sigMobileCard}>
                   <div className={styles.sigMobileImage}>
                     <Image
-                      src={dishImages[dish.id] || '/images/hero-brisket.png'}
+                      src={getItemImage(dish.itemId || dish.id)}
                       alt={dish.name}
                       fill
                       style={{ objectFit: 'cover' }}
@@ -785,6 +759,8 @@ function SignatureDishesSection() {
     window.addEventListener('resize', check);
     return () => window.removeEventListener('resize', check);
   }, []);
+
+  if (dishes.length === 0) return null;
 
   return (
     <>
