@@ -104,7 +104,7 @@ export default function Footer() {
         <div className={`container ${styles.bottomBarInner}`}>
           <p>&copy; {new Date().getFullYear()} PAPA ROMA FOOD ENGINEERING. All rights reserved.</p>
           <p className={styles.credit}>
-            Developed by <a href="https://motionbite.com" target="_blank" rel="noopener noreferrer">MotionBite</a>, motionbite.com is our agency
+            Developed by <a href="https://motionbite.com" target="_blank" rel="noopener noreferrer">MotionBite</a>
           </p>
         </div>
       </div>
