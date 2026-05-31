@@ -105,9 +105,10 @@ export default function AdminSettingsPage() {
   };
 
   const TABS = [
-    { id: 'payment',    label: 'Payment Methods' },
-    { id: 'hotpicks',   label: 'Hot Picks' },
-    { id: 'password',   label: 'Change Password' },
+    { id: 'payment',   label: 'Payment Methods' },
+    { id: 'hotpicks',  label: 'Hot Picks' },
+    { id: 'sigdishes', label: 'Signature Dishes' },
+    { id: 'password',  label: 'Change Password' },
   ];
 
   if (loading) return <AdminLoading text="Loading settings..." />;
@@ -197,7 +198,46 @@ export default function AdminSettingsPage() {
           </div>
         )}
 
-        {/* ── Change Password ── */}
+        {/* ── Signature Dishes ── */}
+        {activeTab === 'sigdishes' && (
+          <div>
+            <p style={{ color: 'rgba(255,255,255,0.45)', fontSize: '0.875rem', marginBottom: '1.25rem' }}>
+              Select up to <strong style={{ color: '#fff' }}>6 items</strong> to feature in the <strong style={{ color: '#fff' }}>Signature Dishes</strong> cinematic scroll section on the homepage. Currently <strong style={{ color: '#c62d39' }}>{(config.signatureDishIds || []).length}</strong> selected.
+            </p>
+            {menuItems.length === 0 && <p style={{ color: 'rgba(255,255,255,0.3)' }}>No menu items found.</p>}
+            <div data-lenis-prevent="true" style={{ height: '420px', overflowY: 'auto', border: '1px solid rgba(255,255,255,0.07)', borderRadius: '10px' }}>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', padding: '8px' }}>
+                {menuItems.map(item => {
+                  const selected = (config.signatureDishIds || []).includes(item.id);
+                  const atMax = (config.signatureDishIds || []).length >= 6;
+                  const disabled = !selected && atMax;
+                  return (
+                    <label key={item.id} style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '10px 14px', borderRadius: '8px', background: selected ? 'rgba(184,145,58,0.1)' : 'rgba(255,255,255,0.02)', border: `1px solid ${selected ? 'rgba(184,145,58,0.35)' : 'rgba(255,255,255,0.06)'}`, cursor: disabled ? 'not-allowed' : 'pointer', opacity: disabled ? 0.4 : 1, transition: 'all 0.2s' }}>
+                      <input
+                        type="checkbox"
+                        checked={selected}
+                        disabled={disabled}
+                        onChange={() => {
+                          const current = config.signatureDishIds || [];
+                          const updated = selected
+                            ? current.filter(id => id !== item.id)
+                            : [...current, item.id];
+                          set('signatureDishIds', updated);
+                        }}
+                        style={{ width: 16, height: 16, accentColor: '#b8913a', flexShrink: 0 }}
+                      />
+                      <span style={{ color: selected ? '#fff' : 'rgba(255,255,255,0.6)', fontSize: '0.875rem', flex: 1 }}>{item.label}</span>
+                      <span style={{ fontSize: '0.72rem', fontFamily: 'monospace', color: 'rgba(255,255,255,0.25)', flexShrink: 0 }}>{item.id}</span>
+                    </label>
+                  );
+                })}
+              </div>
+            </div>
+            <p style={{ color: 'rgba(255,255,255,0.35)', fontSize: '0.8rem', marginTop: '1rem' }}>
+              Click <strong style={{ color: '#fff' }}>Save Changes</strong> above to apply. Max 6 items.
+            </p>
+          </div>
+        )}
         {activeTab === 'password' && (
           <div style={{ maxWidth: 420 }}>
             <p style={{ color: 'rgba(255,255,255,0.45)', fontSize: '0.875rem', marginBottom: '1.5rem' }}>

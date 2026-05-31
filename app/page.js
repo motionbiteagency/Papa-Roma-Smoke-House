@@ -734,23 +734,33 @@ function SignatureDishesMobile({ dishes }) {
 }
 
 function SignatureDishesSection() {
-  const { menuData } = usePublicData();
-  const featuredItems = [];
-  (menuData.menuTypes || []).forEach((mt) => {
-    mt.categories.forEach((cat) => {
-      cat.items.forEach((item) => {
-        if (item.featured) {
-          featuredItems.push({
-            ...item,
-            menuName: mt.name,
-            menuSlug: mt.slug,
-            categoryName: cat.name,
-          });
-        }
-      });
-    });
-  });
-  const dishes = featuredItems.slice(0, 6);
+  const { menuData, config } = usePublicData();
+
+  // Build a flat lookup of all items by their sm1-style id
+  const allItems = (menuData.menuTypes || []).flatMap((mt) =>
+    mt.categories.flatMap((cat) =>
+      cat.items.map((item) => ({
+        ...item,
+        menuName: mt.name,
+        menuSlug: mt.slug,
+        categoryName: cat.name,
+      }))
+    )
+  );
+
+  let dishes;
+  const signatureDishIds = config.signatureDishIds || [];
+
+  if (signatureDishIds.length > 0) {
+    // Use admin-selected order
+    dishes = signatureDishIds
+      .map((id) => allItems.find((item) => item.id === id))
+      .filter(Boolean)
+      .slice(0, 6);
+  } else {
+    // Fallback: items with featured=true
+    dishes = allItems.filter((item) => item.featured).slice(0, 6);
+  }
 
   const [isMobile, setIsMobile] = useState(false);
   useEffect(() => {
