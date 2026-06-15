@@ -370,9 +370,14 @@ function BeefEaterClubSection() {
               <div className={styles.beefClubStatDiv} />
               <div className={styles.beefClubStat}><strong>Free</strong><span>to Join</span></div>
             </div>
-            <Link href="/beef-club" className={styles.beefClubCta}>
-              <Crown size={18} /> Claim Your Membership
-            </Link>
+            <div className={styles.beefClubActions}>
+              <Link href="/beef-club" className={styles.beefClubCta}>
+                <Crown size={18} /> Claim Your Membership
+              </Link>
+              <Link href="/member/login" className={styles.beefClubLogin}>
+                Member Login
+              </Link>
+            </div>
           </div>
 
           {/* Right benefits grid */}
