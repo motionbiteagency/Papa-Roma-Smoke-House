@@ -175,9 +175,9 @@ export default function CartDrawer() {
                   <span className={styles.totalAmount}>৳{getTotal().toLocaleString()}</span>
                 </div>
                 <p className={styles.taxNote}>{items.length} item{items.length !== 1 ? 's' : ''} · taxes included</p>
-                <button className={styles.checkoutBtn} onClick={() => setStep('checkout')}>
+                <Link href="/checkout" className={styles.checkoutBtn} onClick={handleClose}>
                   Place Order →
-                </button>
+                </Link>
               </div>
             )}
           </>
