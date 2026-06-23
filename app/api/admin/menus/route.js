@@ -59,6 +59,14 @@ export async function POST(request) {
       revalidateTag('menus');
       return NextResponse.json({ success: true, item });
     }
+    if (action === 'updateMenuTypePdf') {
+      const menuType = await prisma.menuType.update({
+        where: { id: data.id },
+        data: { pdfUrl: data.pdfUrl },
+      });
+      revalidateTag('menus');
+      return NextResponse.json({ success: true, menuType });
+    }
     return NextResponse.json({ error: 'Unknown action' }, { status: 400 });
   } catch (e) {
     return NextResponse.json({ error: e.message }, { status: 500 });

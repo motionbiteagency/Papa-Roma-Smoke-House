@@ -54,6 +54,7 @@ model MenuType {
   description String
   icon        String
   logoImage   String?
+  pdfUrl      String?
   order       Int        @default(0)
   categories  Category[]
 }

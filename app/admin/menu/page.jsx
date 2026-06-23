@@ -321,6 +321,7 @@ export default function AdminMenuPage() {
   const [expandedCat, setExpandedCat] = useState(null);
   const [modal, setModal] = useState(null); // { mode: 'add'|'edit', item, catName, menuIdx, catIdx, catId }
   const [confirm, setConfirm] = useState(null);
+  const [uploadingPdf, setUploadingPdf] = useState({});
 
   const showToast = (msg, type = 'success') => setToast({ msg, type });
 
@@ -419,6 +420,39 @@ export default function AdminMenuPage() {
     }
   };
 
+  const handlePdfUpload = async (menuId, file) => {
+    if (!file || file.type !== 'application/pdf') {
+      showToast('Please select a valid PDF file', 'error');
+      return;
+    }
+    
+    setUploadingPdf(prev => ({ ...prev, [menuId]: true }));
+    try {
+      const fd = new FormData();
+      fd.append('file', file);
+      
+      const res = await fetch('/api/upload-pdf', { method: 'POST', body: fd });
+      const json = await res.json();
+      
+      if (!res.ok || !json.success) throw new Error(json.error || 'Failed to upload PDF');
+      
+      await apiCall('updateMenuTypePdf', { id: menuId, pdfUrl: json.url });
+      
+      setData(prev => {
+        const clone = JSON.parse(JSON.stringify(prev));
+        for (const mt of clone.menuTypes) {
+          if (mt.id === menuId) mt.pdfUrl = json.url;
+        }
+        return clone;
+      });
+      showToast('PDF Menu uploaded successfully!');
+    } catch (e) {
+      showToast(e.message || 'Error uploading PDF', 'error');
+    } finally {
+      setUploadingPdf(prev => ({ ...prev, [menuId]: false }));
+    }
+  };
+
   if (loading) return <AdminLoading text="Loading menu data..." />;
 
   return (
@@ -457,6 +491,62 @@ export default function AdminMenuPage() {
 
           {expandedMenu === mIdx && (
             <div style={{ marginTop: '1.25rem' }}>
+              
+              {/* PDF Upload Section */}
+              <div style={{ padding: '0.85rem', marginBottom: '1rem', background: 'rgba(255,255,255,0.03)', border: '1px dashed rgba(255,255,255,0.1)', borderRadius: '10px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                <div>
+                  <h4 style={{ margin: '0 0 4px', color: '#fff', fontSize: '0.9rem' }}>Digital PDF Menu</h4>
+                  <p style={{ margin: 0, fontSize: '0.75rem', color: 'rgba(255,255,255,0.4)' }}>
+                    {menu.pdfUrl ? 'Cloud PDF is active.' : 'No cloud PDF uploaded. Using static fallback if available.'}
+                  </p>
+                </div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  {menu.pdfUrl && (
+                    <a href={menu.pdfUrl} target="_blank" rel="noopener noreferrer" className="admin-btn admin-btn-ghost" style={{ fontSize: '0.75rem', padding: '6px 12px' }}>
+                      View PDF
+                    </a>
+                  )}
+                  <input 
+                    type="file" 
+                    accept="application/pdf"
+                    id={`pdf-upload-${menu.id}`}
+                    style={{ display: 'none' }}
+                    onChange={(e) => {
+                      if (e.target.files?.[0]) {
+                        handlePdfUpload(menu.id, e.target.files[0]);
+                        e.target.value = '';
+                      }
+                    }}
+                  />
+                  <button 
+                    className="admin-btn admin-btn-secondary" 
+                    style={{ fontSize: '0.75rem', padding: '6px 12px' }}
+                    onClick={() => document.getElementById(`pdf-upload-${menu.id}`).click()}
+                    disabled={uploadingPdf[menu.id]}
+                  >
+                    {uploadingPdf[menu.id] ? <><Loader2 size={13} style={{ animation: 'spin 0.8s linear infinite' }} /> Uploading...</> : 'Upload PDF'}
+                  </button>
+                  {menu.pdfUrl && (
+                     <button 
+                       className="admin-btn admin-btn-danger" 
+                       style={{ fontSize: '0.75rem', padding: '6px 12px' }}
+                       onClick={async () => {
+                         if (!confirm('Are you sure you want to remove this PDF?')) return;
+                         await apiCall('updateMenuTypePdf', { id: menu.id, pdfUrl: null });
+                         setData(prev => {
+                           const clone = JSON.parse(JSON.stringify(prev));
+                           for (const mt of clone.menuTypes) if (mt.id === menu.id) mt.pdfUrl = null;
+                           return clone;
+                         });
+                         showToast('PDF removed successfully!');
+                       }}
+                     >
+                       Remove
+                     </button>
+                  )}
+                </div>
+              </div>
+
               {menu.categories.map((cat, cIdx) => {
                 const catKey = `${mIdx}-${cIdx}`;
                 return (

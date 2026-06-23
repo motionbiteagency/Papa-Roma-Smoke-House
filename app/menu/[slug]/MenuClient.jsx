@@ -167,9 +167,9 @@ export default function MenuClient({ slug }) {
           ))}
 
           {/* PDF Download */}
-          {pdfMap[slug] && (
+          {(menuType.pdfUrl || pdfMap[slug]) && (
             <AnimateOnScroll className={styles.pdfDownload}>
-              <a href={pdfMap[slug]} target="_blank" rel="noopener noreferrer" className="btn btn-secondary">
+              <a href={menuType.pdfUrl || pdfMap[slug]} target="_blank" rel="noopener noreferrer" className="btn btn-secondary">
                 <Download size={16} /> Download PDF Menu
               </a>
             </AnimateOnScroll>
