@@ -78,11 +78,6 @@ const HOW_IT_WORKS = [
   },
 ];
 
-export const metadata = {
-  title: 'Gym & Fitness Meal Plans | Papa Roma Food Engineering',
-  description: 'Precision-portioned, macro-balanced fitness meals for athletes and gym-goers in Dhaka. Bulking, cutting, and maintenance plans available.',
-};
-
 export default function GymFoodPage() {
   const [form, setForm] = useState({ name: '', phone: '', plan: 'bulking', weight: '', goal: '' });
 
