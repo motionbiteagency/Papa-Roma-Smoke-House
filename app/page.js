@@ -174,6 +174,102 @@ function HeroSection() {
   );
 }
 
+/* ===================== SPECIALIZED DIET SECTION ===================== */
+const DIET_CARDS = [
+  {
+    id: 'gym',
+    href: '/diet/gym',
+    badge: '🏋️ Fitness Nutrition',
+    title: 'Gym & Fitness Meals',
+    subtitle: 'Fuel Your Gains',
+    desc: 'Precision-portioned, macro-balanced meals crafted for athletes and gym enthusiasts. Every gram weighed for your goal.',
+    tags: ['High Protein', 'Weighed Portions', 'Bulking · Cutting · Maintenance'],
+    color: '#22c55e',
+    colorDim: 'rgba(34,197,94,0.12)',
+    colorBorder: 'rgba(34,197,94,0.35)',
+    bg: '/images/hero-brisket.png',
+    cta: 'See Meal Plans',
+  },
+  {
+    id: 'tiffin',
+    href: '/diet/student-tiffin',
+    badge: '🎒 Student Nutrition',
+    title: 'Student Tiffin Box',
+    subtitle: 'Nourish Their Growth',
+    desc: 'Wholesome, parent-approved tiffin boxes for school children. Balanced nutrition for growing minds and bodies.',
+    tags: ['Ages 6–17', 'Daily Delivery', 'Weekly Subscription'],
+    color: '#f59e0b',
+    colorDim: 'rgba(245,158,11,0.12)',
+    colorBorder: 'rgba(245,158,11,0.35)',
+    bg: '/images/food-bengali.png',
+    cta: 'Subscribe Now',
+  },
+  {
+    id: 'medicinal',
+    href: '/diet/medicinal',
+    badge: '🌿 Therapeutic Nutrition',
+    title: 'Medicinal Diet',
+    subtitle: 'Healing Through Food',
+    desc: 'Doctor-aware therapeutic meal plans for diabetes, hypertension, post-surgery recovery, and more.',
+    tags: ['Diabetic Friendly', 'Low-Sodium', 'Post-Surgery Recovery'],
+    color: '#0ea5e9',
+    colorDim: 'rgba(14,165,233,0.12)',
+    colorBorder: 'rgba(14,165,233,0.35)',
+    bg: '/images/food-drinks.png',
+    cta: 'Explore Plans',
+  },
+];
+
+function SpecializedDietSection() {
+  return (
+    <section className={`section ${styles.dietSection}`}>
+      <div className="container">
+        <AnimateOnScroll>
+          <div className="section-header">
+            <span className="section-label">Eat With Purpose</span>
+            <h2 className="section-title">Food That <span className="gold-text">Works For You</span></h2>
+            <p className="section-subtitle">Beyond great taste — meals crafted for your lifestyle, fitness goals, and health needs</p>
+          </div>
+        </AnimateOnScroll>
+        <StaggerContainer className={styles.dietGrid}>
+          {DIET_CARDS.map((card) => (
+            <StaggerItem key={card.id}>
+              <Link href={card.href} className={styles.dietCard} style={{ '--card-color': card.color, '--card-color-dim': card.colorDim, '--card-border': card.colorBorder }}>
+                {/* Background Image */}
+                <div className={styles.dietCardBg}>
+                  <Image src={card.bg} alt={card.title} fill style={{ objectFit: 'cover' }} sizes="(max-width: 768px) 100vw, 33vw" />
+                </div>
+                <div className={styles.dietCardOverlay} />
+
+                {/* Content */}
+                <div className={styles.dietCardContent}>
+                  <div className={styles.dietCardBadge}>{card.badge}</div>
+                  <div className={styles.dietCardBody}>
+                    <p className={styles.dietCardSubtitle}>{card.subtitle}</p>
+                    <h3 className={styles.dietCardTitle}>{card.title}</h3>
+                    <p className={styles.dietCardDesc}>{card.desc}</p>
+                    <div className={styles.dietCardTags}>
+                      {card.tags.map((t) => (
+                        <span key={t} className={styles.dietTag}>{t}</span>
+                      ))}
+                    </div>
+                  </div>
+                  <div className={styles.dietCardCta}>
+                    {card.cta} <ArrowRight size={14} />
+                  </div>
+                </div>
+
+                {/* Hover glow border */}
+                <div className={styles.dietCardBorder} />
+              </Link>
+            </StaggerItem>
+          ))}
+        </StaggerContainer>
+      </div>
+    </section>
+  );
+}
+
 /* ===================== BRAND HERO SECTION ===================== */
 function BrandHeroSection() {
   const containerRef = useRef(null);
@@ -1169,6 +1265,7 @@ export default function HomePage() {
     <>
       <FloatingFoodParticles />
       <HeroSection />
+      <SpecializedDietSection />
       <BrandHeroSection />
       <HotItemsSection />
       <MenuCategoriesSection />

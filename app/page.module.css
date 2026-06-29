@@ -2,6 +2,207 @@
    HOME PAGE STYLES (v2 - With Real Images)
    ============================ */
 
+/* ---- SPECIALIZED DIET SECTION ---- */
+.dietSection {
+  background: var(--color-bg-primary);
+}
+
+.dietGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+}
+
+.dietCard {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  min-height: 540px;
+  text-decoration: none;
+  cursor: pointer;
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.dietCard:hover {
+  transform: translateY(-10px);
+}
+
+.dietCardBg {
+  position: absolute;
+  inset: 0;
+  transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.dietCard:hover .dietCardBg {
+  transform: scale(1.08);
+}
+
+.dietCardOverlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(10, 10, 10, 0.3) 0%,
+    rgba(10, 10, 10, 0.6) 40%,
+    rgba(10, 10, 10, 0.93) 100%
+  );
+  transition: background 0.4s ease;
+  z-index: 1;
+}
+
+.dietCard:hover .dietCardOverlay {
+  background: linear-gradient(
+    180deg,
+    rgba(10, 10, 10, 0.2) 0%,
+    rgba(10, 10, 10, 0.55) 40%,
+    rgba(10, 10, 10, 0.95) 100%
+  );
+}
+
+.dietCardBorder {
+  position: absolute;
+  inset: 0;
+  border-radius: var(--radius-xl);
+  border: 2px solid transparent;
+  transition: border-color 0.4s ease, box-shadow 0.4s ease;
+  z-index: 3;
+  pointer-events: none;
+}
+
+.dietCard:hover .dietCardBorder {
+  border-color: var(--card-border);
+  box-shadow: 0 0 40px -10px var(--card-color), inset 0 0 60px -30px var(--card-color-dim);
+}
+
+.dietCardContent {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+  padding: 1.75rem;
+}
+
+.dietCardBadge {
+  display: inline-flex;
+  align-self: flex-start;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 100px;
+  font-family: var(--font-accent);
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.8);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  transition: background 0.3s, border-color 0.3s;
+}
+
+.dietCard:hover .dietCardBadge {
+  background: var(--card-color-dim);
+  border-color: var(--card-border);
+  color: var(--card-color);
+}
+
+.dietCardBody {
+  margin-top: auto;
+}
+
+.dietCardSubtitle {
+  font-family: var(--font-accent);
+  font-size: 0.78rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 2.5px;
+  color: var(--card-color);
+  margin-bottom: 0.5rem;
+}
+
+.dietCardTitle {
+  font-family: var(--font-heading);
+  font-size: clamp(1.5rem, 2.5vw, 2rem);
+  font-weight: 800;
+  color: var(--color-text);
+  line-height: 1.2;
+  margin-bottom: 0.875rem;
+}
+
+.dietCardDesc {
+  font-size: 0.875rem;
+  color: var(--color-text-secondary);
+  line-height: 1.7;
+  margin-bottom: 1.25rem;
+  max-width: 340px;
+}
+
+.dietCardTags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 1.5rem;
+}
+
+.dietTag {
+  padding: 4px 10px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 100px;
+  font-family: var(--font-accent);
+  font-size: 0.7rem;
+  font-weight: 500;
+  color: var(--color-text-secondary);
+  transition: all 0.3s;
+}
+
+.dietCard:hover .dietTag {
+  background: var(--card-color-dim);
+  border-color: var(--card-border);
+  color: var(--card-color);
+}
+
+.dietCardCta {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-accent);
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--card-color);
+  padding: 10px 20px;
+  border: 1.5px solid var(--card-border);
+  border-radius: var(--radius-md);
+  transition: all 0.3s ease;
+  align-self: flex-start;
+}
+
+.dietCard:hover .dietCardCta {
+  background: var(--card-color-dim);
+  box-shadow: 0 4px 20px -5px var(--card-color);
+}
+
+@media (max-width: 1024px) {
+  .dietGrid {
+    grid-template-columns: 1fr;
+    max-width: 500px;
+    margin: 0 auto;
+  }
+  .dietCard { min-height: 420px; }
+}
+
+@media (max-width: 768px) {
+  .dietCard { min-height: 380px; }
+  .dietCardContent { padding: 1.25rem; }
+}
+
 /* ---- HERO SECTION ---- */
 .hero {
   position: relative;
