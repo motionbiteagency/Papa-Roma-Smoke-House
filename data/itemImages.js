@@ -42,7 +42,7 @@ const itemImageMap = {
   bk6: 'https://images.unsplash.com/photo-1533089860892-a7c6f0a88666?w=500&q=80',
   bk7: 'https://images.unsplash.com/photo-1585937421612-70a008356fbe?w=500&q=80',
 
-  // === Bangla Kuthir — Lunch ===
+  // === Bangla Kutir — Lunch ===
   bl1: 'https://images.unsplash.com/photo-1516714435131-44d6b64dc6a2?w=500&q=80',
   bl2: 'https://images.unsplash.com/photo-1585937421612-70a008356fbe?w=500&q=80',
   bl3: 'https://images.unsplash.com/photo-1518546305927-5a555bb7020d?w=500&q=80',
@@ -60,7 +60,7 @@ const itemImageMap = {
   bl15: 'https://images.unsplash.com/photo-1551529834-525807d6b4f3?w=500&q=80',
   bl16: 'https://images.unsplash.com/photo-1488477181212-4fc5b60ee682?w=500&q=80',
 
-  // === Bangla Kuthir — Main Courses ===
+  // === Bangla Kutir — Main Courses ===
   bm1: 'https://images.unsplash.com/photo-1585937421612-70a008356fbe?w=500&q=80',
   bm2: 'https://images.unsplash.com/photo-1603894584373-5ac82b2ae398?w=500&q=80',
   bm3: 'https://images.unsplash.com/photo-1603894584373-5ac82b2ae398?w=500&q=80',

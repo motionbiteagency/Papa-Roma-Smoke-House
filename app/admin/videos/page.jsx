@@ -10,7 +10,7 @@ function Toast({ msg, type, onClose }) {
 }
 
 const EMPTY = { title: '', youtubeId: '', category: 'Smoke House', duration: '', views: '', featured: false };
-const CATEGORIES = ['Smoke House', 'Bangla Kuthir', 'Pushkin', 'Beverages', 'Reels', 'General'];
+const CATEGORIES = ['Smoke House', 'Bangla Kutir', 'Pushkin', 'Beverages', 'Reels', 'General'];
 
 export default function AdminVideosPage() {
   const [videos, setVideos] = useState([]);

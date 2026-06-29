@@ -38,16 +38,6 @@ export default function Navbar() {
       <nav className={styles.nav}>
         {/* Logo */}
         <Link href="/" className={styles.logo}>
-          <div className={styles.logoImageWrapper}>
-            <Image 
-              src="/images/logo.png" 
-              alt="Papa Roma Logo" 
-              width={48} 
-              height={48} 
-              style={{ objectFit: 'contain', borderRadius: 'var(--radius-sm)' }}
-              priority
-            />
-          </div>
           <div className={styles.logoText}>
             <span className={styles.logoName}>PAPA ROMA</span>
             <span className={styles.logoSub}>FOOD ENGINEERING</span>

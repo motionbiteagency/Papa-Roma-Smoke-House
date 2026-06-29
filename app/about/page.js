@@ -31,7 +31,7 @@ export default function AboutPage() {
               Nestled beside the serene Dhanmondi Lake, Papa Roma Smoke House brings you an extraordinary dining experience where traditional smoking techniques meet bold, contemporary flavors.
             </p>
             <p className={styles.aboutText}>
-              Our pitmasters slow-smoke premium meats for hours using aged hardwood, creating tender, flavorful dishes that tell a story of patience and passion. From our signature Texas-style brisket to authentic Bengali specialties at Bangla Kuthir, every bite is a journey.
+              Our pitmasters slow-smoke premium meats for hours using aged hardwood, creating tender, flavorful dishes that tell a story of patience and passion. From our signature Texas-style brisket to authentic Bengali specialties at Bangla Kutir, every bite is a journey.
             </p>
             <div className={styles.aboutFeatures}>
               <div className={styles.feature}>

@@ -463,7 +463,7 @@ function MenuCategoriesSection() {
         </AnimateOnScroll>
       </div>
       <div className={styles.stickyContainer}>
-        {(menuData.menuTypes || []).map((menu, index) => (
+        {(menuData.menuTypes || []).filter(menu => menu.id !== 'beverages').map((menu, index) => (
           <div key={menu.id} className={styles.stickyPanel} style={{ zIndex: index + 10 }}>
             <div className={styles.stickyPanelImage}>
               <Image
