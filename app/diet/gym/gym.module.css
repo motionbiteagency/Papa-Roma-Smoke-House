@@ -15,7 +15,7 @@
 .heroBg {
   position: absolute;
   inset: 0;
-  background: url('/images/hero-brisket.png') center/cover no-repeat;
+  background: url('/images/diet-gym.png') center/cover no-repeat;
   transform: scale(1.05);
   transition: transform 8s ease;
   filter: brightness(0.4) saturate(0.8);

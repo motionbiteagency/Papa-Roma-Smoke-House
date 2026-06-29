@@ -187,7 +187,7 @@ const DIET_CARDS = [
     color: '#22c55e',
     colorDim: 'rgba(34,197,94,0.12)',
     colorBorder: 'rgba(34,197,94,0.35)',
-    bg: '/images/hero-brisket.png',
+    bg: '/images/diet-gym.png',
     cta: 'See Meal Plans',
   },
   {
@@ -201,7 +201,7 @@ const DIET_CARDS = [
     color: '#f59e0b',
     colorDim: 'rgba(245,158,11,0.12)',
     colorBorder: 'rgba(245,158,11,0.35)',
-    bg: '/images/food-bengali.png',
+    bg: '/images/diet-tiffin.png',
     cta: 'Subscribe Now',
   },
   {
@@ -215,7 +215,7 @@ const DIET_CARDS = [
     color: '#0ea5e9',
     colorDim: 'rgba(14,165,233,0.12)',
     colorBorder: 'rgba(14,165,233,0.35)',
-    bg: '/images/food-drinks.png',
+    bg: '/images/diet-medicinal.png',
     cta: 'Explore Plans',
   },
 ];

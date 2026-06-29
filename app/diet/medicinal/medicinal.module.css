@@ -10,7 +10,7 @@
 .heroBg {
   position: absolute;
   inset: 0;
-  background: url('/images/food-drinks.png') center/cover no-repeat;
+  background: url('/images/diet-medicinal.png') center/cover no-repeat;
   transform: scale(1.05);
   transition: transform 8s ease;
   filter: brightness(0.3) saturate(0.6);
