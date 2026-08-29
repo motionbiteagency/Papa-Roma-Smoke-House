@@ -46,7 +46,8 @@ export default async function RootLayout({ children }) {
     getMenuData(),
     getTestimonials(),
   ]);
-
+  // update the git email to [EMAIL_ADDRESS]
+  
   return (
     <html lang="en">
       <head>
