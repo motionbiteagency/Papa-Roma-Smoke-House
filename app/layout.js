@@ -50,8 +50,10 @@ export default async function RootLayout({ children }) {
   return (
     <html lang="en">
       <head>
+      
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <meta name="google-site-verification" content="xuyNk6l0Tm88B6RSUoOVg7PiHiZJtOrUOqw7N9bsuSc" />
       </head>
       <body>
         <Providers>
