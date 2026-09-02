@@ -1,3 +1,4 @@
+import Script from 'next/script';
 import './globals.css';
 import AppWrapper from './components/layout/AppWrapper';
 import PublicShell from './components/layout/PublicShell';
@@ -58,6 +59,18 @@ export default async function RootLayout({ children }) {
 
       </head>
       <body>
+        <Script
+          src="https://www.googletagmanager.com/gtag/js?id=G-0M9N8V3EDC"
+          strategy="afterInteractive"
+        />
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-0M9N8V3EDC');
+          `}
+        </Script>
         <Providers>
           <CartProvider>
             <PublicDataProvider config={config} menuData={menuData} testimonials={testimonials}>
