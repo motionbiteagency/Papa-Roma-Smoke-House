@@ -46,7 +46,7 @@ export default async function RootLayout({ children }) {
     getMenuData(),
     getTestimonials(),
   ]);
-  // update the git email to [EMAIL_ADDRESS]
+  // update git authentication via SSH
   
   return (
     <html lang="en">
@@ -55,6 +55,7 @@ export default async function RootLayout({ children }) {
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <meta name="google-site-verification" content="xuyNk6l0Tm88B6RSUoOVg7PiHiZJtOrUOqw7N9bsuSc" />
+
       </head>
       <body>
         <Providers>
